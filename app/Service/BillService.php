@@ -136,11 +136,6 @@ class BillService{
         Bill_PF_NEY::insertBill($billPFParams);
         Bill_NEY::insertBills($billData);
 
-//        try {
-//        } catch (Exception $e) {
-//            DB::rollBack();
-//            throw new Exception("계산서 등록에 실패하였습니다.");
-//        }
         DB::commit();
     }
 

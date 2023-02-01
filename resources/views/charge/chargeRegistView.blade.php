@@ -194,9 +194,9 @@
         },
 
         onChargeTableBodyDraw:function() {
-            let html = "";
+            let html = "" ;
             this.billChargeItems.forEach((item, idx) => {
-                html += `<tr class="text-center">`;
+                html += `<tr class="text-center"> `;
                 html += `    <td class="text-nowrap">${item['f_billid']}</td>`;
                 html += `    <td class="text-nowrap">${item['f_bizname'] === null ? "" : item['f_bizname']}</td>`;
                 html += `    <td class="text-nowrap">
@@ -215,10 +215,6 @@
          * 비회원 신규 등록 버튼 클릭시
          */
         billRegistModelInit() {
-            if(this.selectedClientLoginId === "") {
-                alert("고객을 선택해주세요.");
-                location.reload();
-            }
             // 비회원 신규 등록 modal 등록창 form 내부의 특정 input ID에 해당하는 value 값을 변경합니다.
             let loginIdInput = document.getElementById('billModalForm').querySelector('#f_loginid');
             let companyInput = document.getElementById('billModalForm').querySelector('#f_company');
