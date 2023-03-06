@@ -54,7 +54,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <!-- Notifications -->
-                            <h4 class="card-header text-primary">계산서 양식 다운로드</h4>
+                            <h4 class="card-header text-primary">계산서 양식 다운로드2</h4>
 
                             <div class="card-body">
                                 <div class="nav-align-top mb-4">
@@ -183,7 +183,7 @@
                                                         <button class="form-control btn-primary ">저장</button>
                                                     </div>
                                                 </div>
-                                                <div class="card-body">
+                                          `      <div class="card-body">
                                                     <label>작성일자</label>
                                                     <div class="btn-group col-md-10">
                                                         <input class="alert alert-danger container-fluid text-black"

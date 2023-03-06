@@ -6,6 +6,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\IndexContorller;
+use App\Http\Controllers\PFController;
 use App\Http\Controllers\SampleController;
 use Illuminate\Support\Facades\Route;
 
@@ -75,6 +76,7 @@ if (!Auth::check()) {
          */
         Route::post("/publish/list",[BillPublishController::class, "list"])->name("publishList");
         Route::post("/publish/update",[BillPublishController::class, "update"])->name("publishUpdate");
+        Route::post("/publish/delete",[BillPublishController::class, "delete"])->name("publishDelete");
         Route::post("/bill/ListNEY/excel", [BillPublishController::class, "listByNeyExcel"])->name("listByNeyExcel");
 
 
@@ -89,6 +91,7 @@ if (!Auth::check()) {
         Route::get("/deposit/download", [DepositController::class, "download"])->name("downloadExcel");
 
 
+        Route::post("/billpf/present", [PFController::class, "isPresentId"])->name("billPresent");
 
 
         /**

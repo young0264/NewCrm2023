@@ -85,4 +85,19 @@ class BillPublishController extends BaseController {
         ]);
     }
 
+    public function delete(Request $request) {
+        $result = $this->billPublishService->billMultiDelete($request->input());
+        if (!$result['status']) {
+            return response()->json([
+                "status" => "error",
+                "msg" => $result['msg']
+            ]);
+        }
+
+        return response()->json([
+            "status" => "ok",
+            "msg" => "정상적으로 삭제되었습니다."
+        ]);
+}
+
 }

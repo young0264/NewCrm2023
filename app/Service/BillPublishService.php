@@ -59,7 +59,7 @@ class BillPublishService {
         }
 
         /**
-         * select-box내 직접입력 input으로 검색, where절 설정
+         * select-box내 직접입력 input으로 검색시, where절 설정
          */
         foreach (self::$select_input_arr as $ex_item) {
             $item = str_replace("searchInput_", "", $ex_item);
@@ -70,7 +70,7 @@ class BillPublishService {
         }
 
         /**
-         * input 컬럼 검색
+         * input 컬럼 검색.(input tonghap 검색이 아닐 때)
          */
         if ($request->filled("sch_key") and $request->input("sch_key") != "tonghap") {
             $wheres .= " and (";
@@ -84,9 +84,9 @@ class BillPublishService {
          */
         if ($request->input("sch_key") == "tonghap") {
             $wheres .= " and (";
-            foreach(self::$f_billForm_param as $item) {
-                $wheres .= "{$item} like :sch_val or ";
-            }
+            $wheres .= " f_bizname like :sch_val or";
+            $wheres .= " f_shopname like :sch_val or";
+            $wheres .= " f_price like :sch_val or";
             $wheres = substr($wheres, 0, -3);
             $wheres .= ")";
             $binds += array("sch_val" => "%" . $request->input('sch_val') . "%");
@@ -97,6 +97,22 @@ class BillPublishService {
             "sch_year"=>$sch_year,
             "sch_month"=>$sch_month
         ];
+    }
+
+    /** publish 삭제 */
+    public function billMultiDelete(array $request) {
+        DB::beginTransaction();
+        $publishIdParmas = self::makePublishIdParams($request['publishIdArr']);
+        if (empty($request || $publishIdParmas)) {
+            DB::rollBack();
+            return array("status"=>false, "msg"=>"삭제에 실패하였습니다.");
+        }
+        if (!BillPublishNEY::deleteBillPublish($publishIdParmas)) {
+            DB::rollBack();
+            return array("status"=>false, "msg"=>"삭제시 에러가 발생했습니다. 입력값들을 확인해주세요.");
+        }
+        DB::commit();
+        return array("status"=>true, "msg"=>"삭제에 성공하였습니다.");
     }
 
     /**

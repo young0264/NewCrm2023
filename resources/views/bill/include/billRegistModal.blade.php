@@ -24,9 +24,13 @@
 
     let register = {
         BillFormRegister: function () {
-            const element = document.querySelector('#f_pf_price[name="f_pay_interval"]');
-            if(element === null){
+            let element = document.getElementById("f_pay_interval").value;
+            if(element === '0'){
                 alert("결제주기를 입력해 주세요.");
+                return;
+            }
+            if(document.getElementById("f_pf_price").value === ""){
+                alert("공연권료를 입력해 주세요.");
                 return;
             }
             const checkbox = document.getElementById("bill_immediate");
@@ -207,7 +211,7 @@
                             <div class="col-md-3 mx-2">
                                 <select class="form-select text-black fw-bold" id="f_pay_interval"
                                         name="f_pay_interval" onchange="interval_option(this.value)">
-                                    <option value="-1">결제주기</option>
+                                    <option value="0">결제주기</option>
                                     <option value="M">월납</option>
                                     <option value="Q">분기납</option>
                                     <option value="T">삼기납</option>

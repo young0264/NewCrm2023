@@ -9,6 +9,22 @@ use Illuminate\Http\Request;
 
 class PFController {
 
+    public function isPresentId(Request $request) {
+        $f_loginid = $request->input('f_loginid');
+        $result = Bill_PF_NEY::isPresentId($f_loginid);
+        if($result > 0) {
+            return response()->json([
+                'status' => 'ok',
+                'result' => 'true'
+            ]);
+        }else {
+            return response()->json([
+                'status' => 'ok',
+                'result' => 'false'
+            ]);
+        }
+    }
+
     public function pfRegisterProcess(Request $request){
         $billPFParams = array(
             "F_LOGINID" => $request->input('f_loginid'),

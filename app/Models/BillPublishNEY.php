@@ -50,4 +50,10 @@ class BillPublishNEY extends Model{
             ->update($parameters);
     }
 
+    public static function deleteBillPublish($params){
+        return DB::table('T_BILL_NEY_PUBLISH')
+            ->whereIn('f_id', $params['f_id'])
+            ->delete();
+    }
+
 }

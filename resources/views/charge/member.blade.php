@@ -77,6 +77,21 @@
         clientClassList : null,
         billClassList: new Set(),
 
+        clientSearchKeyPress: function (event, key) {
+            console.log("client search key press");
+            if (event.key === 'Enter') {
+                this.onClientTableSearch();
+            }
+        },
+
+        billSearchKeyPress: function (event, key) {
+            console.log("bill search key press");
+            if (event.key === 'Enter') {
+                alert("bill search key press");
+                this.onChargeTableSearch();
+            }
+        },
+
         /** F_STATUS 컬럼 Y : 노출, 컬럼 N :삭제(숨기기)*/
         billDelete: function () {
             if (!confirm("삭제 하시겠습니까?")) {
@@ -221,6 +236,7 @@
         },
 
         onChargeTableBodyDraw:function() {
+            alert("onChargeTableBodyDraw");
             let html = "";
             if (this.billChargeItems.length===0) {
                 html += `<tr class="text-center">`;
@@ -249,9 +265,22 @@
          * 비회원 신규 등록 버튼 클릭시
          */
         billRegistModelInit() {
-            console.log(document.getElementById('billModalForm'));
+            // <a href="#" onclick="update.BillFormShow('${item['f_billid']}', '${item['f_loginid']}')">${item['f_shopname'] === null ? "값없음" : item['f_shopname']} </a>
+
+            let method = "POST";
+            let url = "{{route("billPresent")}}";
+            let data = {'f_loginid' : this.selectedClientLoginId};
+            let dataType = "json";
+            let result = js.ajax_call(method, url, data, dataType, false, "", true);
+            // if (!result) {
+            //     update.BillFormShow()
+            //     location.href = update.BillFormShow('${item['f_billid']}', '${item['f_loginid']}')
+            //
+            // }
             // 비회원 신규 등록 modal 등록창 form 내부의 특정 input ID에 해당하는 value 값을 변경합니다.
             let loginIdInput = document.getElementById('billModalForm').querySelector('#f_loginid');
+            console.log(this.selectedClientLoginId);
+
             let companyInput = document.getElementById('billModalForm').querySelector('#f_company');
             let shopnameInput = document.getElementById('billModalForm').querySelector('#f_shopname');
             let siteInput = document.getElementById('billModalForm').querySelector('#f_site');
@@ -324,6 +353,7 @@
                                                 id="sch_val"
                                                 name="sch_val"
                                                 placeholder="검색어를 입력하세요."
+                                                onkeypress="tables.clientSearchKeyPress(event)"
                                             />
                                         </div>
                                         <button type="button" class="btn btn-info " onclick="tables.onClientTableSearch()">검색</button>
@@ -411,6 +441,7 @@
                                                         type="text"
                                                         id="sch_val" name="sch_val"
                                                         placeholder="검색어를 입력하세요."
+                                                        onkeypress="tables.billSearchKeyPress(event)"
                                                     />
                                                 </div>
                                                 <div class="btn-group my-2">

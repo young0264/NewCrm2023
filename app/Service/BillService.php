@@ -142,7 +142,9 @@ class BillService{
         BillLog::createLog($log_params);
         Bill_NEY::insertBills($billsData);
         if ($request->input('f_pf_price')) {
-            Bill_PF_NEY::insertBill($billPFParams);
+            Bill_PF_NEY::findBillByLoginId($billPFParams['F_LOGINID'])
+                ? Bill_PF_NEY::updateBill(['F_PF_PRICE'=>$request->input('f_pf_price')],['F_LOGINID'=>$billPFParams['F_LOGINID']])
+                : Bill_PF_NEY::insertBill($billPFParams);
         }
 
         if ($request->input('bill_immediate') == "true") {
@@ -231,7 +233,7 @@ class BillService{
      * t_bill_pf 테이블 column 정보
      */
     private static function getBillPFInfo(){
-        return array("f_loginid", "f_tax_issue", "f_pf_price", "f_pyung", "f_village", "f_issuedate", "f_opendate", "f_closedate");
+        return array("f_loginid", "f_tax_issue", "f_pf_price", "f_pyung", "f_village", "f_issuedate", "f_billid", "f_opendate", "f_closedate");
     }
 
     /**

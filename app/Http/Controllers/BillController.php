@@ -85,13 +85,25 @@ class BillController extends BaseController {
      * @throws Exception
      */
     public function billDelete(Request $request) {
-        $log_params = $this->logService->makeBillLogParams($request->input('f_billId')[0],"T_Bill_NEY","D");
-        if ($this->billService->billDelete($request->input(), $log_params )) {
-            return response()->json([
-                "status" => "ok",
-                "msg" => "삭제되었습니다."
-            ]);
+//        echo "<pre>";
+//        print_r($request->input());
+//        exit;
+        foreach ( $request->input('f_billId') as $billId ) {
+            echo "<pre>";
+            print_r($billId);
+            exit;
+            $log_params = $this->logService->makeBillLogParams($billId,"T_Bill_NEY","D");
+            if (!$this->billService->billDelete($request->input(), $log_params )) {
+                return response()->json([
+                    "status" => "error",
+                    "msg" => "삭제에 실패하였습니다."
+                ]);
+            }
         }
+        return response()->json([
+            "status" => "ok",
+            "msg" => "삭제되었습니다."
+        ]);
     }
 
     /**

@@ -3,6 +3,9 @@
     <?php
     $sch_year = request('sch_year') ?? date('Y');
     $sch_month = request('sch_month') ?? date('m');
+//    echo "<pre>";
+//    print_r( Auth::user()->email);
+//    exit;
     ?>
     <script type="text/javascript">
         let sch_year = "";
@@ -12,6 +15,7 @@
         let selected_tab = "table_tab1";
         let search_data = {"sch_year": sch_year, "sch_month": sch_month};
         let items = null;
+
         window.oncontextmenu = function () {
             return false;
         };
@@ -51,6 +55,7 @@
             tables.YmColorChange(sch_month);
         });
 
+
         let checkbox = {
             // (input.checkbox : id값 , 숨길 div : id값)
             showByChecked: function (checkboxId, isShowDivId) {
@@ -74,7 +79,7 @@
             selectOptionData: {},
             hideSelectSearchKeys: [],
             hideSelectUpdateKeys: [],
-            publishIdArrForUpdate: [], //billIdArrForUpdate : 업데이트할 billid 배열
+            selectedBillId: [], //billIdArrForUpdate : 업데이트할 billid 배열 /publishIdArrForUpdate
             tab1: new Set(["f_pay_type", "f_pay_interval", "f_history",
                 "f_reply", "f_statement", "f_tax_bill", "f_issuedate"]),
             tab2: new Set(["f_registration_number",
@@ -87,6 +92,35 @@
                 "f_day2", "f_product2", "f_standard2", "f_unitprice2", "f_count2", "f_price2", "f_tax2", "f_bigo2",
                 "f_day3", "f_product3", "f_standard3", "f_unitprice3", "f_count3", "f_price3", "f_tax3", "f_bigo3",
                 "f_day4", "f_product4", "f_standard4", "f_unitprice4", "f_count4", "f_price4", "f_tax4", "f_bigo4", "f_issue_type"]),
+
+            goBillForm: function () {
+                location.href = "/bill/form?sch_month=" + sch_month;
+            },
+
+            billDelete: function () {
+                // publishIdArrForUpdate
+                // selectedBillId
+                // confirm("삭제하시겠습니까?");
+                if(this.selectedBillId.length === 0) {
+                    alert("삭제할 항목을 선택해주세요.");
+                    return false;
+                }
+                let method = "POST";
+                let url = "{{route("publishDelete")}}";
+                let data = {'publishIdArr' : this.selectedBillId};
+                let dataType = "json";
+                let result = js.ajax_call(method, url, data, dataType, false, "", true);
+                alert("삭제되었습니다.");
+                location.reload();
+                // console.log( result);
+                // if (result['status'] === "ok") {
+                //     alert("삭제되었습니다.");
+                //     location.reload();
+                // } else {
+                //     alert("삭제에 실패하였습니다.");
+                // }
+            },
+
 
             initialize: function () {
                 this.dataSet();
@@ -181,8 +215,8 @@
              * 컬럼 일괄 업데이트 버튼 클릭시
              */
             billsUpdate: function () {
-                console.log(this.publishIdArrForUpdate);
-                if (this.publishIdArrForUpdate.length === 0) {
+                console.log(this.selectedBillId);
+                if (this.selectedBillId.length === 0) {
                     alert("업데이트할 항목을 선택해주세요.");
                     return;
                 }
@@ -198,10 +232,8 @@
                     }
                 }
                 //bill 다중 업데이트는 업데이트 대상에 대한 billId 배열을 넘겨줘야함
-                jsonObjectForUpdate['publishIdArr'] = this.publishIdArrForUpdate;
-                this.publishIdArrForUpdate = [];
-                console.log("jsonObjectForUpdate", jsonObjectForUpdate);
-                console.log("this.publishIdArrForUpdate", this.publishIdArrForUpdate);
+                jsonObjectForUpdate['publishIdArr'] = this.selectedBillId;
+                this.selectedBillId = [];
                 let method = "POST";
                 let url = "{{route("publishUpdate")}}";
                 let dataType = "json";
@@ -266,12 +298,17 @@
 
             },
 
-            /**
-             * select-box 검색 enter key press
-             */
+            /** select-box 검색 enter key press */
             handleKeyPress: function (event, key) {
                 if (event.key === 'Enter') {
                     this.submitInput();
+                }
+            },
+
+            /** input-box search. enter 검색*/
+            handleKeyPressSearch: function (event, key) {
+                if (event.key === 'Enter') {
+                    this.onSearch();
                 }
             },
 
@@ -308,7 +345,7 @@
                 let updateSelectBoxHtml = "";
                 updateSelectBoxHtml += `
                                     <tr class="btn-group">
-                                        <th style="width:340px; ">
+                                        <th style="width:370px; ">
                                             <button class="btn btn-primary" onclick="tables.billsUpdate()">컬럼 일괄 업데이트</button>
                                             <button class="btn btn-warning" onclick="location.href='{{route('billIssue')}}'">초기화</button>
                                         </th>`;
@@ -440,16 +477,17 @@
              */
             onLeftClick:function(obj, f_id) {
                 if (obj.classList.contains('selected')) {
-                    tables.publishIdArrForUpdate.pop(f_id);
+                    tables.selectedBillId.pop(f_id);
                     obj.classList.remove("selected");
                 } else {
-                    tables.publishIdArrForUpdate.push(f_id);
+                    tables.selectedBillId.push(f_id);
                     obj.classList.add("selected");
                 }
             },
 
             onYmChange(sch_month_param) {
                 tables.YmColorChange(sch_month_param);
+                sch_month = sch_month_param;
                 tables.initialize();
                 this.showInputHideSelectBox('search', this.hideSelectSearchKeys);
             },
@@ -535,7 +573,7 @@
                 <div class="col-md-12">
                     <div class="col-md-12">
                         <div class="card mb-4">
-                            <h4 class="card-header text-primary">계산서 발행 리스트2</h4>
+                            <h4 class="card-header text-primary">계산서 발행 리스트22</h4>
                             <div class="card-body">
                                 {{-- 년도, 월 선택--}}
                                 <nav aria-label="Page navigation">
@@ -636,7 +674,8 @@
                                     </div>
                                 </div>
                                 <div class="btn-group col-md-5 mb-1">
-                                    <input type="text" class="form-control" placeholder="검색어를 입력하세요." id="sch_key" name="sch_key">
+                                    <input type="text" class="form-control" placeholder="검색어를 입력하세요."
+                                           id="sch_key" name="sch_key" onkeypress="tables.handleKeyPressSearch(event)">
                                 </div>
                                 <div class="btn-group col-md-1 mb-1">
                                     <button class="btn btn-success" onclick="tables.onSearch()">검색</button>
@@ -648,10 +687,50 @@
                                         <button class="btn btn-success" type="submit">다운로드</button>
                                     </form>
                                 </div>
+
+{{--                                --}}
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="card overflow-hidden mb-4" style="height: 300px">
+                                        <h5 class="">Vertical Scrollbar</h5>
+                                        <div class="" id="vertical-example">
+                                            <p>
+                                                Sweet roll I love I love. Tiramisu I love soufflé cake tart sweet roll cotton
+                                                candy cookie.
+                                                Macaroon biscuit dessert. Bonbon cake soufflé jelly gummi bears lemon drops.
+                                                Chocolate bar I
+                                                love macaroon danish candy pudding. Jelly carrot cake I love tart cake bear claw
+                                                macaroon candy
+                                                candy canes. Muffin gingerbread sweet jujubes croissant sweet roll. Topping
+                                                muffin carrot cake
+                                                sweet. Toffee chocolate muffin I love croissant. Donut carrot cake ice cream ice
+                                                cream. Wafer I
+                                                love pie danish marshmallow cheesecake oat cake pie I love. Icing pie chocolate
+                                                marzipan jelly
+                                                ice cream cake.
+                                            </p>
+                                            <p>
+                                                Sweet roll I love I love. Tiramisu I love soufflé cake tart sweet roll cotton
+                                                candy cookie.
+                                                Macaroon biscuit dessert. Bonbon cake soufflé jelly gummi bears lemon drops.
+                                                Chocolate bar I
+                                                love macaroon danish candy pudding. Jelly carrot cake I love tart cake bear claw
+                                                macaroon candy
+                                                candy canes. Muffin gingerbread sweet jujubes croissant sweet roll. Topping
+                                                muffin carrot cake
+                                                sweet. Toffee chocolate muffin I love croissant. Donut carrot cake ice cream ice
+                                                cream. Wafer I
+                                                love pie danish marshmallow cheesecake oat cake pie I love. Icing pie chocolate
+                                                marzipan jelly
+                                                ice cream cake.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+{{--                                --}}
                                 {{--컬럼 업데이트 head group 시작--}}
 {{--                                <nav class="navbar navbar-example navbar-expand-lg navbar-light bg-light">--}}
                                 <div class="table-responsive">
-
                                     <div class="horizontal-scrollable" >
                                         <form id="update_form">
                                             {{-- 컬럼일괄 업데이트 시작--}}
@@ -674,7 +753,8 @@
                                 <div class="table-responsive" style="height: 500px">
                                     <div class="table-container">
                                         <form id="search_form">
-                                            <table class="table table-hover" style="table-layout: fixed;">
+                                            <table class="table table-hover table-bordered border-bottom" >
+{{--                                            <table class="table table-hover border-bottom border-top" >--}}
                                                 <thead id="table_head_select">
                                                 </thead>
                                                 <tbody id="table_body">
@@ -705,10 +785,8 @@
                    data-bs-target="#bill_divide">계산서 분할</a>
                 <a class="list-group-item list-group-item-action " data-bs-toggle="modal"
                    data-bs-target="#price_sync">단가 동기화</a>
-                <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">계산서
-                    양식 출력</a>
-                <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">계산서
-                    삭제</a>
+                <a class="list-group-item list-group-item-action" onclick="tables.goBillForm()" data-bs-toggle="modal" data-bs-target="#">계산서 양식 출력</a>
+                <a class="list-group-item list-group-item-action" onclick="tables.billDelete()" data-bs-toggle="modal" data-bs-target="#">계산서 삭제</a>
             </div>
         </div>
     </div>
