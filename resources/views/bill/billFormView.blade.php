@@ -37,7 +37,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <!-- Notifications -->
-                            <h5 class="card-header" style="color: dodgerblue">계산서 양식 다운로드</h5>
+                            <h5 class="card-header text-primary">계산서 양식 다운로드</h5>
 
                             <div class="card-body">
                                 <div class="nav-align-top mb-4">
@@ -80,76 +80,78 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="container-fluid">
-                                    <div class="btn-group col-md-3">
-                                        <div class="card-body">
-                                            <h5>작성일자<span class="font-semibold">&emsp;20240413</span></h5>
-                                            <h5 class="text-danger">(06:위수탁)</h5>
-                                            <h5 class="text-danger">(01:일반)</h5>
-                                            <h5 style="border: 1px dashed #bbb; "></h5>
-                                            <table class="table table-hover border-bottom">
-                                                <thead>
-                                                <tr>
-                                                    <th>공급가액</th>
-                                                    <th>세액</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td>899,100</td>
-                                                    <td>0</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>450,100</td>
-                                                    <td>0</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>900</td>
-                                                    <td>0</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="card-body float-end">
-                                                <button class="btn-success">양식 다운로드</button>
-                                            </div>
-                                            <div class="card-body float-end">
-                                            <div class="form-control">
-                                                <h5 class="text-primary">최근 다운로드 정보</h5>
-                                                <h5>영심이</h5>
-                                                <span class="text-muted fw-light align-content-center">2023-04-13 13:20:31</span>
-                                                <label></label>
-                                            </div>
+                                <div class="container">
+                                    <div class="btn-group">
+                                        <div class=" col-md-3">
+                                            <div class="card-body">
+                                                <h5>작성일자<span class="font-semibold">&emsp;20240413</span></h5>
+                                                <h5 class="text-danger text-center">(06:위수탁)</h5>
+                                                <h5 class="text-danger text-center">(01:일반)</h5>
+                                                <h5 style="border: 1px dashed #bbb; "></h5>
+                                                <table class="table table-hover border-bottom">
+                                                    <thead class="alert-danger">
+                                                    <tr>
+                                                        <th>공급가액</th>
+                                                        <th>세액</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>899,100</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>450,100</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>900</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="card-body float-end">
+                                                    <button class="btn btn-success">양식 다운로드</button>
+                                                </div>
+                                                <div class="card-body float-end">
+                                                <div class="form-control">
+                                                    <h5 class="text-primary">최근 다운로드 정보</h5>
+                                                    <h5>영심이</h5>
+                                                    <span class="text-muted fw-light align-content-center">2023-04-13 13:20:31</span>
+                                                    <label></label>
+                                                </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="btn-group col-md-3">
-                                        <div class="form-control">
-                                            <h3 align="center">공급 받는자</h3>
-                                            <input class="btn-primary container-fluid" value="에이케이에스앤디(주)AK광명">
+                                        <div class=" col-md-3">
                                             <div class="card-body">
-                                                <h5 style="border: 1px dashed #bbb; "></h5>
+                                                <div class="form-control">
+                                                    <h3 align="center">공급 받는자</h3>
+                                                    <input class="form-control btn-primary text-center" value="에이케이에스앤디(주)AK광명">
+                                                    <div class="card-body">
+                                                        <h5 style="border: 1px dashed #bbb; "></h5>
+                                                    </div>
+                                                    <h3 align="center"><span class="text-muted fw-light align-content-center">공급자</span>
+                                                    </h3>
+                                                    <div class="card">
+                                                        <div class="btn btn-secondary container-fluid ">음저협</div>
+                                                        <div class="btn btn-secondary container-fluid my-2">음실연</div>
+                                                        <div class="btn btn-secondary container-fluid">함저협</div>
+                                                        <div class="btn btn-secondary container-fluid my-2">연제협</div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <h5 style="border: 1px dashed #bbb; "></h5>
+                                                    </div >
+                                                    <h3 ><span class="text-muted fw-light">수탁자</span></h3>
+                                                    <div class="btn btn-primary container-fluid">(주)샵캐스트</div>
+                                                </div>
                                             </div>
-                                            <h3 align="center"><span class="text-muted fw-light align-content-center">공급자</span>
-                                            </h3>
-                                            <div class="card">
-                                                <div class="btn btn-secondary container-fluid ">음저협</div>
-                                                <div class="btn btn-secondary container-fluid my-2">음실연</div>
-                                                <div class="btn btn-secondary container-fluid">함저협</div>
-                                                <div class="btn btn-secondary container-fluid my-2">연제협</div>
-                                            </div>
-                                            <div class="card-body">
-                                                <h5 style="border: 1px dashed #bbb; "></h5>
-                                            </div>
-                                            <h3 align="center"><span class="text-muted fw-light">수탁자</span></h3>
-                                            <div class="btn btn-primary container-fluid">(주)샵캐스트</div>
-
                                         </div>
-                                    </div>
 
-                                    <div class="btn-group col-md-5">
+                                        <div class=" col-md-5">
                                         <div class="card-body">
-                                            <div class="alert alert-info container-fluid">
+                                            <div class="alert alert-info container-fluid text-center">
                                                 <div class="btn-group">
                                                     <h3 align="center"><span class="text-muted fw-light">수탁자</span>
                                                         (주)샵캐스트</h3>
@@ -161,103 +163,104 @@
                                             <div class="card-body">
                                                 <label>작성일자</label>
                                                 <div class="btn-group col-md-10">
-                                                    <input class="alert alert-danger container-fluid" value="20240413">
+                                                    <input class="alert alert-danger container-fluid text-black" value="20240413">
                                                 </div>
                                                 <label>등록번호</label>
                                                 <div class="btn-group col-md-10">
-                                                    <input class="alert alert-warning container-fluid" value="20240413">
+                                                    <input class="alert alert-warning container-fluid text-black" value="20240413">
                                                 </div>
                                                 <label> 공급가액</label>
                                                 <div class="btn-group col-md-10">
-                                                    <input class="alert alert-warning container-fluid" value="20240413">
+                                                    <input class="alert alert-warning container-fluid text-black" value="20240413">
                                                 </div>
                                                 <label>&emsp;품목&emsp;</label>
-                                                <div class="btn-group col-md-9">
-                                                    <input class="form-control container-fluid my-2" value="20240413">
+                                                <div class="btn-group col-md-10">
+                                                    <input class="form-control container-fluid my-2 text-black" value="20240413">
                                                 </div>
                                                 <label> &emsp;일자 &emsp;</label>
                                                 <div class="btn-group col-md-10">
-                                                    <input class="alert alert-warning container-fluid" value="20240413">
+                                                    <input class="alert alert-warning container-fluid text-black" value="20240413">
                                                 </div>
                                                 <label> &emsp;상호 &emsp;</label>
                                                 <div class="btn-group col-md-10">
-                                                    <input class="alert alert-warning container-fluid" value="20240413">
+                                                    <input class="alert alert-warning container-fluid text-black" value="20240413">
                                                 </div>
                                                 <label>&emsp;성명&emsp;</label>
                                                 <div class="btn-group col-md-10">
-                                                    <input class="alert alert-warning container-fluid" value="20240413">
+                                                    <input class="alert alert-warning container-fluid text-black" value="20240413">
                                                 </div>
                                                 <label>사업장주소</label>
-                                                <div class="btn-group col-md-9">
-                                                    <input class="form-control container-fluid" value="20240413">
+                                                <div class="btn-group col-md-10">
+                                                    <input class="form-control container-fluid text-black" value="20240413">
                                                 </div>
                                                 <label>&emsp;업태&emsp;&emsp;</label>
-                                                <div class="btn-group col-md-9">
-                                                    <input class="form-control container-fluid my-2" value="20240413">
+                                                <div class="btn-group col-md-10">
+                                                    <input class="form-control container-fluid text-black my-2 " value="20240413">
                                                 </div>
                                                 <label>&emsp;종목&emsp;&emsp;</label>
-                                                <div class="btn-group col-md-9">
-                                                    <input class="form-control container-fluid " value="20240413">
+                                                <div class="btn-group col-md-10">
+                                                    <input class="form-control container-fluid text-black" value="20240413">
                                                 </div>
                                                 <label>&emsp;이메일&emsp;</label>
-                                                <div class="btn-group col-md-9">
-                                                    <input class="form-control container-fluid my-2" value="20240413">
+                                                <div class="btn-group col-md-10">
+                                                    <input class="form-control container-fluid text-black my-2" value="20240413">
                                                 </div>
                                                 {{--                                                계산서 음실연--}}
                                                 <label>&emsp;일자1</label>
-                                                <div class="btn-group col-md-10">
+                                                <div class="btn-group col-md-10 ">
                                                     <select
-                                                        class="btn-group col-md-3 alert alert-warning container-fluid">
+                                                        class="btn-group col-md-3 alert alert-warning text-black container-fluid">
                                                         <option>1</option>
                                                         <option>31</option>
                                                     </select>
                                                 </div>
                                                 <label>공급가액1</label>
                                                 <div class="btn-group col-md-10">
-                                                    <input class="alert alert-warning container-fluid" value="20240413">
+                                                    <input class="alert alert-warning container-fluid text-black" value="20240413">
                                                 </div>
                                                 <label>&emsp;품목1&emsp;</label>
-                                                <div class="btn-group col-md-9">
+                                                <div class="btn-group col-md-10">
                                                     <input class="form-control container-fluid my-2" value="20240413">
                                                 </div>
                                                 <label>&emsp;일자2</label>
                                                 <div class="btn-group col-md-10">
                                                     <select
-                                                        class="btn-group col-md-3 alert alert-warning container-fluid">
+                                                        class="btn-group col-md-3 alert alert-warning container-fluid text-black">
                                                         <option>1</option>
                                                         <option>31</option>
                                                     </select>
                                                 </div>
                                                 <label>공급가액2</label>
                                                 <div class="btn-group col-md-10">
-                                                    <input class="alert alert-warning container-fluid" value="20240413">
+                                                    <input class="alert alert-warning container-fluid text-black" value="20240413">
                                                 </div>
                                                 <label>&emsp;품목2&emsp;</label>
-                                                <div class="btn-group col-md-9">
-                                                    <input class="form-control container-fluid my-2" value="20240413">
+                                                <div class="btn-group col-md-10">
+                                                    <input class="form-control container-fluid text-black my-2" value="20240413">
                                                 </div>
 
                                                 <label>&emsp;일자3</label>
                                                 <div class="btn-group col-md-10">
                                                     <select
-                                                        class="btn-group col-md-3 alert alert-warning container-fluid">
+                                                        class="btn-group col-md-3 alert alert-warning container-fluid text-black">
                                                         <option>1</option>
                                                         <option>31</option>
                                                     </select>
                                                 </div>
                                                 <label>공급가액3</label>
                                                 <div class="btn-group col-md-10">
-                                                    <input class="alert alert-warning container-fluid" value="20240413">
+                                                    <input class="alert alert-warning container-fluid text-black" value="20240413">
                                                 </div>
                                                 <label>&emsp;품목3&emsp;</label>
-                                                <div class="btn-group col-md-9">
-                                                    <input class="form-control container-fluid " value="20240413">
+                                                <div class="btn-group col-md-10">
+                                                    <input class="form-control container-fluid text-black" value="20240413">
                                                 </div>
 
                                             </div>
 
                                         </div>
 
+                                    </div>
                                     </div>
                                 </div>
 

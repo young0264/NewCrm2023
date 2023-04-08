@@ -18,8 +18,11 @@ class DepositController extends BaseController{
         return view('deposit.depositSearch');
     }
 
-    public static function match(){
+    public static function match1(){
         return view('deposit.depositMatching');
+    }
+    public static function match2(){
+        return view('deposit.depositMatching2');
     }
 
 

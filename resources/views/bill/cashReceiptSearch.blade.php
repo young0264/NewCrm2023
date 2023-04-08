@@ -80,278 +80,21 @@
             <div class="row">
                 <div class="col-md-12 col-12 mb-3 mb-md-0">
                     <div class="list-group">
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#bill_integrate">계산서 통합</a>
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#bill_divide">계산서 분할</a>
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#price_sync">단가 동기화</a>
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">계산서 양식 출력</a>
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">계산서 삭제</a>
+                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">현금 영수증 분할</a>
+                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">현금 영수증 통합</a>
+                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">단가 동기화</a>
+                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">현금 영수증 삭제</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="bill_integrate" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="btn-group">
-                        <h3 class="modal-title" id="modalCenterTitle" style="color:black; font-weight: bold">계산서 통합하기</h3>
-                    </div>
-
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                    ></button>
-                </div>
-                <div class="card-body">
-                    <div class="modal-body" >
-                        <div class="row">
-                            <div class="col mb-3">
-                                <h6 style="color:black;"> 선택 (최대 4건)된 계산서가 하나로 통합됩니다.</h6>
-                                <h6 style="color:black;">계산서 단가는 합산되어 생성됩니다.</h6>
-                                <h6 style="color:black;">단가 수정이 필요한 경우 단가를 편집하고</h6>
-                                <h6 style="color:black;">통합 버튼을 클릭하세요.</h6>
-                            </div>
-                        </div>
-                        <div class="card-body alert alert-secondary">
-
-                            <div class="btn group col-md-6 " >
-                                <label class="text-black fw-bold">품목1</label>
-                                <div class="btn-group col-md-5 my-1 ">
-                                    <input class="form-control" value="4월 공연">
-                                </div>
-                                <div class="btn-group col-md-5 my-1">
-                                    <input class="form-control" value="4월 공연">
-                                </div>
-
-                                <label class="text-black fw-bold">품목2</label>
-                                <div class="btn-group col-md-5 my-1">
-                                    <input class="form-control" value="4월 셋탑">
-                                </div>
-                                <div class="btn-group col-md-5 my-1 ">
-                                    <input class="form-control" value="4월 6000">
-                                </div>
-
-                                <label class="text-black fw-bold">품목3</label>
-                                <div class="btn-group col-md-5 my-1">
-                                    <input class="form-control" value="" disabled>
-                                </div>
-                                <div class="btn-group col-md-5 my-1">
-                                    <input class="form-control" value="" disabled>
-                                </div>
-
-                                <label class="text-black fw-bold">품목4</label>
-                                <div class="btn-group col-md-5 my-1">
-                                    <input class="form-control" value="" disabled>
-                                </div>
-                                <div class="btn-group col-md-5 my-1">
-                                    <input class="form-control" value="" disabled>
-                                </div>
-                            </div>
-                            <div class="btn group col-md-4">
-                                <button class="btn btn-warning btn-xl" type="button" >2건 통합</button>
-                                <h4 class="text-black fw-bold py-3 mb-4">
-                                    통합 단가 <span class="text-primary">12,000</span>원
-                                </h4>
-                            </div>
-{{--                            <div--}}
-{{--                                class=" btn group col-md-4 bs-toast toast fade show bg-warning"--}}
-{{--                            >--}}
-{{--                                <div class="toast-header">--}}
-{{--                                </div>--}}
-{{--                                <div class="toast-body">--}}
-{{--                                    2건 통합--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-                                <h4 class="text-black fw-bold py-3 mb-4">
-                                    통합 단가 <span class="text-primary">12,000</span>원
-                                </h4>
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">통합</button>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="bill_divide" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="btn-group">
-                        <h3 class="modal-title" id="modalCenterTitle" style="font-weight: bold">계산서 분할하기</h3>
-                    </div>
-
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                    ></button>
-
-                </div>
-                <div class="card-body" >
-                    <div class="modal-body" >
-                        <div class="row">
-                            <div class="col mb-3">
-                                <h6> 선택된 계산서가 최대 4개로 분할됩니다.</h6>
-                                <h6>계산서 단가는 품목별로 분할되어 생성됩니다.</h6>
-                                <h6>단가 수정이 필요한 경우 단가를 편집하고</h6>
-                                <h6>분할 버튼을 클릭하세요.</h6>
-                            </div>
-                        </div>
-
-                        <div class="card-body alert-secondary">
-                            <div>
-                                <div class="btn-group">
-                                    <h5>분할 품목</h5>
-                                </div>
-                                <div class="btn-group mx-4 my-4">
-                                    <select class="form-select">
-                                        <option>2개</option>
-                                        <option>3개</option>
-                                        <option>4개</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <h5 style="border: 1px dashed #bbb; "></h5>
-
-                            <div class="btn group col-md-8">
-    {{--                            <div class="form-control"></div>--}}
-                                <label>계산서1</label>
-                                <div class="btn-group col-md-5">
-                                    <input class="form-control" value="4월 공연">
-                                </div>
-                                <div class="btn-group col-md-5">
-                                    <input class="form-control" value="4월 공연">
-                                </div>
-
-                                <label>계산서2</label>
-                                <div class="btn-group col-md-5">
-                                    <input class="form-control" value="4월 셋탑">
-                                </div>
-                                <div class="btn-group col-md-5">
-                                    <input class="form-control" value="4월 6000">
-                                </div>
-                                <label>계산서3</label>
-                                <div class="btn-group col-md-5">
-                                    <input class="form-control" value="4월 셋탑">
-                                </div>
-                                <div class="btn-group col-md-5">
-                                    <input class="form-control" value="4월 6000">
-                                </div>
-                                <label>계산서4</label>
-                                <div class="btn-group col-md-5">
-                                    <input class="form-control" value="4월 셋탑">
-                                </div>
-                                <div class="btn-group col-md-5">
-                                    <input class="form-control" value="4월 6000">
-                                </div>
-
-                            </div>
-                            <div class="btn group col-md-6">
-                                <button class="btn btn-lg alert-info text-black fw-bold col-sm-12" type="button" >
-                                    <span>계산서</span>
-                                    <span style="font-weight: bold; font-size: 30px">2</span>
-                                    <span >개로 분할</span>
-                                </button>
-                            </div>
-                            <div class="btn group col-md-5">
-                                <h4 class="text-black fw-bold">  단가 총액 <span class="text-primary" >12,000</span>원</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <button type="button" class="btn btn-primary">분할</button>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="price_sync" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="btn-group">
-                        <h3 class="modal-title" id="modalCenterTitle" style="font-weight: bold">단가 동기화</h3>
-                    </div>
-
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                    ></button>
-
-                </div>
-                <div class="card-body" >
-                    <div class="modal-body" >
-                        <div class="row">
-                            <div class="col mb-3">
-                                <h6>CRM에서 관리되는 서비스 이용료룰</h6>
-                                <h6>자동으로 연결하여 단가 동기화를 진행합니다.</h6>
-                                <h6 style="color: dodgerblue">입금내역이 매칭되지 않은 계산서만 적용됩니다.</h6>
-                            </div>
-                        </div>
-
-                        <div class="card-body alert-secondary ">
-                            <div class="btn-group">
-                                <div class="col-md-2">
-                                    <div class="form-check form-switch mb-2 ">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked />
-                                    </div>
-                                </div>
-
-                                <div class="col-md-8">
-                                    <h5 class="text-black">지정월 전체 단가 동기화</h5>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="card">
-                                        <div class="card-body col-sm-6 ">
-                                            <h4>
-                                                <span class="fw-bold">2</span>건
-                                            </h4>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <h5 class="my-3" style="border: 1px dashed #bbb; "></h5>
-
-                            <div class="btn group col-md-8">
-                                <h6 style="color: black">해당 옵션이 활성화 될 경우 계산서 선택과 상관없이 </h6>
-                                <h6 style="color: black">지정된 월의 전체 단가를 동기화 시켜줍니다.</h6>
-                                <h6>(단, 입금내역이 미매칭된 계산서의 경우만 업데이트)</h6>
-                            </div>
-                        </div>
-
-
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">동기화</button>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
-                </div>
-            </div>
-        </div>
 
     </div>
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">
-            <span class="text-muted fw-light">정산 / 계산서 / </span>계산서 발행 조회
+            <span class="text-muted fw-light">정산 / 계산서 / </span>현금 영수증 조회
         </h4>
 
         <div class="form-floating">
@@ -362,7 +105,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <!-- Notifications -->
-                            <h5 class="card-header text-primary">계산서 발행 리스트</h5>
+                            <h5 class="card-header text-primary">현금 영수증 리스트</h5>
 
                             <div class="card-body">
                                 {{--1~12번 호출--}}
@@ -500,8 +243,8 @@
                             <div class="card-body">
                                 <nav class="navbar navbar-example navbar-expand-lg navbar-light bg-light">
                                     <div class="horizontal-scrollable">
-{{--                                    <div class="container-fluid ">--}}
-{{--                                        class="card overflow-hidden mb-4"--}}
+                                        {{--                                    <div class="container-fluid ">--}}
+                                        {{--                                        class="card overflow-hidden mb-4"--}}
                                         <div class="btn-group">
                                             <button class="btn btn-primary">컬럼 일괄 업데이트</button>
                                         </div>

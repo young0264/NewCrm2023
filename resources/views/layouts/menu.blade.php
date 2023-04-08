@@ -78,8 +78,11 @@
                     <a href="{{route('printBillForm')}}" class="menu-link">
                         <div data-i18n="Account">계산서 양식 출력 내역 View(임시)</div>
                     </a>
-                    <a href="#" class="menu-link">
+                    <a href="{{route('billIntegratedCollection')}}" class="menu-link">
                         <div data-i18n="Account">통합 징수 출력</div>
+                    </a>
+                    <a href="{{route('billCashReceipt')}}" class="menu-link">
+                        <div data-i18n="Account">현금 영수증 조회</div>
                     </a>
                 </li>
             </ul>
@@ -92,18 +95,23 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="{{route('depositHistory')}}" class="menu-link" target="_blank">
+                    <a href="{{route('depositHistory')}}" class="menu-link" >
                         <div data-i18n="Basic">입금내역 등록 히스토리</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{route('depositSearch')}}" class="menu-link" target="_blank">
+                    <a href="{{route('depositSearch')}}" class="menu-link" >
                         <div data-i18n="Basic">입금내역 등록, 조회</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{route('depositMatch')}}" class="menu-link" target="_blank">
-                        <div data-i18n="Basic">입금내역 매칭</div>
+                    <a href="{{route('depositMatch1')}}" class="menu-link" >
+                        <div data-i18n="Basic">입금내역 매칭1</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{route('depositMatch2')}}" class="menu-link" >
+                        <div data-i18n="Basic">입금내역 매칭2</div>
                     </a>
                 </li>
             </ul>

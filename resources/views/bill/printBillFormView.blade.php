@@ -37,10 +37,11 @@
                     <div class="col-md-12">
                         <div class="card">
                             <!-- Notifications -->
-                            <h5 class="card-header" style="color: dodgerblue">계산서 양식 출력 내역</h5>
 
                             <div class="card-body">
-                                <div class="card-body">
+                                <h5 class=" text-primary">계산서 양식 출력 내역</h5>
+
+                                <div class="my-2">
                                     <div class="btn-group">
                                         <select class="form-select">
                                             <option>2023년</option>
@@ -61,7 +62,7 @@
                                         </select>
                                     </div>
                                     <div class="btn-group">
-                                        <input class="form-control" placeholder="검색어를 입력하세요.">
+                                        <input class="form-control alert-secondary" placeholder="검색어를 입력하세요.">
                                     </div>
                                 </div>
                                 <table class="table">
@@ -80,7 +81,7 @@
                                     </thead>
                                     <tbody>
                                     <tr class="text-black">
-                                        <td>CMS</td>
+                                        <td class="badge bg-warning my-1">C</td>
                                         <td class="text-secondary">ABIZZ012321</td>
                                         <td>탐앤탐스</td>
                                         <td>경기도 광주점</td>
@@ -91,7 +92,7 @@
                                         <td class="text-secondary">3월공연사용료</td>
                                     </tr>
                                     <tr class="text-black">
-                                        <td>CMS</td>
+                                        <td class="badge bg-primary my-1">무</td>
                                         <td class="text-secondary">ABIZZ012321</td>
                                         <td>탐앤탐스</td>
                                         <td>경기도 광주점</td>
@@ -102,7 +103,7 @@
                                         <td class="text-secondary">3월공연사용료</td>
                                     </tr>
                                     <tr class="text-black">
-                                        <td>CMS</td>
+                                        <td class="badge bg-primary my-1">무</td>
                                         <td class="text-secondary">ABIZZ012321</td>
                                         <td>탐앤탐스</td>
                                         <td>경기도 광주점</td>
@@ -113,7 +114,7 @@
                                         <td class="text-secondary">3월공연사용료</td>
                                     </tr>
                                     <tr class="text-black">
-                                        <td>CMS</td>
+                                        <td class="badge bg-warning my-1">C</td>
                                         <td class="text-secondary">ABIZZ012321</td>
                                         <td>탐앤탐스</td>
                                         <td>경기도 광주점</td>
@@ -124,7 +125,7 @@
                                         <td class="text-secondary">3월공연사용료</td>
                                     </tr>
                                     <tr class="text-black">
-                                        <td>CMS</td>
+                                        <td class="badge bg-primary my-1">무</td>
                                         <td class="text-secondary">ABIZZ012321</td>
                                         <td>탐앤탐스</td>
                                         <td>경기도 광주점</td>
@@ -135,7 +136,7 @@
                                         <td class="text-secondary">3월공연사용료</td>
                                     </tr>
                                     <tr class="text-black">
-                                        <td>CMS</td>
+                                        <td class="badge bg-warning my-1">C</td>
                                         <td class="text-secondary">ABIZZ012321</td>
                                         <td>탐앤탐스</td>
                                         <td>경기도 광주점</td>

@@ -20,7 +20,7 @@
                                     <div class="mb-3">
                                         <div class="demo-inline-spacing">
                                             <div class="btn-group col-md-12">
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 mx-1">
                                                 <select class="form-select">
                                                     <option>결제수단</option>
                                                     <option>카드</option>
@@ -28,14 +28,14 @@
                                                     <option>후불</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 mx-1">
                                                 <select class="form-select">
                                                     <option>신탁여부</option>
                                                     <option>신탁</option>
                                                     <option>비신탁</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-3 mx-1">
                                                 <select class="form-select">
                                                     <option>통합</option>
                                                     <option>통합1</option>
@@ -116,7 +116,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <!-- Notifications -->
-                            <h5 class="card-header text-center" style="color: cornflowerblue">청구 대상</h5>
+                            <h5 class="card-header text-center text-primary">청구 대상</h5>
                             <div class="card-body">
                                 <div class="error"></div>
                             </div>
@@ -493,12 +493,13 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <div class=" gap-2 col-lg-4 mx-auto">
+                                                    <div class="card-body">
+                                                        <div class="text-center">
                                                             <button type="button" class="btn btn-primary"> 신규등록</button>
                                                             <button type="button" class="btn btn-secondary"> 취소</button>
                                                         </div>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>

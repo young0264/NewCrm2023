@@ -33,7 +33,7 @@ if (!Auth::check()) {
         Route::get("/excel/import", [\App\Http\Controllers\SampleController::class, "import"])->name("excelImport");
         Route::get("/excel/exportProcess", [\App\Http\Controllers\SampleController::class, "exportProcess"])->name("excelExportProcess");
         Route::post("/excel/importProcess", [\App\Http\Controllers\SampleController::class, "importProcess"])->name("excelImportProcess");
-
+        Route::get("/sample/dataTablesOracle", [\App\Http\Controllers\SampleController::class, "dataTablesOracle"])->name("dataTablesOracle");
 
         /**
          * 이용료청구
@@ -48,13 +48,16 @@ if (!Auth::check()) {
         Route::get("/bill/issue", [\App\Http\Controllers\BillController::class, "issue"])->name("billIssue");
         Route::get("/bill/form", [\App\Http\Controllers\BillController::class, "form"])->name("billForm");
         Route::get("/bill/form/sub", [\App\Http\Controllers\BillController::class, "printForm"])->name("printBillForm");
-
+        Route::get("/bill/integrate", [\App\Http\Controllers\BillController::class, "integrate"])->name("billIntegratedCollection");
+        Route::get("/bill/cash", [\App\Http\Controllers\BillController::class, "cashReceipt"])->name("billCashReceipt");
+        Route::post("/bill/list", [\App\Http\Controllers\BillController::class, "list"])->name("billList");
         /**
          * 입금내역
          */
         Route::get("/deposit/history", [\App\Http\Controllers\DepositController::class, "history"])->name("depositHistory");
         Route::get("/deposit/search", [\App\Http\Controllers\DepositController::class, "search"])->name("depositSearch");
-        Route::get("/deposit/match", [\App\Http\Controllers\DepositController::class, "match"])->name("depositMatch");
+        Route::get("/deposit/match/1", [\App\Http\Controllers\DepositController::class, "match1"])->name("depositMatch1");
+        Route::get("/deposit/match/2", [\App\Http\Controllers\DepositController::class, "match2"])->name("depositMatch2");
 
 
     });

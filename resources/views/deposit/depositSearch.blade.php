@@ -41,7 +41,7 @@
 
                         <div class="card-body">
                             <div class="card-body">
-                                <div>
+                                <div class="my-2">
                                     <div class="btn-group">
                                         <select class="form-select">
                                             <option>2023년</option>
@@ -61,6 +61,12 @@
                                             <option>일선택</option>
                                             <option>1일</option>
                                             <option>31일</option>
+                                        </select>
+                                    </div>
+                                    <div class="btn-group">
+                                        <select class="form-select btn-success">
+                                            <option>입금액초과</option>
+                                            <option>만원</option>
                                         </select>
                                     </div>
                                 </div>
@@ -83,14 +89,58 @@
                                         <input class="form-control" placeholder="검색어를 입력하세요.">
                                     </div>
 
-                                    <div class="btn-group">
-                                        <button class="btn btn-success align-items-end">입금내역 업로드</button>
+                                    <div class="btn-group float-end mx-1">
+                                        <button class="btn btn-success float-end">결과 다운로드</button>
                                     </div>
-                                    <div class="btn-group">
-                                        <button class="btn btn-success ">결과 다운로드</button>
+                                    <div class="btn-group float-end mx-1">
+                                        <button
+                                            type="button"
+                                            class="btn btn-success float-end"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deposit_upload">입금내역 업로드
+                                        </button>
+                                    </div>
+                                    <div class="modal fade" id="deposit_upload" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h2>입금내역 업로드</h2>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="card-body">
+                                                        <div class="form-control">
+                                                            <h6 class="text-muted">파일 형식이 정확해야 합니다.</h6>
+                                                            <h6 class="text-muted">샘플이 필요하신 경우 파일을 다운로드하세요. </h6>
+                                                            <button class="btn btn-success">무통장</button>
+                                                            <button class="btn btn-success">CMS</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <h5 class="text-black ">입금내역 유형을 선택하세요</h5>
+                                                        <div class="alert-secondary rounded ">
+                                                            <div class="card-body row">
+                                                                <div class="my-2">
+                                                                    <input  type="radio"><span class="text-black fw-bold">무통장</span>
+                                                                </div>
+                                                                <div class="my-2">
+                                                                    <input  type="radio"><span class="text-black fw-bold">CMS</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <h5 class="text-black ">입금내역 엑셀 파일을 선택하세요.</h5>
+                                                        <input class="form-control " type="file" id="formFileDisabled" disabled />
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button class="btn btn-primary">업로드</button>
+                                                        <button class="btn btn-secondary">취소</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-
                             </div>
 
                             <table class="table">
@@ -112,7 +162,7 @@
                                     <td>국민</td>
                                     <td>5434153-01-54153135</td>
                                     <td>2023-03-03</td>
-                                    <td>YES24</td>
+                                    <td><span class="badge badge-center bg-warning">C</span> YES24</td>
                                     <td class="text-primary">61,600</td>
                                     <td>전자금융</td>
                                     <td>하나은행</td>
@@ -122,7 +172,7 @@
                                     <td>국민</td>
                                     <td>5434153-01-54153135</td>
                                     <td>2023-03-03</td>
-                                    <td>YES24</td>
+                                    <td><span class="badge badge-center bg-warning">C</span> YES24</td>
                                     <td class="text-primary">61,600</td>
                                     <td>전자금융</td>
                                     <td>하나은행</td>
@@ -132,7 +182,7 @@
                                     <td>국민</td>
                                     <td>5434153-01-54153135</td>
                                     <td>2023-03-03</td>
-                                    <td>YES24</td>
+                                    <td><span class="badge badge-center bg-primary">무</span> YES24</td>
                                     <td class="text-primary">61,600</td>
                                     <td>전자금융</td>
                                     <td>신한은행</td>
@@ -142,7 +192,7 @@
                                     <td>국민</td>
                                     <td>5434153-01-54153135</td>
                                     <td>2023-03-03</td>
-                                    <td>YES24</td>
+                                    <td><span class="badge badge-center bg-warning">C</span> YES24</td>
                                     <td class="text-primary">61,600</td>
                                     <td>전자금융</td>
                                     <td>우리은행</td>
@@ -152,7 +202,7 @@
                                     <td>국민</td>
                                     <td>5434153-01-54153135</td>
                                     <td>2023-03-03</td>
-                                    <td>YES24</td>
+                                    <td><span class="badge badge-center bg-primary">무</span> YES24</td>
                                     <td class="text-primary">61,600</td>
                                     <td>전자금융</td>
                                     <td>국민은행</td>

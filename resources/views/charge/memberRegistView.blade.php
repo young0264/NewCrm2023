@@ -8,19 +8,18 @@
 
         <div class="form-floating">
             <div class="row">
-
                 {{--            content left        --}}
                 <div class="col-md-3">
                     <div class="col-md-12">
                         <div class="card">
                             <!-- Notifications -->
-                            <h5 class="card-header text-center">고객 검색</h5>
+                            <h5 class="card-header text-center text-primary">고객 검색</h5>
                             <div class="card-body">
                                 <div class="form-floating">
                                     <div class="mb-3">
                                         <div class="demo-inline-spacing">
-                                            <div class="btn-group col-md-12">
-                                                <div class="col-md-4">
+                                            <div class="btn-group">
+                                                <div class="btn-group mx-1">
                                                     <select class="form-select">
                                                         <option>결제수단</option>
                                                         <option>카드</option>
@@ -28,14 +27,14 @@
                                                         <option>후불</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="btn-group mx-1">
                                                     <select class="form-select">
                                                         <option>신탁여부</option>
                                                         <option>신탁</option>
                                                         <option>비신탁</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="btn-group mx-1">
                                                     <select class="form-select">
                                                         <option>통합</option>
                                                         <option>통합1</option>
@@ -58,11 +57,13 @@
                                         />
                                     </div>
                                 </div>
-
-                                <div class="form-floating">
-                                    <button type="button" class="btn btn-secondary">전체로드</button>
-                                    <button type="button" class="btn btn-secondary">미등록만</button>
-                                    <button type="button" class="btn btn-primary">청구&gt;</button>
+                                <div>
+                                    <button type="button" class="btn btn-secondary mx-1">전체로드</button>
+                                    <button type="button" class="btn btn-secondary mx-1">미등록만</button>
+                                    <button type="button" class="btn btn-primary mx-1">청구&gt;</button>
+                                </div>
+                                <div class="form-floatingd row my-2 mx-2">
+                                    <button type="button" class="btn btn-primary">비회원 청구 대상 불러오기&gt;</button>
                                 </div>
                             </div>
                             <div class="table-responsive">
@@ -117,7 +118,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <!-- Notifications -->
-                            <h5 class="card-header text-center" style="color: cornflowerblue">청구 대상</h5>
+                            <h5 class="card-header text-center text-primary">청구 대상</h5>
                             <div class="card-body">
 
                                 <div class="form-floating">
@@ -166,208 +167,486 @@
                                     <button type="button"
                                             class="btn btn-warning me-4"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#mocal_setting1">청구 설정 </button>
+                                            data-bs-target="#mocal_setting1">청구 설정
+                                    </button>
+                                    <button type="button" class="btn btn-primary me-4 float-end"> 비회원 신규등록</button>
+
                                 </div>
                             </div>
-{{--                            모달시작--}}
+                            {{-- 청구 대상 등록 설정 모달 시작--}}
                             <div class="modal fade" id="mocal_setting1" tabindex="-1" aria-hidden="true">
                                 <div class="modal-dialog modal-xl" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h3 class="fw-bold py-3 mb-4">청구 대상 등록 설정</h3>
+                                            <h3 class="fw-bold ">청구 대상 등록 설정</h3>
                                         </div>
-                                            <div class="modal-body">
-                                                <h5>정기적인 계산서 발행을 위해 청구 대상을 등록합니다.</h5>
-                                                <h5>서비스 이용료나 공연보상금 등 품목과 계산서 종류를 </h5>
-                                                <h5>설정할 수 있습니다.</h5>
-                                                <div>
-                                                    <h5 class="fw-bold">선택된 청구 <span class="alert alert-secondary">2건</span></h5>
-                                                </div>
-
-                                            </div>
-
-{{--                                            <button--}}
-{{--                                                type="button"--}}
-{{--                                                class="btn-close"--}}
-{{--                                                data-bs-dismiss="modal"--}}
-{{--                                                aria-label="Close"--}}
-{{--                                            ></button>--}}
-
-
-
 
                                         <div class="modal-body">
+                                            <h5 class="row mx-3">서비스 이용료나 공연권료 등 품목과 계산서 종류를 설정합니다. </h5>
+
+                                            <div class="card-body">
+                                                <div class="btn-group">
+                                                    <label class="btn-group fw-bold ">발행일</label>
+                                                    <div class=" col-md-2 mx-1">
+                                                        {{--                                                        <label class="btn-group fw-bold ">발행일</label>--}}
+                                                        {{--                                                        <h6>발행일</h6>--}}
+                                                        <input class="form-control alert-warning " placeholder="작성일자">
+                                                    </div>
+                                                    <div class="col-sm-2 mx-1">
+                                                        <select class="btn btn-dark ">
+                                                            <option>계산서</option>
+                                                            <option>현금영수증</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class=" col-sm-2 mx-1">
+                                                        <select class="form-select text-black">
+                                                            <option>농어촌</option>
+                                                            <option>농촌</option>
+                                                            <option>어촌</option>
+                                                        </select>
+                                                    </div>
+                                                    <label class="mx-2">공연권료</label>
+
+                                                    <div class=" col-sm-1 mx-1 text-black ">
+                                                        {{--                                                        <h6>공연권료</h6>--}}
+                                                        <input class="form-control " placeholder="4,000">
+                                                    </div>
+                                                    <label class="mx-2">면적</label>
+                                                    <div class=" col-sm-1 mx-1 text-black">
+                                                        <input class="form-control" placeholder="60">
+                                                    </div>
+                                                    <span class="text-muted">(㎡)</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="card-body">
+                                                <h5 style="border: 1px dashed #bbb; "></h5>
+                                            </div>
+
+                                            <div class="card-body row">
+                                                <div class="btn-group my-1">
+                                                    <div class="col-md-1">
+                                                        매장명
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control " placeholder="매장명">
+                                                    </div>
+                                                    <div class="col-md-1 mx-2">
+                                                        <span></span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <select class="form-select alert-info text-black fw-bold">
+                                                            <option>업종</option>
+                                                            <option>업종2</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3 mx-2 ">
+                                                        <select class="form-select alert-infotext-black fw-bold">
+                                                            <option>업태</option>
+                                                            <option>업태2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="btn-group my-1">
+                                                    <div class="col-md-1">
+                                                        상호명
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <input class="form-control alert-warning" placeholder="상호명">
+                                                    </div>
+                                                    <div class="col-md-1 mx-2 ">
+                                                        <span>담당자1</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control " placeholder="담당자1">
+                                                    </div>
+                                                    <div class="col-md-3 mx-2">
+                                                        <select class="form-select text-black fw-bold">
+                                                            <option>결제수단</option>
+                                                            <option>카드</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="btn-group my-1">
+                                                    <div class="col-md-1">
+                                                        대표자명
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control alert-warning" placeholder="대표자명">
+                                                    </div>
+
+                                                    <div class="col-md-1 mx-2" style="float: right">
+                                                        <span>연락처1</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control " placeholder="연락처1">
+                                                    </div>
+
+                                                    <div class="col-md-3 mx-2">
+                                                        <select class="form-select text-black fw-bold">
+                                                            <option>결제주기</option>
+                                                            <option>한달</option>
+                                                        </select>
+                                                    </div>
+                                                    <span class="badge badge-center bg-label-secondary">
+                                                        0
+                                                    </span>
+                                                </div>
+
+                                                <div class="btn-group my-1">
+                                                    <div class="col-md-1">
+                                                        사업자번호
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control alert-warning" placeholder="사업자번호">
+                                                    </div>
+
+                                                    <div class="col-md-1 mx-2">
+                                                        <span>이메일1</span>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <input class="form-control " placeholder="연락처1">
+                                                    </div>
+
+                                                    <div class="col-md-3 mx-2">
+                                                        <select class="form-select text-black fw-bold">
+                                                            <option>내역</option>
+                                                            <option>내역2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="btn-group my-1">
+                                                    <div class="col-md-1">
+                                                        주소
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control " placeholder="주소">
+                                                    </div>
+
+                                                    <div class="col-md-1 mx-2">
+                                                        <span>담당자2</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control " placeholder="담당자2">
+                                                    </div>
+
+                                                    <div class="col-md-3 mx-2">
+                                                        <select class="form-select text-black fw-bold">
+                                                            <option>회신</option>
+                                                            <option>회신2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="btn-group my-1">
+                                                    <div class="col-md-1">
+                                                        발행주소1
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control " placeholder="발행주소1">
+                                                    </div>
+
+                                                    <div class="col-md-1 mx-2">
+                                                        <span>연락처2</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control " placeholder="연락처2">
+                                                    </div>
+
+                                                    <div class="col-md-3 mx-2">
+                                                        <select class="form-select text-black fw-bold">
+                                                            <option>거래명세서</option>
+                                                            <option>거래명세서2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="btn-group my-1">
+                                                    <div class="col-md-1">
+                                                        발행주소2
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control " placeholder="발행주소2">
+                                                    </div>
+
+                                                    <div class="col-md-1 mx-2">
+                                                        <span>이메일2</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control " placeholder="이메일2">
+                                                    </div>
+
+                                                    <div class="col-md-3 mx-2">
+                                                        <select class="form-select text-black fw-bold">
+                                                            <option>세금계산서</option>
+                                                            <option>세금계산서2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+
                                             <div class="card-body">
                                                 <div class="form-check form-switch mb-2">
-                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked />
-                                                    <label class="form-check-label" for="flexSwitchCheckChecked"
-                                                    >공연권료 / (세금)계산서 (위수탁)</label
-                                                    >
+                                                    <input class="form-check-input" type="checkbox"
+                                                           id="flexSwitchCheckChecked" checked/>
+                                                    <label class="form-check-label fw-bold" for="flexSwitchCheckChecked"
+                                                    >공연권료 / (세금)계산서 (위수탁)</label>
                                                 </div>
-                                                <div class="card-body">
 
-                                                    <div class="form-control row alert alert-secondary ">
-
-                                                        <div class="btn-group col-md-4">
-                                                            <div class="row my-3 ">
-                                                                <div class="col-md-3">
-                                                                    <span class="col-form-label">면적</span>
-                                                                </div>
-                                                                <div class="col-md-7">
-                                                                    <input class="form-control" placeholder="영업장면적">
-                                                                </div>(㎡)
-
-                                                                <div class="col-md-3">
-                                                                    <span class="col-form-label">납부금액</span>
-                                                                </div>
-                                                                <div class="col-md-7">
-                                                                    <input class="form-control" placeholder="납부금액">
-                                                                </div>
-                                                            </div>
+                                                <div class="form-control row alert alert-secondary ">
+                                                    <div class="row">
+                                                        <div class="col-md-1">음저협</div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="공연사용료">
                                                         </div>
-
-                                                        <div class="btn-group row col-md-2 align-bottom">
-                                                            <span class="text-muted">음저협</span>
-
-                                                            <input class="form-control" placeholder="음저협">
+                                                        <div class="col-md-2 ">
+                                                            <input class="form-control alert-warning"
+                                                                   placeholder="1,960">
                                                         </div>
-
-                                                        <div class="btn-group row col-md-2 align-bottom">
-                                                            <span class="text-muted">함저협</span>
-                                                            <input class="form-control" placeholder="함저협">
+                                                        <div class="col-md-2">
+                                                            <select
+                                                                class="form-select alert-warning text-black fw-bold">
+                                                                <option>청구(02)</option>
+                                                                <option>청구(07)</option>
+                                                            </select>
                                                         </div>
-
-                                                        <div class="btn-group row col-md-2 align-bottom">
-                                                            <div>
-                                                                <select class="form-select align-top">
-                                                                    <option>업종</option>
-                                                                    <option>업종1</option>
-                                                                    <option>업종2</option>
-                                                                </select>
-                                                            </div>
-                                                            <span class="text-muted">음실련</span>
-                                                            <input class="form-control" placeholder="음실련">
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="품목비교1">
                                                         </div>
-                                                        <div class="btn-group row col-md-2 align-bottom">
-                                                            <div>
-                                                                <select class="form-select align-top">
-                                                                    <option>농어촌</option>
-                                                                    <option>농촌1</option>
-                                                                    <option>어촌1</option>
-                                                                </select>
-                                                            </div>
-                                                            <span class="text-muted">연제협</span>
-                                                            <input class="form-control" placeholder="연제협">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-control btn-group row alert alert-secondary ">
-                                                        <div class="col-md-6">
-                                                            <label class="btn-group col-form-label">음저협</label>
-                                                            <div class="btn-group col-md-6">
-                                                                <input class="form-control">
-                                                                <input class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-
-                                                        <label class="btn-group col-form-label">음실련</label>
-                                                            <div class="btn-group col-md-6 mx-4">
-                                                                <input class="form-control">
-                                                                <input class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label class="btn-group col-form-label">함저협</label>
-                                                            <div class="btn-group col-md-6">
-                                                                <input class="form-control">
-                                                                <input class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-
-                                                        <label class="btn-group col-form-label">연제협</label>
-                                                            <div class="btn-group col-md-6 mx-4">
-                                                                <input class="form-control">
-                                                                <input class="form-control">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <h5 style="border: 1px dashed #bbb; "></h5>
-                                                    </div>
-
-                                                    <div class="btn-group">
-                                                        <div class="col-md-6 ">
-                                                            <div class="form-check form-switch mb-2">
-                                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked />
-                                                                <label class="form-check-label" for="flexSwitchCheckChecked"> 이용료 분할 / (세금)계산서 (일반)</label>
-                                                            </div>
-
-                                                            <div class="btn-group">
-                                                                <label>품목1</label>
-                                                                <div class="col-md-4">
-                                                                    <input class="form-control" placeholder="이용료">
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <input class="form-control" placeholder="이용료">
-                                                                </div>
-                                                            </div>
-                                                            <div class="btn-group">
-                                                                <label>품목2</label>
-                                                                <div class="col-md-4">
-                                                                    <input class="form-control" placeholder="이용료">
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <input class="form-control" placeholder="이용료">
-                                                                </div>
-                                                            </div>
-                                                            <div class="btn-group">
-                                                                <label>품목3</label>
-                                                                <div class="col-md-4">
-                                                                    <input class="form-control" placeholder="이용료">
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <input class="form-control" placeholder="이용료">
-                                                                </div>
-                                                            </div>
-                                                            <div class="btn-group">
-                                                                <label>품목4</label>
-                                                                <div class="col-md-4">
-                                                                    <input class="form-control" placeholder="이용료">
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <input class="form-control" placeholder="이용료">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div >
-                                                            <div class="btn btn-warning">
-                                                                <h3 class="fw-bold">세금계산서 2건</h3>
-                                                                <h5>이용료 세금계산서</h5>
-                                                                <h5>연제협 공연보상금 세금계산서</h5>
-
-
-                                                                <h3 class="fw-bold">계산서 3건</h3>
-                                                                <h5>음저협 공연사용료 세금계산서</h5>
-                                                                <h5>함저협 공연사용료 세금계산서</h5>
-                                                                <h5>음실련 공연보상금 세금계산서</h5>
-                                                            </div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="비고">
                                                         </div>
                                                     </div>
 
+                                                    <div class="row">
+                                                        <div class="col-md-1">함저협</div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="공연사용료">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control alert-warning"
+                                                                   placeholder="1,960">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <select
+                                                                class="form-select alert-warning text-black fw-bold">
+                                                                <option>청구(02)</option>
+                                                                <option>청구(07)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="품목비교1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="비고">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-1">음실련</div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="공연사용료">
+                                                        </div>
+                                                        <div class="col-md-2 ">
+                                                            <input class="form-control alert-warning"
+                                                                   placeholder="1,960">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <select
+                                                                class="form-select alert-warning text-black fw-bold">
+                                                                <option>청구(02)</option>
+                                                                <option>청구(07)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="품목비교1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="비고">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-1">연제협</div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="공연사용료">
+                                                        </div>
+                                                        <div class="col-md-2 ">
+                                                            <input class="form-control alert-warning"
+                                                                   placeholder="1,960">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <select
+                                                                class="form-select alert-warning text-black fw-bold">
+                                                                <option>청구(02)</option>
+                                                                <option>청구(07)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="품목비교1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="비고">
+                                                        </div>
+                                                    </div>
                                                 </div>
 
 
+                                                <div class="form-check btn-group form-switch mb-2">
+                                                    <div class="col-md-12">
+                                                        <input class="form-check-input" type="checkbox"
+                                                               id="flexSwitchCheckChecked" checked/>
+                                                        <label class="form-check-label fw-bold"
+                                                               for="flexSwitchCheckChecked"
+                                                        >이용료 분할 / (세금)계산서 (일반)</label>
+                                                    </div>
+                                                    <div class="col-md-8"></div>
+                                                    <div class="col-md-7 float-end">
+                                                        <input class="form-control alert-info" placeholder="비고">
+                                                    </div>
+                                                </div>
+                                                <div class="form-control btn-group row alert alert-secondary ">
+                                                    <div class="row">
+                                                        <div class="col-md-1">품목1</div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="이용료">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control alert-warning"
+                                                                   placeholder="6,000">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <select
+                                                                class="form-select alert-warning text-black fw-bold">
+                                                                <option>청구(02)</option>
+                                                                <option>청구(07)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <input class="form-control alert-info" placeholder="품목비고1">
+                                                        </div>
+                                                    </div>
 
+                                                    <div class="row">
+                                                        <div class="col-md-1">품목1</div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="이용료">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control alert-warning" placeholder="단가2">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <select
+                                                                class="form-select alert-warning text-black fw-bold">
+                                                                <option>청구(02)</option>
+                                                                <option>청구(07)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <input class="form-control alert-info" placeholder="품목비고1">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-1">품목2</div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="이용료">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control alert-warning" placeholder="단가3">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <select
+                                                                class="form-select alert-warning text-black fw-bold">
+                                                                <option>청구(02)</option>
+                                                                <option>청구(07)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <input class="form-control alert-info" placeholder="품목비고1">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-1">품목3</div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="이용료">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control alert-warning" placeholder="단가4">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <select
+                                                                class="form-select alert-warning text-black fw-bold">
+                                                                <option>청구(02)</option>
+                                                                <option>청구(07)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <input class="form-control alert-info" placeholder="품목비고1">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-1">품목4</div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control" placeholder="이용료">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <input class="form-control alert-warning" placeholder="단가4">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <select
+                                                                class="form-select alert-warning text-black fw-bold">
+                                                                <option>청구(02)</option>
+                                                                <option>청구(07)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <input class="form-control alert-info" placeholder="품목비고1">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="btn-group">
+                                                    <div class="col-md-12">
+                                                        <label>
+                                                            <input class="form-check-input me-1" type="checkbox">계산서 즉시
+                                                            생성
+                                                        </label>
+                                                    </div>
+                                                    {{--                                                    <div class="col-md-2 mx-1">--}}
+                                                    {{--                                                        <button type="button" class="btn btn-primary"> 저장</button>--}}
+                                                    {{--                                                    </div>--}}
+                                                    {{--                                                    <div class="col-md-2 mx-1">--}}
+                                                    {{--                                                        <button type="button" class="btn btn-primary"> 신규복제</button>--}}
+                                                    {{--                                                    </div>--}}
+                                                    <div class="col-md-3 mx-1">
+                                                        <button type="button" class="btn btn-primary"> 신규등록</button>
+                                                    </div>
+                                                    <div class="col-md-3 mx-1">
+                                                        <button type="button" class="btn btn-secondary"> 취소</button>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <button type="button" class="btn btn-success float-end"> 중복내역
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="modal-footer ">
-                                            <div class=" gap-2 col-lg-4 mx-auto">
-                                                <button type="button" class="btn btn-primary"> 신규등록</button>
-                                                <button type="button" class="btn btn-secondary"> 취소</button>
-                                            </div>
-                                        </div>
+
+
                                     </div>
+
                                 </div>
                             </div>
 
