@@ -46,12 +46,12 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item ">
-                    <a href="pages-account-settings-account.html" class="menu-link">
+                    <a href="{{route('chargeMemberRegist')}}" class="menu-link">
                         <div data-i18n="Account">청구 대상 등록</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="pages-account-settings-notifications.html" class="menu-link">
+                    <a href="{{route('chargeNonMemberRegist')}}" class="menu-link">
                         <div data-i18n="Notifications">비회원 청구 대상 등록</div>
                     </a>
                 </li>
@@ -65,35 +65,42 @@
         <li class="menu-item ">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings">청구관리</div>
+                <div data-i18n="Account Settings">계산서</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item active">
-                    <a href="pages-account-settings-account.html" class="menu-link">
-                        <div data-i18n="Account">개별청구</div>
+                    <a href="{{route('billIssue')}}" class="menu-link ">
+                        <div data-i18n="Account">계산서 발행 조회</div>
                     </a>
-                </li>
-                <li class="menu-item">
-                    <a href="pages-account-settings-notifications.html" class="menu-link">
-                        <div data-i18n="Notifications">일괄청구</div>
+                    <a href="#" class="menu-link">
+                        <div data-i18n="Account">계산서 양식 출력</div>
                     </a>
-                </li>
-                <li class="menu-item">
-                    <a href="pages-account-settings-connections.html" class="menu-link">
-                        <div data-i18n="Connections">청구관리</div>
+                    <a href="#" class="menu-link">
+                        <div data-i18n="Account">통합 징수 출력</div>
                     </a>
                 </li>
             </ul>
         </li>
+
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
-                <div data-i18n="Authentications">입급내역</div>
+                <div data-i18n="Authentications">입금내역</div>
             </a>
             <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{route('depositHistory')}}" class="menu-link" target="_blank">
+                        <div data-i18n="Basic">입금내역 등록 히스토리</div>
+                    </a>
+                </li>
                 <li class="menu-item">
                     <a href="auth-login-basic.html" class="menu-link" target="_blank">
-                        <div data-i18n="Basic">입금관리</div>
+                        <div data-i18n="Basic">입금내역 등록, 조회</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="auth-login-basic.html" class="menu-link" target="_blank">
+                        <div data-i18n="Basic">입금내역 매칭</div>
                     </a>
                 </li>
             </ul>
@@ -101,39 +108,22 @@
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-                <div data-i18n="Misc">미수관리</div>
+                <div data-i18n="Misc">미수금</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="pages-misc-error.html" class="menu-link">
-                        <div data-i18n="Error">Error</div>
+                        <div data-i18n="Error">미수금 조회</div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="pages-misc-under-maintenance.html" class="menu-link">
-                        <div data-i18n="Under Maintenance">Under Maintenance</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-                <div data-i18n="Misc">계산서관리</div>
-            </a>
-            <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="pages-misc-error.html" class="menu-link">
-                        <div data-i18n="Error">Error</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="pages-misc-under-maintenance.html" class="menu-link">
-                        <div data-i18n="Under Maintenance">Under Maintenance</div>
+                        <div data-i18n="Error">이용료 납부 안내</div>
                     </a>
                 </li>
             </ul>
         </li>
+
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">기능샘플</span>
         </li>

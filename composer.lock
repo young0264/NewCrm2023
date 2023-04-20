@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "43a3037e3079ed0229530c5d9bcecd8a",
+    "content-hash": "7762ab9d122be00a58c85f68c2984201",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2068,6 +2068,52 @@
                 "source": "https://github.com/MarkBaker/PHPMatrix/tree/3.0.1"
             },
             "time": "2022-12-02T22:17:43+00:00"
+        },
+        {
+            "name": "mointeng/sqlrelay",
+            "version": "8.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/solitude316/php-sqlrelay-connector.git",
+                "reference": "edf5dd994315b6edc647de466fc647b2fa765d44"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/solitude316/php-sqlrelay-connector/zipball/edf5dd994315b6edc647de466fc647b2fa765d44",
+                "reference": "edf5dd994315b6edc647de466fc647b2fa765d44",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3|^8.0",
+                "yajra/laravel-oci8": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mointeng\\SQLRelay\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Moin Teng",
+                    "email": "solitude316@gmail.com"
+                }
+            ],
+            "description": "SQLrelay PDO driver connect for laravel 8.x.x",
+            "keywords": [
+                "laravel",
+                "oracle",
+                "sqlrelay"
+            ],
+            "support": {
+                "issues": "https://github.com/solitude316/php-sqlrelay-connector/issues",
+                "source": "https://github.com/solitude316/php-sqlrelay-connector/tree/8.0.0"
+            },
+            "time": "2021-02-23T02:52:27+00:00"
         },
         {
             "name": "monolog/monolog",

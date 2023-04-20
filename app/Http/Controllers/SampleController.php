@@ -11,12 +11,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use Mointeng\SQLRelay\SqlRelayConnectionFactory;
 
 class SampleController extends Controller
 {
     //
     public static function connection() {
-
 //        $query = "select * from tab where tname=:tname order by tname";
 //        $parameters = array(
 //            "tname"=>"MIGRATIONS"
@@ -171,4 +171,22 @@ class SampleController extends Controller
         exit;
 
     }
+
+    public static function sqlrelay() {
+        $config = array(
+            "host"=>"10.10.131.76",
+            "port"=>9903,
+            "username"=>"findcp",
+            "password"=>"p1234"
+        );
+
+        $aa = SqlRelayConnectionFactory::getInstance($config);
+        print_r($aa);
+
+//        $relay = new OracleConnector($config);
+//        echo '<pre>';
+//        print_r($relay);
+//        exit;
+    }
 }
+
