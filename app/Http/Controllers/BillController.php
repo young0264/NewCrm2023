@@ -14,6 +14,14 @@ class BillController extends BaseController{
     {
         return view("billIssueView");
     }
+    public static function form()
+    {
+        return view("billFormView");
+    }
+    public static function printForm()
+    {
+        return view("printBillFormView");
+    }
 
 
 }

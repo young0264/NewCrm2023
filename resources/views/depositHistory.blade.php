@@ -32,43 +32,24 @@
             <div class="col-md-12">
                 <div class="col-md-12">
                     <div class="card">
+                    <div class="card-body">
                         <!-- Notifications -->
-                        <h5 class="card-header" style="color: dodgerblue">입금 등록 현황</h5>
-
-                        <div class="card-body">
-                            {{--1~12번 호출--}}
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination pagination-lg">
-                                    <li>
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >2023년
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="javascript:void(0);">2024년</a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="javascript:void(0);">2023년</a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="javascript:void(0);">2022년</a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="javascript:void(0);">2021년</a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="javascript:void(0);">2020년</a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="javascript:void(0);">2019년</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </nav>
-                            {{--1~12번 end--}}
+                        <div class="btn-group col-md-2">
+                            <div class="card-body">
+                                <h5 class="card-header text-primary" >입금 등록 현황</h5>
+                                <div class="card-body">
+                                    <select class="form-select">
+                                        <option>2024년</option>
+                                        <option>2023년</option>
+                                        <option>2022년</option>
+                                        <option>2021년</option>
+                                        <option>2020년</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
+                        <div class="btn-group col-md-8">
+                            <div class="card-body">
                             <div class="content-wrapper">
                                 <!-- Content -->
                                 <div class="container-xxl flex-grow-1 container-p-y">
@@ -79,100 +60,101 @@
                                             <!-- Content -->
                                             <div class="container-xxl flex-grow-1 container-p-y">
                                                 <div class="d-flex flex-wrap" id="icons-container">
-                                                    <div
-                                                        class="card icon-card cursor-pointer text-center mb-4 mx-2">
-                                                        <div class="card-body">
-                                                            <i class="bx bxl-adobe mb-2"></i>
-                                                            <p class="icon-name text-capitalize text-truncate mb-0">
-                                                                adobe</p>
+                                                    <div class="">
+                                                        <h4 align="right">1월</h4>
+
+                                                        <div
+                                                            class="card icon-card cursor-pointer text-center mb-4 mx-2">
+                                                            <div class="card-body my-xxl-5 mx-xxl-5">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        class="card icon-card cursor-pointer text-center mb-4 mx-2">
-                                                        <div class="card-body">
-                                                            <i class="bx bxl-algolia mb-2"></i>
-                                                            <p class="icon-name text-capitalize text-truncate mb-0">
-                                                                algolia</p>
+                                                    <div class="">
+                                                        <h4 align="right">2월</h4>
+                                                        <div
+                                                            class="card icon-card cursor-pointer text-center mb-4 mx-2">
+                                                            <div class="card-body my-xxl-5 mx-xxl-5">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        class="card icon-card cursor-pointer text-center mb-4 mx-2">
-                                                        <div class="card-body">
-                                                            <i class="bx bxl-audible mb-2"></i>
-                                                            <p class="icon-name text-capitalize text-truncate mb-0">
-                                                                audible</p>
+                                                    <div class="">
+                                                        <h4 align="right">3월</h4>
+                                                        <div
+                                                            class="card icon-card cursor-pointer text-center mb-4 mx-2">
+                                                            <div class="card-body my-xxl-5 mx-xxl-5">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        class="card icon-card cursor-pointer text-center mb-4 mx-2">
-                                                        <div class="card-body">
-                                                            <i class="bx bxl-figma mb-2"></i>
-                                                            <p class="icon-name text-capitalize text-truncate mb-0">
-                                                                figma</p>
+                                                    <div class="">
+                                                        <h4 align="right">4월</h4>
+                                                        <div
+                                                            class="card icon-card cursor-pointer text-center mb-4 mx-2">
+                                                            <div class="card-body my-xxl-5 mx-xxl-5">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        class="card icon-card cursor-pointer text-center mb-4 mx-2">
-                                                        <div class="card-body">
-                                                            <i class="bx bxl-redbubble mb-2"></i>
-                                                            <p class="icon-name text-capitalize text-truncate mb-0">
-                                                                redbubble</p>
+                                                    <div class="">
+                                                        <h4 align="right">5월</h4>
+                                                        <div
+                                                            class="card icon-card cursor-pointer text-center mb-4 mx-2">
+                                                            <div class="card-body my-xxl-5 mx-xxl-5">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        class="card icon-card cursor-pointer text-center mb-4 mx-2">
-                                                        <div class="card-body">
-                                                            <i class="bx bxl-etsy mb-2"></i>
-                                                            <p class="icon-name text-capitalize text-truncate mb-0">
-                                                                etsy</p>
+                                                    <div class="">
+                                                        <h4 align="right">6월</h4>
+                                                        <div
+                                                            class="card icon-card cursor-pointer text-center mb-4 mx-2">
+                                                            <div class="card-body my-xxl-5 mx-xxl-5">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        class="card icon-card cursor-pointer text-center mb-4 mx-2">
-                                                        <div class="card-body">
-                                                            <i class="bx bxl-gitlab mb-2"></i>
-                                                            <p class="icon-name text-capitalize text-truncate mb-0">
-                                                                gitlab</p>
+                                                    <div class="">
+                                                        <h4 align="right">7월</h4>
+                                                        <div
+                                                            class="card icon-card cursor-pointer text-center mb-4 mx-2">
+                                                            <div class="card-body my-xxl-5 mx-xxl-5">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        class="card icon-card cursor-pointer text-center mb-4 mx-2">
-                                                        <div class="card-body">
-                                                            <i class="bx bxl-patreon mb-2"></i>
-                                                            <p class="icon-name text-capitalize text-truncate mb-0">
-                                                                patreon</p>
+                                                    <div class="">
+                                                        <h4 align="right">8월</h4>
+                                                        <div
+                                                            class="card icon-card cursor-pointer text-center mb-4 mx-2">
+                                                            <div class="card-body my-xxl-5 mx-xxl-5">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        class="card icon-card cursor-pointer text-center mb-4 mx-2">
-                                                        <div class="card-body">
-                                                            <i class="bx bxl-facebook-circle mb-2"></i>
-                                                            <p class="icon-name text-capitalize text-truncate mb-0">
-                                                                facebook-circle</p>
+                                                    <div class="">
+                                                        <h4 align="right">9월</h4>
+                                                        <div
+                                                            class="card icon-card cursor-pointer text-center mb-4 mx-2">
+                                                            <div class="card-body my-xxl-5 mx-xxl-5">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        class="card icon-card cursor-pointer text-center mb-4 mx-2">
-                                                        <div class="card-body">
-                                                            <i class="bx bxl-imdb mb-2"></i>
-                                                            <p class="icon-name text-capitalize text-truncate mb-0">
-                                                                imdb</p>
+                                                    <div class="">
+                                                        <h4 align="right">10월</h4>
+                                                        <div
+                                                            class="card icon-card cursor-pointer text-center mb-4 mx-2">
+                                                            <div class="card-body my-xxl-5 mx-xxl-5">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        class="card icon-card cursor-pointer text-center mb-4 mx-2">
-                                                        <div class="card-body">
-                                                            <i class="bx bxl-jquery mb-2"></i>
-                                                            <p class="icon-name text-capitalize text-truncate mb-0">
-                                                                jquery</p>
+                                                    <div class="">
+                                                        <h4 align="right">11월</h4>
+                                                        <div
+                                                            class="card icon-card cursor-pointer text-center mb-4 mx-2">
+                                                            <div class="card-body my-xxl-5 mx-xxl-5">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        class="card icon-card cursor-pointer text-center mb-4 mx-2">
-                                                        <div class="card-body">
-                                                            <i class="bx bxl-pinterest-alt mb-2"></i>
-                                                            <p class="icon-name text-capitalize text-truncate mb-0">
-                                                                pinterest-alt</p>
+                                                    <div class="">
+                                                        <h4 align="right">12월</h4>
+                                                        <div
+                                                            class="card icon-card cursor-pointer text-center mb-4 mx-2">
+                                                            <div class="card-body my-xxl-5 mx-xxl-5">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -183,6 +165,8 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>

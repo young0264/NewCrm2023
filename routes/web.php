@@ -41,9 +41,19 @@ if (!Auth::check()) {
 //
         Route::get("/regist/chargeMember", [\App\Http\Controllers\ChargeController::class, "chargeMemberRegist"])->name("chargeMemberRegist");
         Route::get("/regist/chargeNonMember", [\App\Http\Controllers\ChargeController::class, "chargeNonMemberRegist"])->name("chargeNonMemberRegist");
-        Route::get("/bill/issue", [\App\Http\Controllers\BillController::class, "issue"])->name("billIssue");
 
+        /**
+         * 계산서
+         */
+        Route::get("/bill/issue", [\App\Http\Controllers\BillController::class, "issue"])->name("billIssue");
+        Route::get("/bill/form", [\App\Http\Controllers\BillController::class, "form"])->name("billForm");
+        Route::get("/bill/form/sub", [\App\Http\Controllers\BillController::class, "printForm"])->name("printBillForm");
+
+        /**
+         * 입금내역
+         */
         Route::get("/deposit/history", [\App\Http\Controllers\DepositController::class, "history"])->name("depositHistory");
+        Route::get("/deposit/search", [\App\Http\Controllers\DepositController::class, "search"])->name("depositSearch");
 
 
     });

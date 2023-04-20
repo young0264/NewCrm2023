@@ -14,5 +14,9 @@ class DepositController extends BaseController{
         return view('depositHistory');
     }
 
+    public static function search(){
+        return view('depositSearch');
+    }
+
 
 }
