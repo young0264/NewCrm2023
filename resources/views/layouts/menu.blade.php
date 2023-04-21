@@ -102,7 +102,7 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="auth-login-basic.html" class="menu-link" target="_blank">
+                    <a href="{{route('depositMatch')}}" class="menu-link" target="_blank">
                         <div data-i18n="Basic">입금내역 매칭</div>
                     </a>
                 </li>

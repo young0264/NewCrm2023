@@ -12,10 +12,10 @@ class ChargeController extends BaseController{
 
 
     public static function chargeMemberRegist(){
-        return view('memberRegistView');
+        return view('charge.memberRegistView');
     }
     public static function chargeNonMemberRegist(){
-        return view('nonMemberRegistView');
+        return view('charge.nonMemberRegistView');
     }
 
 }

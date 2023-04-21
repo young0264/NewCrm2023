@@ -497,7 +497,9 @@
 
                             <div class="card-body">
                                 <nav class="navbar navbar-example navbar-expand-lg navbar-light bg-light">
-                                    <div class="container-fluid">
+                                    <div class="horizontal-scrollable">
+{{--                                    <div class="container-fluid ">--}}
+{{--                                        class="card overflow-hidden mb-4"--}}
                                         <div class="btn-group">
                                             <button class="btn btn-primary">컬럼 일괄 업데이트</button>
                                         </div>
@@ -506,330 +508,186 @@
                                             <input value="6000">
                                         </div>
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >결제방식
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="javascript:void(0);">카드</a></li>
-                                                <li><a class="dropdown-item" href="javascript:void(0);">현금</a></li>
-                                                <li><a class="dropdown-item" href="javascript:void(0);">후불</a>
-                                                </li>
-                                                <li>
-                                                    <hr class="dropdown-divider"/>
-                                                </li>
-                                            </ul>
+                                            <select class="form-select">
+                                                <option>결제방식</option>
+                                                <option>카드</option>
+                                                <option>현금</option>
+                                                <option>후불</option>
+                                            </select>
                                         </div>
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >결제주기
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><input class="form-check-input" type="checkbox" value="반기납">반기납</li>
-                                                <li><input class="form-check-input" type="checkbox" value="반기납">분납</li>
-                                                <li><input class="form-check-input" type="checkbox" value="반기납">연납</li>
-                                                <li><input class="form-check-input" type="checkbox" value="반기납">월납</li>
-                                            </ul>
+                                            <select class="form-select">
+                                                <option>결제주기</option>
+                                                <option>반기납</option>
+                                                <option>분납</option>
+                                                <option>연납</option>
+                                                <option>월납</option>
+                                            </select>
                                         </div>
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >내역
-                                            </button>
+                                            <select class="form-select">
+                                                <option>내역</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >회신
-                                            </button>
+                                            <select class="form-select">
+                                                <option>회신</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >거래명세서
-                                            </button>
+                                            <select class="form-select">
+                                                <option>거래명세서</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >세금계산서
-                                            </button>
+                                            <select class="form-select">
+                                                <option>세금계산서</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >발행날짜
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    <div class="navbar-nav align-items-center">
-                                                        <div class="nav-item d-flex align-items-center">
-                                                            <i class="bx bx-search fs-4 lh-0"></i>
-                                                            <input
-                                                                type="text"
-                                                                class="form-control border-0 shadow-none"
-                                                                placeholder="Search..."
-                                                                aria-label="Search..."
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li><a class="dropdown-item" href="javascript:void(0);">10일</a></li>
-                                                <li><a class="dropdown-item" href="javascript:void(0);">15일</a></li>
-                                                <li><a class="dropdown-item" href="javascript:void(0);">19일</a>
-                                                </li>
-                                                <li>
-                                                    <hr class="dropdown-divider"/>
-                                                </li>
-                                            </ul>
+                                            <select class="form-select">
+                                                <option>발행날짜</option>
+                                                <option>10일</option>
+                                                <option>15일</option>
+                                                <option>19일</option>
+                                            </select>
                                         </div>
 
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >사업자번호
-                                            </button>
+                                            <select class="form-select">
+                                                <option>사업자번호</option>
+                                            </select>
                                         </div>
 
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >상호명
-                                            </button>
+                                            <select class="form-select">
+                                                <option>상호명</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >대표자
-                                            </button>
+                                            <select class="form-select">
+                                                <option>대표자</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >주소
-                                            </button>
+                                            <select class="form-select">
+                                                <option>주소</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >업태
-                                            </button>
+                                            <select class="form-select">
+                                                <option>업태</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >종목
-                                            </button>
+                                            <select class="form-select">
+                                                <option>종목</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >발행주소1
-                                            </button>
+                                            <select class="form-select">
+                                                <option>발행주소1</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >발행주소2
-                                            </button>
+                                            <select class="form-select">
+                                                <option>발행주소2</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >담당자1
-                                            </button>
+                                            <select class="form-select">
+                                                <option>담당자1</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >연락처1
-                                            </button>
+                                            <select class="form-select">
+                                                <option>연락처1</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >이메일1
-                                            </button>
+                                            <select class="form-select">
+                                                <option>이메일1</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >담당자2
-                                            </button>
+                                            <select class="form-select">
+                                                <option>담당자2</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >연락처2
-                                            </button>
+                                            <select class="form-select">
+                                                <option>연락처2</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >이메일2
-                                            </button>
+                                            <select class="form-select">
+                                                <option>이메일2</option>
+                                            </select>
+                                        </div>
+                                        <div class="btn-group">
+                                            <select class="form-select">
+                                                <option>품목1</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >품목1
-                                            </button>
+                                            <select class="form-select">
+                                                <option>공급가액1</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >공급가액1
-                                            </button>
+                                            <select class="form-select">
+                                                <option>품목2</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >품목2
-                                            </button>
+                                            <select class="form-select">
+                                                <option>공급가액2</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >공급가액2
-                                            </button>
+                                            <select class="form-select">
+                                                <option>품목3</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >품목3
-                                            </button>
+                                            <select class="form-select">
+                                                <option>공급가액3</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >공급가액3
-                                            </button>
+                                            <select class="form-select">
+                                                <option>품목4</option>
+                                            </select>
                                         </div>
 
                                         <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >품목4
-                                            </button>
-                                        </div>
-
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >공급가액4
-                                            </button>
+                                            <select class="form-select">
+                                                <option>공급가액4</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </nav>

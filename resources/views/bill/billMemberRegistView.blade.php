@@ -97,7 +97,7 @@
                                     <div class="mt-4">
                                         <button type="button" class="btn btn-secondary me-4">전체로드</button>
                                         <button type="button" class="btn btn-secondary me-4">미등록만</button>
-                                        <button type="button" class="btn btn-primary">청구></button>
+                                        <button type="button" class="btn btn-primary">청구&gt;</button>
                                     </div>
                                 </div>
                             </div>
@@ -232,7 +232,7 @@
 
                                 <div class="form-floating">
                                     <div class="mt-4">
-                                        <button type="button" class="btn btn-danger me-4"> <청구 해제</button>
+                                        <button type="button" class="btn btn-danger me-4"> &lt;청구 해제</button>
                                     </div>
                                 </div>
                             </div>

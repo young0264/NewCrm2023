@@ -84,10 +84,10 @@
                                     </div>
 
                                     <div class="btn-group">
-                                        <button class="btn-success align-items-end">입금내역 업로드</button>
+                                        <button class="btn btn-success align-items-end">입금내역 업로드</button>
                                     </div>
                                     <div class="btn-group">
-                                        <button class="btn-success ">결과 다운로드</button>
+                                        <button class="btn btn-success ">결과 다운로드</button>
                                     </div>
                                 </div>
 

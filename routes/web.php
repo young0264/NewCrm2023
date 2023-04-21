@@ -39,8 +39,8 @@ if (!Auth::check()) {
          * 이용료청구
          */
 //
-        Route::get("/regist/chargeMember", [\App\Http\Controllers\ChargeController::class, "chargeMemberRegist"])->name("chargeMemberRegist");
-        Route::get("/regist/chargeNonMember", [\App\Http\Controllers\ChargeController::class, "chargeNonMemberRegist"])->name("chargeNonMemberRegist");
+        Route::get("/charge/chargeMember", [\App\Http\Controllers\ChargeController::class, "chargeMemberRegist"])->name("chargeMemberRegist");
+        Route::get("/charge/chargeNonMember", [\App\Http\Controllers\ChargeController::class, "chargeNonMemberRegist"])->name("chargeNonMemberRegist");
 
         /**
          * 계산서
@@ -54,6 +54,7 @@ if (!Auth::check()) {
          */
         Route::get("/deposit/history", [\App\Http\Controllers\DepositController::class, "history"])->name("depositHistory");
         Route::get("/deposit/search", [\App\Http\Controllers\DepositController::class, "search"])->name("depositSearch");
+        Route::get("/deposit/match", [\App\Http\Controllers\DepositController::class, "match"])->name("depositMatch");
 
 
     });

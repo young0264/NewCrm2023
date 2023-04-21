@@ -12,15 +12,15 @@ class BillController extends BaseController{
 
     public static function issue()
     {
-        return view("billIssueView");
+        return view("bill.billIssueView");
     }
     public static function form()
     {
-        return view("billFormView");
+        return view("bill.billFormView");
     }
     public static function printForm()
     {
-        return view("printBillFormView");
+        return view("bill.printBillFormView");
     }
 
 

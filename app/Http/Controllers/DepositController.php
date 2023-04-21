@@ -11,11 +11,15 @@ class DepositController extends BaseController{
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public static function history(){
-        return view('depositHistory');
+        return view('deposit.depositHistory');
     }
 
     public static function search(){
-        return view('depositSearch');
+        return view('deposit.depositSearch');
+    }
+
+    public static function match(){
+        return view('deposit.depositMatching');
     }
 
 
