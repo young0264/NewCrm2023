@@ -1,29 +1,7 @@
-{{--deposit search--}}
-
+{{-- 정산 / 입금내역 / 입금내역 등록, 조회 --}}
 @extends('layouts.app')
 @section('content')
 
-<div id='right_click_menu' class="custom-context-menu" style="display: none; z-index: 99">
-    <div class="mt-3">
-        <div class="row">
-            <div class="col-md-12 col-12 mb-3 mb-md-0">
-                <div class="list-group">
-                    <a class="list-group-item list-group-item-action " data-bs-toggle="modal"
-                       data-bs-target="#bill_integrate">계산서 통합</a>
-                    <a class="list-group-item list-group-item-action " data-bs-toggle="modal"
-                       data-bs-target="#bill_divide">계산서 분할</a>
-                    <a class="list-group-item list-group-item-action " data-bs-toggle="modal"
-                       data-bs-target="#price_sync">단가 동기화</a>
-                    <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">계산서
-                        양식 출력</a>
-                    <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">계산서
-                        삭제</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">정산 / 입금내역 / </span>입금내역 등록, 조회
@@ -31,7 +9,6 @@
 
     <div class="form-floating">
         <div class="row">
-
             {{--            content left        --}}
             <div class="col-md-12">
                 <div class="col-md-12">
@@ -51,7 +28,7 @@
                                     </div>
                                     <div class="btn-group">
                                         <select class="form-select">
-                                            <option>4월<option>
+                                            <option>4월</option>
                                             <option>3월</option>
                                             <option>2월</option>
                                         </select>
@@ -65,8 +42,11 @@
                                     </div>
                                     <div class="btn-group">
                                         <select class="form-select btn-success">
-                                            <option>입금액초과</option>
-                                            <option>만원</option>
+                                            <option class="form-control">입금액 초과</option>
+                                            <option class="form-control">입금액 전체</option>
+                                            <option class="form-control">입금액 초과</option>
+                                            <option class="form-control">입금액 미만</option>
+                                            <option class="form-control">입금액 합산</option>
                                         </select>
                                     </div>
                                 </div>
@@ -252,9 +232,6 @@
                                 </ul>
                             </nav>
                         </div>
-
-
-
                     </div>
                 </div>
             </div>

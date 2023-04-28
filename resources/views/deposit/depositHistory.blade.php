@@ -1,23 +1,5 @@
-
 @extends('layouts.app')
 @section('content')
-
-    <div id='right_click_menu' class="custom-context-menu" style="display: none; z-index: 99">
-        <div class="mt-3">
-            <div class="row">
-                <div class="col-md-12 col-12 mb-3 mb-md-0">
-                    <div class="list-group">
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal"
-                           data-bs-target="#bill_integrate">계산서 통합</a>
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal"
-                           data-bs-target="#bill_divide">계산서 분할</a>
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal"
-                           data-bs-target="#price_sync">단가 동기화</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">
@@ -177,7 +159,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>

@@ -99,6 +99,7 @@
                                                             </tr>
                                                             </thead>
                                                             <tbody>
+                                                            @for($i=0; $i<7; $i++)
                                                             <tr>
                                                                 <td><input class="form-control" value="서울센터(1센터)"></td>
                                                                 <td><input class="form-control" value="786456746"></td>
@@ -107,56 +108,7 @@
                                                                 <td class="table-secondary">강서구청점</td>
                                                                 <td class="table-secondary">11965456438</td>
                                                             </tr>
-                                                            <tr>
-                                                                <td><input class="form-control" value="서울센터(1센터)"></td>
-                                                                <td><input class="form-control" value="786456746"></td>
-                                                                <td class="table-primary">커피업종</td>
-                                                                <td class="table-secondary">꼬지사케</td>
-                                                                <td class="table-secondary">강서구청점</td>
-                                                                <td class="table-secondary">11965456438</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><input class="form-control" value="서울센터(1센터)"></td>
-                                                                <td><input class="form-control" value="786456746"></td>
-                                                                <td class="table-primary">커피업종</td>
-                                                                <td class="table-secondary">꼬지사케</td>
-                                                                <td class="table-secondary">강서구청점</td>
-                                                                <td class="table-secondary">11965456438</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><input class="form-control" value="서울센터(1센터)"></td>
-                                                                <td><input class="form-control" value="786456746"></td>
-                                                                <td class="table-primary">커피업종</td>
-                                                                <td class="table-secondary">꼬지사케</td>
-                                                                <td class="table-secondary">강서구청점</td>
-                                                                <td class="table-secondary">11965456438</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><input class="form-control" value="서울센터(1센터)"></td>
-                                                                <td><input class="form-control" value="786456746"></td>
-                                                                <td class="table-primary">커피업종</td>
-                                                                <td class="table-secondary">꼬지사케</td>
-                                                                <td class="table-secondary">강서구청점</td>
-                                                                <td class="table-secondary">11965456438</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><input class="form-control" value="서울센터(1센터)"></td>
-                                                                <td><input class="form-control" value="786456746"></td>
-                                                                <td class="table-primary">커피업종</td>
-                                                                <td class="table-secondary">꼬지사케</td>
-                                                                <td class="table-secondary">강서구청점</td>
-                                                                <td class="table-secondary">11965456438</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><input class="form-control" value="서울센터(1센터)"></td>
-                                                                <td><input class="form-control" value="786456746"></td>
-                                                                <td class="table-primary">커피업종</td>
-                                                                <td class="table-secondary">꼬지사케</td>
-                                                                <td class="table-secondary">강서구청점</td>
-                                                                <td class="table-secondary">11965456438</td>
-                                                            </tr>
-
-
+                                                            @endfor
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -301,7 +253,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>

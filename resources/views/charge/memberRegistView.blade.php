@@ -4,6 +4,7 @@
     <script type="text/javascript">
         let checkbox = {
 
+            // (input.checkbox : id값 , 숨길 div : id값)
             showByChecked: function (checkboxId, isShowDivId) {
                 console.log(checkboxId, isShowDivId);
                 if (this.isChecked(checkboxId)) {
@@ -621,20 +622,11 @@
                                                             생성
                                                         </label>
                                                     </div>
-                                                    {{--                                                    <div class="col-md-2 mx-1">--}}
-                                                    {{--                                                        <button type="button" class="btn btn-primary"> 저장</button>--}}
-                                                    {{--                                                    </div>--}}
-                                                    {{--                                                    <div class="col-md-2 mx-1">--}}
-                                                    {{--                                                        <button type="button" class="btn btn-primary"> 신규복제</button>--}}
-                                                    {{--                                                    </div>--}}
                                                     <div class="col-md-6 text-center mx-1">
                                                         <button type="button" class="btn btn-primary"> 신규등록</button>
                                                         <button type="button" class="btn btn-secondary"> 취소</button>
 
                                                     </div>
-{{--                                                    <div class="col-md-3 mx-1">--}}
-{{--                                                        <button type="button" class="btn btn-secondary"> 취소</button>--}}
-{{--                                                    </div>--}}
                                                     <div class="col-md-11 float-end">
                                                         <button type="button" class="btn btn-success float-end "> 중복내역
                                                         </button>

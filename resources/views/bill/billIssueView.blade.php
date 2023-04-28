@@ -1,14 +1,11 @@
-{{--비회원 청구 대상 등록--}}
+{{-- --}}
 
 @extends('layouts.app')
 @section('content')
+
     <script type="text/javascript">
-        function markTest() {
-            $('#unitPriceModal').modal('show');
-        }
 
         let checkbox = {
-
             // (input.checkbox : id값 , 숨길 div : id값)
             showByChecked: function (checkboxId, isShowDivId) {
                 console.log(checkboxId, isShowDivId);
@@ -23,38 +20,7 @@
                 var con = document.getElementById(checkboxId);
                 return !!con.checked;
             },
-        }
-    </script>
-    <style type="text/css">
-        html, body {
-            height: 100%;
-        }
-
-        .custom-context-menu {
-            position: absolute;
-            box-sizing: border-box;
-            min-height: 100px;
-            min-width: 200px;
-            background-color: #ffffff;
-            box-shadow: 0 0 1px 2px lightgrey;
-        }
-
-        .custom-context-menu ul {
-            list-style: none;
-            padding: 0;
-            background-color: transparent;
-        }
-
-        .custom-context-menu li {
-            padding: 3px 5px;
-            cursor: pointer;
-        }
-
-        .custom-context-menu li:hover {
-            background-color: #f0f0f0;
-        }
-    </style>
-    <script type="text/javascript">
+        };
 
         window.oncontextmenu = function () {
             return false;
@@ -90,22 +56,48 @@
             tables.addEventListener("mouseup", mouse_end);
         });
     </script>
-    {{--    <nav>--}}
-    {{--        <ul>--}}
-    {{--            <li><a href="http://gmail.com/">구글</a></li>--}}
-    {{--            <li><a href="http://heodolf.tistory.com/">블로그</a></li>--}}
-    {{--            <li><img src="https://tistory1.daumcdn.net/tistory/2803323/skin/images/img.jpg" width="100"></li>--}}
-    {{--        </ul>--}}
-    {{--    </nav>--}}
+
+    <style type="text/css">
+        html, body {
+            height: 100%;
+        }
+
+        .custom-context-menu {
+            position: absolute;
+            box-sizing: border-box;
+            min-height: 100px;
+            min-width: 200px;
+            background-color: #ffffff;
+            box-shadow: 0 0 1px 2px lightgrey;
+        }
+
+        .custom-context-menu ul {
+            list-style: none;
+            padding: 0;
+            background-color: transparent;
+        }
+
+        .custom-context-menu li {
+            padding: 3px 5px;
+            cursor: pointer;
+        }
+
+        .custom-context-menu li:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+
 
     <div id='right_click_menu' class="custom-context-menu" style="display: none; z-index: 99">
         <div class="mt-3">
             <div class="row">
                 <div class="col-md-12 col-12 mb-3 mb-md-0">
                     <div class="list-group">
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal"
+                        <a class="list-group-item list-group-item-action "
+                           data-bs-toggle="modal"
                            data-bs-target="#bill_integrate">계산서 통합</a>
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal"
+                        <a class="list-group-item list-group-item-action "
+                           data-bs-toggle="modal"
                            data-bs-target="#bill_divide">계산서 분할</a>
                         <a class="list-group-item list-group-item-action " data-bs-toggle="modal"
                            data-bs-target="#price_sync">단가 동기화</a>
@@ -139,10 +131,10 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col mb-3">
-                                <h6 style="color:black;"> 선택 (최대 4건)된 계산서가 하나로 통합됩니다.</h6>
-                                <h6 style="color:black;">계산서 단가는 합산되어 생성됩니다.</h6>
-                                <h6 style="color:black;">단가 수정이 필요한 경우 단가를 편집하고</h6>
-                                <h6 style="color:black;">통합 버튼을 클릭하세요.</h6>
+                                <h6 class="text-black" style="color:black;"> 선택 (최대 4건)된 계산서가 하나로 통합됩니다.</h6>
+                                <h6 class="text-black">계산서 단가는 합산되어 생성됩니다.</h6>
+                                <h6 class="text-black">단가 수정이 필요한 경우 단가를 편집하고</h6>
+                                <h6 class="text-black">통합 버튼을 클릭하세요.</h6>
                             </div>
                         </div>
                         <div class="card-body alert alert-secondary">
@@ -179,31 +171,19 @@
                                 <div class="btn-group col-md-5 my-1">
                                     <input class="form-control" value="" disabled>
                                 </div>
-                            </div>
-                            <div class="btn group col-md-4">
-                                <button class="btn btn-warning btn-xl" type="button">2건 통합</button>
                                 <h4 class="text-black fw-bold py-3 mb-4">
                                     통합 단가 <span class="text-primary">12,000</span>원
                                 </h4>
                             </div>
-                            {{--                            <div--}}
-                            {{--                                class=" btn group col-md-4 bs-toast toast fade show bg-warning"--}}
-                            {{--                            >--}}
-                            {{--                                <div class="toast-header">--}}
-                            {{--                                </div>--}}
-                            {{--                                <div class="toast-body">--}}
-                            {{--                                    2건 통합--}}
-                            {{--                                </div>--}}
-                            {{--                            </div>--}}
-                            <h4 class="text-black fw-bold py-3 mb-4">
-                                통합 단가 <span class="text-primary">12,000</span>원
-                            </h4>
+                            <div class="btn group col-md-5">
+                                <button class="btn btn-warning btn-xl" type="button">2건 통합</button>
+                                <h4 class="text-black fw-bold py-3 mb-4">
+                                    통합 단가<span class="text-primary">12,000</span>원
+                                </h4>
+                            </div>
                         </div>
                     </div>
-
                 </div>
-
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary">통합</button>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
@@ -1159,80 +1139,40 @@
                                         </tr>
                                         </thead>
                                         <tbody class="text-center">
-                                        {{-- <td class="align-middle"><small class="text-light fw-semibold">Text Highlight</small></td>--}}
-
+                                        @for ($i=0; $i<3; $i++)
                                         <tr class="text-center">
                                             <td class="text-nowrap">만렙커피</td>
                                             <td class="text-nowrap">신설동역점</td>
-                                            <td class="text-nowrap">
-                                                <mark>6000</mark>
+                                            <td class="text-nowrap" id="" >
+
+                                                <a class="text-nowrap"
+                                                   data-bs-toggle="modal"
+                                                   data-bs-target="#unitPriceModal"><mark>6000x</mark></a>
                                             </td>
                                             <td class="text-nowrap">CMS</td>
-                                            <td class="text-nowrap">월납</td>
+                                            <td class="text-nowrap">월납1212</td>
                                             <td class="text-nowrap">X</td>
                                             <td class="text-nowrap">X</td>
                                             <td class="text-nowrap">X</td>
                                             <td class="text-nowrap">21일</td>
                                             <td class="text-nowrap">21일</td>
                                         </tr>
-                                        <tr class="text-center">
-                                            <td class="text-nowrap">만렙커피</td>
-                                            <td class="text-nowrap">신설동역점</td>
-                                            <td class="text-nowrap" onclick="markTest()"><mark>6000</mark></td>
-{{--                                            <td class="text-nowrap" onclick="markTest()"><mark>6000</mark></td>--}}
-{{--                                            <td class="text-nowrap"><mark>6000</mark></td>--}}
-                                            <td class="text-nowrap">CMS</td>
-                                            <td class="text-nowrap">월납</td>
-                                            <td class="text-nowrap">X</td>
-                                            <td class="text-nowrap">X</td>
-                                            <td class="text-nowrap">X</td>
-                                            <td class="text-nowrap">25일</td>
-                                            <td class="text-nowrap">25일</td>
-                                        </tr>
+                                        @endfor
                                         </tbody>
                                     </table>
-                                    <div class="demo-inline-spacing">
-                                        <button
-                                            type="button"
-                                            class="btn btn-primary"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#unitPriceModal"
-                                        >
-                                            Small
-                                        </button>
-                                    </div>
-                                    <!-- Small Modal 모달 시작 -->
                                     <div class="modal fade" id="unitPriceModal" tabindex="-1" aria-hidden="true">
-                                        <div class="modal-dialog modal-sm" role="document">
+                                        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel2">Modal title</h5>
-                                                    <button
-                                                        type="button"
-                                                        class="btn-close"
-                                                        data-bs-dismiss="modal"
-                                                        aria-label="Close"
-                                                    ></button>
+                                                    <h5>단가를 합산한 세부 내역을 <br>엑셀 파일로 다운로드 할까요? </h5>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <div>
-                                                        <h5>단가를 합산한 세부 내역을 </h5>
-                                                        <h5>엑셀 파일로 다운로드 할까요?</h5>
-                                                    </div>
-                                                    <div>
-                                                        <button type="button" class="btn btn-primary">네</button>
-
-                                                        <button type="button" class="btn btn-outline-secondary"
-                                                                data-bs-dismiss="modal">아니오
-                                                        </button>
-                                                    </div>
-
+                                                <div class="modal-body text-center ">
+                                                    <button class="btn btn-primary mx-2">네</button>
+                                                    <button class="btn btn-primary mx-2">아니오</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-{{--                                    모달끝--}}
                                 </div>
                             </div>
                         </div>

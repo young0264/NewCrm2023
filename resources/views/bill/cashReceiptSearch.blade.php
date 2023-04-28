@@ -67,24 +67,14 @@
             tables.addEventListener("mouseup", mouse_end);
         });
     </script>
-    {{--    <nav>--}}
-    {{--        <ul>--}}
-    {{--            <li><a href="http://gmail.com/">구글</a></li>--}}
-    {{--            <li><a href="http://heodolf.tistory.com/">블로그</a></li>--}}
-    {{--            <li><img src="https://tistory1.daumcdn.net/tistory/2803323/skin/images/img.jpg" width="100"></li>--}}
-    {{--        </ul>--}}
-    {{--    </nav>--}}
-
     <div id='right_click_menu' class="custom-context-menu" style="display: none; z-index: 99">
-        <div class="mt-3">
-            <div class="row">
-                <div class="col-md-12 col-12 mb-3 mb-md-0">
-                    <div class="list-group">
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">현금 영수증 분할</a>
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">현금 영수증 통합</a>
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">단가 동기화</a>
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">현금 영수증 삭제</a>
-                    </div>
+        <div class="row">
+            <div class="col-md-12 col-12 mb-3 mb-md-0">
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">현금 영수증 분할</a>
+                    <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">현금 영수증 통합</a>
+                    <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">단가 동기화</a>
+                    <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">현금 영수증 삭제</a>
                 </div>
             </div>
         </div>
@@ -633,7 +623,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -645,7 +634,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -657,7 +645,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -669,7 +656,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -681,7 +667,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -693,7 +678,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -705,7 +689,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -717,7 +700,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -729,7 +711,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -741,7 +722,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -753,7 +733,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -765,7 +744,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -777,7 +755,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -800,7 +777,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -823,7 +799,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -846,7 +821,6 @@
                                                     </button>
                                                 </div>
                                             </th>
-
                                             <th class="text-nowrap text-center">
                                                 <div class="btn-group">
                                                     <button
@@ -872,8 +846,7 @@
                                         </tr>
                                         </thead>
                                         <tbody class="text-center">
-                                        {{-- <td class="align-middle"><small class="text-light fw-semibold">Text Highlight</small></td>--}}
-
+                                        @for($i=0; $i<5; $i++ )
                                         <tr class="text-center">
                                             <td class="text-nowrap">만렙커피</td>
                                             <td class="text-nowrap">신설동역점</td>
@@ -886,18 +859,7 @@
                                             <td class="text-nowrap">25일</td>
                                             <td class="text-nowrap">25일</td>
                                         </tr>
-                                        <tr class="text-center">
-                                            <td class="text-nowrap">만렙커피</td>
-                                            <td class="text-nowrap">신설동역점</td>
-                                            <td class="text-nowrap"><mark>6000</mark></td>
-                                            <td class="text-nowrap">CMS</td>
-                                            <td class="text-nowrap">월납</td>
-                                            <td class="text-nowrap">X</td>
-                                            <td class="text-nowrap">X</td>
-                                            <td class="text-nowrap">X</td>
-                                            <td class="text-nowrap">25일</td>
-                                            <td class="text-nowrap">25일</td>
-                                        </tr>
+                                        @endfor
                                         </tbody>
                                     </table>
                                 </div>

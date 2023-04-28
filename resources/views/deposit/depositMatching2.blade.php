@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container-xxl flex-grow-1 container-p-y">
+<div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">
             <span class="text-muted fw-light">정산 / 입금내역 / </span>입금내역 매칭(2)
         </h4>
@@ -14,8 +14,7 @@
                                 1차 완전한 매칭
                             </div>
                             <div class="col-md-4">
-                                <h5 class="text-muted text-center my-3"> 0 / <span class="text-black fw-bold">20</span>
-                                    / 100</h5>
+                                <h5 class="text-muted text-center my-3"> 0 / <span class="text-black fw-bold">20</span>/ 100</h5>
                             </div>
                         </div>
                         <div class="row">
@@ -71,18 +70,17 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <h4>청구 대상</h4>
-                                <div class="form-control my-4">상호명</div>
-                                <div class="form-control my-4">단가</div>
+                                <h4 class="fw-bold">청구 대상</h4>
+                                <div class="form-control fw-bold my-4 ">상호명</div>
+                                <div class="form-control fw-bold my-4">단가</div>
                             </div>
                             <div class="col-md-1">
-                                <h4 class=" my-6">~</h4>
-                                <div class="alert form-control my-4">. . .</div>
+                                <div class="alert form-control my-4"><br><br>. . .</div>
                             </div>
                             <div class="col-md-3">
-                                <h4>입금내역</h4>
-                                <div class="form-control my-4">의뢰인</div>
-                                <div class="form-control my-4">입금액</div>
+                                <h4 class="fw-bold">입금내역</h4>
+                                <div class="form-control fw-bold my-4">의뢰인</div>
+                                <div class="form-control fw-bold my-4">입금액</div>
                             </div>
                         </div>
 
@@ -112,23 +110,20 @@
                                         <span class="text-primary fw-bold">20건</span>이
                                         <span class="text-primary fw-bold">매칭</span>되었습니다.
                                     </h5>
-                                    <div class="btn btn-dark">
+                                    <div class="btn btn-sm btn-dark">
                                         검토 후 확정하기
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="card-body">
                                 <button class="btn btn-primary float-end">시작하기</button>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 @stop

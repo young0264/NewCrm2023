@@ -59,6 +59,13 @@
                                     <div class="btn-group">
                                         <select class="form-select">
                                             <option>선택</option>
+                                            <option>회사코드</option>
+                                            <option>본사명</option>
+                                            <option>매장명</option>
+                                            <option>사업자번호</option>
+                                            <option>등록번호</option>
+                                            <option>상호</option>
+                                            <option>대표명</option>
                                         </select>
                                     </div>
                                     <div class="btn-group">
@@ -190,9 +197,6 @@
                                     </ul>
                                 </nav>
                             </div>
-
-
-
                         </div>
                     </div>
                 </div>
