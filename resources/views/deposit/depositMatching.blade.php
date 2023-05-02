@@ -190,7 +190,7 @@
                             <td>
                                 <button class="btn btn-secondary"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#confirmModal">확정1</button>
+                                        data-bs-target="#confirmModal">확정</button>
                             </td>
                         </tr>
                         <tr>
@@ -235,4 +235,4 @@
             </div>
         </div>
     </div>
-@stop
+@endsection

@@ -1,5 +1,4 @@
 @yield('head', View::make('layouts.html'))
-
 <body>
 @guest
     @yield('content')

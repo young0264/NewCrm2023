@@ -14,7 +14,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <!-- Notifications -->
-                        <h5 class="card-header text-primary">입금 등록 현황</h5>
+                        <h4 class="card-header text-primary">입금 등록 현황</h4>
 
                         <div class="card-body">
                             <div class="card-body">
@@ -238,4 +238,4 @@
         </div>
     </div>
 </div>
-@stop
+@endsection

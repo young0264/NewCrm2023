@@ -156,8 +156,8 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="pages-misc-under-maintenance.html" class="menu-link">
-                        <div data-i18n="Under Maintenance">Under Maintenance</div>
+                    <a href="{{route('dataTablesOracle')}}" class="menu-link">
+                        <div data-i18n="Error">데이터테이블오라클</div>
                     </a>
                 </li>
             </ul>

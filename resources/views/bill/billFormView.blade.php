@@ -54,7 +54,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <!-- Notifications -->
-                            <h5 class="card-header text-primary">계산서 양식 다운로드</h5>
+                            <h4 class="card-header text-primary">계산서 양식 다운로드</h4>
 
                             <div class="card-body">
                                 <div class="nav-align-top mb-4">
@@ -307,4 +307,4 @@
             </div>
         </div>
     </div>
-@stop
+@endsection

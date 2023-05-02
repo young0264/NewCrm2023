@@ -95,7 +95,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <!-- Notifications -->
-                            <h5 class="card-header text-primary">현금 영수증 리스트</h5>
+                            <h4 class="card-header text-primary">현금 영수증 리스트</h4>
 
                             <div class="card-body">
                                 {{--1~12번 호출--}}
@@ -870,4 +870,4 @@
             </div>
         </div>
     </div>
-@stop
+@endsection

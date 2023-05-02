@@ -7,11 +7,12 @@ use App\Helpers\Common;
 use App\Helpers\File;
 use App\Helpers\Pagination;
 use App\Imports\SampleImport;
+use App\Models\Bill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
-use Mointeng\SQLRelay\SqlRelayConnectionFactory;
+use Mointeng\SQLRelay\Connectors\OracleConnector;
 
 class SampleController extends Controller
 {
@@ -167,20 +168,72 @@ class SampleController extends Controller
     }
 
     public static function dataTablesOracle(Request $request) {
-        echo 1;
-        exit;
 
+
+        return view('sample.datatablesOra', [
+
+        ]);
     }
 
     public static function sqlrelay() {
+
+
+//        $aa = DB::connection("sqlrelay");
+//        print_r($aa);
+//        exit;
+//
+//
+//        $user = "NSC";
+//        $pass = "SR-NSC1234";
+//
+//
+//        $con  = new \PDO("sqlrelay:host=localhost;port=9903;tries=1;retrytime=1;debug=0", $user, $pass);
+//        if (!$con) {
+//            die("connection failed");
+//        }
+//        $stmt = $con->query("select * from tab");
+//        while($row=$stmt->fetch(\PDO::FETCH_BOTH)){
+//            echo "Result  data value:"  .$row[0] ."\n";
+//        }
+
+
+//        $con = sqlrcon_alloc("localhost", 9903, "", "NSC", "SR-NSC1234", 0, 1);
+//        $cur = sqlrcur_alloc($con);
+//        echo "con:" .$con  ." cur:"  .$cur  ."\n";
+//
+//        if(!sqlrcur_sendQuery($cur, "select * from tab")) {
+//            echo sqlrcur_errorMessage($cur);
+//            echo "\n";
+//        }
+//
+//        for($row=0; $row<sqlrcur_rowCount($cur); $row++) {
+//            for($col=0; $col<sqlrcur_colCount($cur); $col++) {
+//                echo sqlrcur_getField($cur,$row,$col);
+//                echo ",";
+//            }
+//            echo "\n";
+//        }
+//
+//
+//        sqlrcon_endSession($con);
+//        sqlrcur_free($cur);
+//        sqlrcon_free($con);
+
+
+
         $config = array(
-            "host"=>"10.10.131.76",
+            "host"=>"localhost",
             "port"=>9903,
-            "username"=>"findcp",
-            "password"=>"p1234"
+            "username"=>"NSC",
+            "password"=>"SR-NSC1234"
         );
 
-        $aa = SqlRelayConnectionFactory::getInstance($config);
+
+        $aa = \Mointeng\SQLRelay\Connectors\OracleConnector::connect($config);
+        print_r($aa);
+        exit;
+//
+//
         print_r($aa);
 
 //        $relay = new OracleConnector($config);

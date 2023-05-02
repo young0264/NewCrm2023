@@ -60,6 +60,23 @@ class BillController extends BaseController{
                     || $header == "f_count2"
                     || $header == "f_count3"
                     || $header == "f_count4"
+                    || $header == "f_tax1"
+                    || $header == "f_tax2"
+                    || $header == "f_tax3"
+                    || $header == "f_tax4"
+                    || $header == "f_bigo1"
+                    || $header == "f_bigo2"
+                    || $header == "f_bigo3"
+                    || $header == "f_bigo4"
+                    || $header == "f_day1"
+                    || $header == "f_day2"
+                    || $header == "f_day3"
+                    || $header == "f_day4"
+                    || $header == "f_unitprice1"
+                    || $header == "f_unitprice2"
+                    || $header == "f_unitprice3"
+                    || $header == "f_unitprice4"
+                    || $header == "f_issue_type"
                 ) {
                     continue;
                 }

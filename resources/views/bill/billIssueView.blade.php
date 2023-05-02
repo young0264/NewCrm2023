@@ -89,24 +89,20 @@
 
 
     <div id='right_click_menu' class="custom-context-menu" style="display: none; z-index: 99">
-        <div class="mt-3">
-            <div class="row">
-                <div class="col-md-12 col-12 mb-3 mb-md-0">
-                    <div class="list-group">
-                        <a class="list-group-item list-group-item-action "
-                           data-bs-toggle="modal"
-                           data-bs-target="#bill_integrate">계산서 통합</a>
-                        <a class="list-group-item list-group-item-action "
-                           data-bs-toggle="modal"
-                           data-bs-target="#bill_divide">계산서 분할</a>
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal"
-                           data-bs-target="#price_sync">단가 동기화</a>
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">계산서
-                            양식 출력</a>
-                        <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">계산서
-                            삭제</a>
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col-md-12 col-12 mb-3 mb-md-0">
+                    <a class="list-group-item list-group-item-action "
+                       data-bs-toggle="modal"
+                       data-bs-target="#bill_integrate">계산서 통합</a>
+                    <a class="list-group-item list-group-item-action "
+                       data-bs-toggle="modal"
+                       data-bs-target="#bill_divide">계산서 분할</a>
+                    <a class="list-group-item list-group-item-action " data-bs-toggle="modal"
+                       data-bs-target="#price_sync">단가 동기화</a>
+                    <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">계산서
+                        양식 출력</a>
+                    <a class="list-group-item list-group-item-action " data-bs-toggle="modal" data-bs-target="#">계산서
+                        삭제</a>
             </div>
         </div>
     </div>
@@ -372,7 +368,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <!-- Notifications -->
-                            <h5 class="card-header text-primary">계산서 발행 리스트</h5>
+                            <h4 class="card-header text-primary">계산서 발행 리스트</h4>
 
                             <div class="card-body">
                                 {{--1~12번 호출--}}
@@ -502,12 +498,10 @@
                                     <input type="text"
                                            class="form-control" placeholder="검색어를 입력하세요.">
                                 </div>
-                                <div class="btn-group" style="float:right">
+                                <div class="btn-group float-end">
                                     <button class="btn btn-success">목록 다운로드</button>
                                 </div>
-                            </div>
 
-                            <div class="card-body">
                                 <nav class="navbar navbar-example navbar-expand-lg navbar-light bg-light">
                                     <div class="horizontal-scrollable">
                                         {{--                                    <div class="container-fluid ">--}}
@@ -1181,4 +1175,4 @@
             </div>
         </div>
     </div>
-@stop
+@endsection

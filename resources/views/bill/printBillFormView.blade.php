@@ -39,7 +39,7 @@
                             <!-- Notifications -->
 
                             <div class="card-body">
-                                <h5 class=" text-primary">계산서 양식 출력 내역</h5>
+                                <h4 class=" text-primary">계산서 양식 출력 내역</h4>
 
                                 <div class="my-2">
                                     <div class="btn-group">
@@ -203,4 +203,4 @@
             </div>
         </div>
     </div>
-@stop
+@endsection

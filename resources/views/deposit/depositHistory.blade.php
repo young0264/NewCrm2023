@@ -14,7 +14,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="text-primary">입금 등록 현황</h5>
+                                <h4 class="text-primary">입금 등록 현황</h4>
                                 <div class="btn-group">
                                     <select class="form-select">
                                         <option>2023년</option>
@@ -172,4 +172,4 @@
             </div>
         </div>
     </div>
-@stop
+@endsection

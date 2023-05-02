@@ -33,7 +33,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="text-primary">통합 징수 리스트 다운로드</h5>
+                                <h4 class="text-primary">통합 징수 리스트 다운로드</h4>
                                 <div class="btn-group">
                                     <select class="form-select">
                                         <option>2023년</option>
@@ -266,4 +266,4 @@
             </div>
         </div>
     </div>
-@stop
+@endsection

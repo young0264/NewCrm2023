@@ -14,7 +14,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <!-- Notifications -->
-                            <h5 class="card-header text-center">고객 검색</h5>
+                            <h4 class="card-header text-center">고객 검색</h4>
                             <div class="card-body">
                                 <div class="form-floating">
                                     <div class="mb-3">
@@ -228,4 +228,4 @@
             </div>
         </div>
     </div>
-@stop
+@endsection
