@@ -98,24 +98,28 @@ class BillController extends BaseController{
 
     public static function billRegisterProcess(Request $request)
     {
-        $tax_type0306 = 'off';
-        $tax_type01 = 'off';
+        $tax_type0306 = $request->input('tax_type0306') === 'on' ? 'on' : 'off';
+        $tax_type01 = $request->input('tax_type01') === 'on' ? 'on' : 'off';
+
         extract($_POST);
 
-        if ($mode == 'insert') {
-            $f_billid = 0;
-        }
-        echo"<pre>";
-        print_r($f_email1);
-        print_r($f_email1);
-        print_r($f_email1);
-        print_r($f_email1);
-        print_r($f_email1);
-        print_r($f_email1);
-        print_r($f_email1);
-        print_r($f_email1);
 
-        $wheres = array("F_BILLID" => $f_billid);
+        /**
+         * 1. 이용료에 대한 등록
+         * {
+         *      1-1 이용료 분할에 체크 O => 맥시멈 4줄
+         *      1-2 이용ㄹ 분할에 체크 X => 1줄인데 => 옆으로 집어넣어
+         * }
+         * 2. 공연권료 체크가 되어있으면, 음저협 / 함저협 / 음실연 / 연제협 의 데이터를 4줄을 모두 넣는다. ( 각각 )
+         */
+
+        $asso_array = array(
+            "KOMCA"=>"06",
+            "FKMP"=>"06",
+            "KAPP"=>"03",
+            "KOSCAP"=>"06"
+        );
+        // 기본 파라미터 세팅 ( 전체 )
         $basic_info_param = array(
             "F_EVENT"=>$f_event,
             "F_BUSINESS"=>$f_business,
@@ -136,8 +140,110 @@ class BillController extends BaseController{
             "F_STATEMENT"=>$f_statement,
             "F_PUBLIC_ADDR2"=>$f_public_addr2,
             "F_EMAIL2"=>$f_email2,
-            "F_TAX_BILL"=>$f_tax_bill,
+            "F_TAX_BILL"=>$f_tax_bill
         );
+
+        $params = array();
+        // 이용료 건 등록
+//        try {
+//            if (empty($f_reply)) throw new \Exception("컬럼이 없습니다");
+//        } catch (\Exception $e) {
+//            DB::rollBack();
+//            return response()->json(array("status"=>"error", "msg"=>$e->getMessage()));
+//        }
+
+        if ($tax_type01 === "on") {
+            /**
+             * 이용료분할 처리가 On 되었을 경우
+             * 품목명이 있을 경우에만  등록한다. ( Maximum : 4줄 )
+             */
+            for ($i=1; $i<=4; $i++) {
+                $params = $basic_info_param;
+                if (!empty($_POST['f_product'.$i])) {
+
+                    $params["F_PRODUCT1"] = $_POST["f_product".$i];
+                    $params["F_UNITPRICE1"] = $_POST["f_unitprice".$i];
+                    $params["F_TAX_TYPE"] = "01"; //이용료 분할 계산서 (일반 -> 01)
+                    $params["F_ISSUE_TYPE"] = $_POST["f_issue_type_prod".$i];
+                    $params["F_BIGO1"] = $_POST["f_bigo".$i];
+                    $params["F_BIGO"] = $_POST['f_bigo'];
+                    $params["F_ASSO"] = "NORMAL";
+
+                    // 인서트
+                    if (DB::table('T_BILL_NEY')->insert( $params) === false)
+                        throw new \Exception("등록을 실패하였습니다." .$i);
+                }
+            }
+
+        } else if($tax_type01 === "off") {
+            /**
+             * 이용료분할 처리가 Off 되었을 경우
+             * 옆으로 1~4까지 컬럼을 다 채운다
+             */
+            $params = $basic_info_param;
+            $params["F_PRODUCT1"] = $_POST["f_product1"];
+            $params["F_UNITPRICE1"] = $_POST["f_unitprice1"];
+            $params["F_ISSUE_TYPE"] = $_POST["f_issue_type_prod1"];
+            $params["F_BIGO1"] = $_POST["f_bigo1"];
+
+            $params["F_PRODUCT2"] = $_POST["f_product2"];
+            $params["F_UNITPRICE2"] = $_POST["f_unitprice2"];
+            $params["F_BIGO2"] = $_POST["f_bigo2"];
+
+            $params["F_PRODUCT3"] = $_POST["f_product3"];
+            $params["F_UNITPRICE3"] = $_POST["f_unitprice3"];
+            $params["F_BIGO3"] = $_POST["f_bigo3"];
+
+            $params["F_PRODUCT4"] = $_POST["f_product4"];
+            $params["F_UNITPRICE4"] = $_POST["f_unitprice4"];
+            $params["F_BIGO4"] = $_POST["f_bigo4"];
+
+            $params["F_BIGO"] = $_POST['f_bigo'];
+            $params["F_ASSO"] = "NORMAL";
+
+            // 인서트
+            DB::table('T_BILL_NEY')->insert( $params);
+        }
+
+
+
+
+
+//        DB::commit();
+//        print_r("T_BILL_NEY INSERT123");
+//        exit;
+
+
+        // 공연권료 등록
+        if ($tax_type0306 == "on") {
+            foreach ($asso_array as $key => $val) {
+                $params = $basic_info_param;
+                $params["F_PRODUCT1"] = $_POST["f_product1_".strtolower($key)];
+                $params["F_UNITPRICE1"] = $_POST["f_unitprice_".strtolower($key)];
+                $params["F_ISSUE_TYPE"] = $_POST["f_issue_type_".strtolower($key)];
+                $params["F_BIGO1"] = $_POST["f_bigo1_".strtolower($key)];
+                $params["F_TAX_TYPE"] = $val;
+                $params["F_BIGO"] = $_POST["f_bigo_".strtolower($key)];
+                $params["F_ASSO"] = $key;
+
+                // 인서트
+                DB::table('T_BILL_NEY')->insert($params);
+            }
+        }
+        DB::commit();
+        print_r("T_BILL_NEY INSERT123");
+        exit;
+
+
+//        if ($mode == 'insert') {
+//            $f_billid = 0;
+//        }
+
+
+
+//        $wheres = array("F_BILLID" => $f_billid);
+//        $wheres = array("F_BILLID"=>999999999999999999999);
+
 
         $second_info_param1 = array();
         $second_info_param2 = array();
@@ -154,34 +260,34 @@ class BillController extends BaseController{
             );
             $basic_info_param = array_merge($basic_info_param, $param_arr);
 
-        }else if ($tax_type0306 == 'on') {
+        } else if ($tax_type0306 == 'on') {
             $param_arr1 = array(
-                "F_ASSO" => 'KOMCA',
-                "F_ASSO_KOMCA"=>$f_asso_komca,
-                "F_ISSUE_TYPE_KOMCA"=>$f_issue_type_komca,
-                "F_BIGO1_KOMCA"=>$f_bigo1_komca,
-                "F_BIGO_KOMCA"=>$f_bigo_komca
+//                "F_ASSO" => 'KOMCA',
+                "F_ASSO"=>$f_asso_komca,
+                "F_ISSUE_TYPE"=>$f_issue_type_komca,
+                "F_BIGO1"=>$f_bigo1_komca,
+                "F_BIGO"=>$f_bigo_komca
             );
             $param_arr2 = array(
-                "F_ASSO" => 'FKMP',
-                "F_ASSO_FKMP"=>$f_asso_fkmp,
-                "F_ISSUE_TYPE_FKMP"=>$f_issue_type_fkmp,
-                "F_BIGO1_FKMP"=>$f_bigo1_fkmp,
-                "F_BIGO_FKMP"=>$f_bigo_fkmp
+//                "F_ASSO" => 'FKMP',
+                "F_ASSO"=>$f_asso_fkmp,
+                "F_ISSUE_TYPE"=>$f_issue_type_fkmp,
+                "F_BIGO1"=>$f_bigo1_fkmp,
+                "F_BIGO"=>$f_bigo_fkmp
             );
             $param_arr3 = array(
-                "F_ASSO" => 'KOSCAP',
-                "F_ASSO_KOSCAP"=>$f_asso_koscap,
-                "F_ISSUE_TYPE_KOSCAP"=>$f_issue_type_koscap,
-                "F_BIGO1_KOSCAP"=>$f_bigo1_koscap,
-                "F_BIGO_KOSCAP"=>$f_bigo_koscap
+//                "F_ASSO" => 'KOSCAP',
+                "F_ASSO"=>$f_asso_koscap,
+                "F_ISSUE_TYPE"=>$f_issue_type_koscap,
+                "F_BIGO1"=>$f_bigo1_koscap,
+                "F_BIGOP"=>$f_bigo_koscap
             );
             $param_arr4 = array(
-                "F_ASSO" => 'KAPP',
-                "F_ASSO_KAPP"=>$f_asso_kapp,
-                "F_ISSUE_TYPE_KAPP"=>$f_issue_type_kapp,
-                "F_BIGO1_KAPP"=>$f_bigo1_kapp,
-                "F_BIGO_KAPP"=>$f_bigo_kapp
+//                "F_ASSO" => 'KAPP',
+                "F_ASSO"=>$f_asso_kapp,
+                "F_ISSUE_TYPE"=>$f_issue_type_kapp,
+                "F_BIGO1"=>$f_bigo1_kapp,
+                "F_BIGO"=>$f_bigo_kapp
             );
 
             $second_info_param1 = array_merge($basic_info_param, $param_arr1);
@@ -194,22 +300,22 @@ class BillController extends BaseController{
 
             "F_PRODUCT1"=>$f_product1,
             "F_COUNT1"=>$f_count1,
-            "F_ISSUE_TYPE_PROD1"=>$f_issue_type_prod1,
+            "F_STANDARD1"=>$f_issue_type_prod1,
             "F_BIGO1"=>$f_bigo1,
 
             "F_PRODUCT2"=>$f_product2,
             "F_COUNT2"=>$f_count2,
-            "F_ISSUE_TYPE_PROD2"=>$f_issue_type_prod2,
+            "F_STANDARD2"=>$f_issue_type_prod2,
             "F_BIGO2"=>$f_bigo2,
 
             "F_PRODUCT3"=>$f_product3,
             "F_COUNT3"=>$f_count3,
-            "F_ISSUE_TYPE_PROD3"=>$f_issue_type_prod3,
+            "F_STANDARD3"=>$f_issue_type_prod3,
             "F_BIGO3"=>$f_bigo3,
 
             "F_PRODUCT4"=>$f_product4,
             "F_COUNT4"=>$f_count4,
-            "F_ISSUE_TYPE_PROD4"=>$f_issue_type_prod4,
+            "F_STANDARD4"=>$f_issue_type_prod4,
             "F_BIGO4"=>$f_bigo4
         );
 
@@ -222,53 +328,62 @@ class BillController extends BaseController{
         if ($tax_type0306=='off' and $tax_type01 == 'off' ) {
             print_r("이용료 분할 / (세금)계산서 (일반)");
             $final_info_param = array_merge($basic_info_param, $param_arr);
+            DB::table('T_BILL_NEY')->updateOrInsert($wheres, $final_info_param);
+
         }else if ( $tax_type0306=='on' and $tax_type01 == 'off'){
             $param_arr1 = array_merge($second_info_param1, $param_arr);
             $param_arr2 = array_merge($second_info_param2, $param_arr);
             $param_arr3 = array_merge($second_info_param3, $param_arr);
             $param_arr4 = array_merge($second_info_param4, $param_arr);
+            DB::table('T_BILL_NEY')->updateOrInsert($wheres, $param_arr1);
+            DB::table('T_BILL_NEY')->updateOrInsert($wheres, $param_arr2);
+            DB::table('T_BILL_NEY')->updateOrInsert($wheres, $param_arr3);
+            DB::table('T_BILL_NEY')->updateOrInsert($wheres, $param_arr4);
         } else if ($tax_type0306=='off' and $tax_type01 == 'on') {
             $arr1 = array(
                 "F_PRODUCT1" => $f_product1,
                 "F_COUNT1" => $f_count1,
-                "F_ISSUE_TYPE_PROD1" => $f_issue_type_prod1,
+                "F_STANDARD1" => $f_issue_type_prod1,
                 "F_BIGO1" => $f_bigo1);
             $arr2 = array(
                 "F_PRODUCT2"=>$f_product2,
                 "F_COUNT2"=>$f_count2,
-                "F_ISSUE_TYPE_PROD2"=>$f_issue_type_prod2,
+                "F_STANDARD2"=>$f_issue_type_prod2,
                 "F_BIGO2"=>$f_bigo2);
             $arr3 = array(
                 "F_PRODUCT3"=>$f_product3,
                 "F_COUNT3"=>$f_count3,
-                "F_ISSUE_TYPE_PROD3"=>$f_issue_type_prod3,
+                "F_STANDARD3"=>$f_issue_type_prod3,
                 "F_BIGO3"=>$f_bigo3);
             $arr4 = array(
                 "F_PRODUCT4"=>$f_product4,
                 "F_COUNT4"=>$f_count4,
-                "F_ISSUE_TYPE_PROD4"=>$f_issue_type_prod4,
+                "F_STANDARD4"=>$f_issue_type_prod4,
                 "F_BIGO4"=>$f_bigo4);
             $param_arr5 = array_merge($basic_info_param,$arr1);
             $param_arr6 = array_merge($basic_info_param,$arr2);
             $param_arr7 = array_merge($basic_info_param,$arr3);
             $param_arr8 = array_merge($basic_info_param,$arr4);
+            DB::table('T_BILL_NEY')->updateOrInsert($wheres, $param_arr5);
+            DB::table('T_BILL_NEY')->updateOrInsert($wheres, $param_arr6);
+            DB::table('T_BILL_NEY')->updateOrInsert($wheres, $param_arr7);
+            DB::table('T_BILL_NEY')->updateOrInsert($wheres, $param_arr8);
         }
 //        else if ($tax_type0306 == 'on' and $tax_type01 == 'on') {
 //
 //        }
 
-
-        DB::table('T_BILL')->updateOrInsert($wheres, $final_info_param);
-//        DB::table('t_bill')->updateOrInsert($wheres, $param_arr1);
-//        DB::table('t_bill')->updateOrInsert($wheres, $param_arr2);
-//        DB::table('t_bill')->updateOrInsert($wheres, $param_arr3);
-//        DB::table('t_bill')->updateOrInsert($wheres, $param_arr4);
-//        DB::table('t_bill')->updateOrInsert($wheres, $param_arr5);
-//        DB::table('t_bill')->updateOrInsert($wheres, $param_arr6);
-//        DB::table('t_bill')->updateOrInsert($wheres, $param_arr7);
-//        DB::table('t_bill')->updateOrInsert($wheres, $param_arr8);
+        echo "<pre>";
+//        print_r($final_info_param);
+//        exit;
+//        DB::table('T_BILL')->updateOrInsert($wheres, $final_info_param);
 
 
+
+
+
+        DB::commit();
+        return redirect()->route('chargeMemberRegist');
 
 
 ////        param all info
@@ -342,8 +457,8 @@ class BillController extends BaseController{
 //                $wheres,
 //                $param
 //            );
-        DB::commit();
-        return redirect()->route('chargeMemberRegist');
+//        DB::commit();
+//        return redirect()->route('chargeMemberRegist');
 
     }
 
