@@ -38,7 +38,19 @@ var js = {
         value = value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣A-Za-z?!@#$%^&*()=;{}\[\]\-`' ]/gi, "");
         return js.regex(value, /[^0-9][:][,]/gi);
     },
+    /**
+     *
+     * @param method POST / GET
+     * @param url   Call Url
+     * @param datas data
+     * @param dataType  json / text / html
+     * @param refresh   true : reload / false : 유지
+     * @param location_url 있으면 전달된 Url 호출
+     * @param ret          Select Query 를 호출 시킬 시 이 함수를 사용하세요.
+     * @returns {string}
+     */
     ajax_call:function(method, url, datas, dataType, refresh, location_url, ret) {
+
         refresh = typeof refresh !== 'undefined' ? refresh : false;
         ret = ret ? ret : false;
         location_url = location_url ? location_url : "";

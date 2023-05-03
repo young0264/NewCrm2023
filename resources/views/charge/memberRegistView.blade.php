@@ -9,15 +9,11 @@
         });
 
         let tables = {
-            headers: null,
             items: null,
-            dataset: [],
-
             initialize:function(){
                 this.set();
                 this.onDraw();
             },
-
             set:function(){
                 let method = "POST";
                 let url = "{{route("billList")}}";
@@ -26,73 +22,27 @@
                 let dataType = "json";
                 let ret = js.ajax_call(method, url, datas, dataType, false, "", true);
 
-                this.headers = JSON.parse(ret['header']);
                 this.items = JSON.parse(ret['items']);
-
-                // 전체 데이터를 받아서, 각각의 셀렉트 옵션에 데이터처리
-                this.setDataset();
             },
-
-            setDataset:function() {
-                this.headers.forEach((item, idx)=> {
-                    this.dataset[item.key] = [];
-                });
-
-                this.items.forEach((item, idx)=>{
-                    this.headers.forEach((header, header_idx)=>{
-                        if (this.dataset[header.key][item[header.key]] === undefined)
-                            this.dataset[header.key][item[header.key]] = [];
-
-                        if (item[header.key]!==null)
-                            this.dataset[header.key][item[header.key]] = "";
-                    });
-                });
-            },
-
             onDraw:function() {
-                // this.onDrawHeader();
                 this.onDrawBody();
             },
-
-            onDrawHeader:function() {
-
-                /**
-                 * Thead
-                 * @type {string}
-                 */
-                let html = "<tr>";
-                console.log(this.headers);
-                this.charge_thead.forEach((col_name, idx)=> {
-                    this.headers.forEach((value, idx2) => {
-                        if (value.key === col_name) {
-                            html += `<td class="text-nowrap text-center">${value.name}</td>`;
-                            return;
-                        }
-                    });
-                });
-
-                html += "</tr>";
-
-                document.querySelector("#charge_thead").innerHTML = html;
-            },
-
             onDrawBody:function() {
                 /**
                  * 바디에 데이터셋 입력 처리
                  * @type {string}
                  */
-
                 let html = "";
-
                 this.items.forEach((item, idx) => {
-                    html += `<tr class="text-center">`
-                    html += `<td class="text-nowrap">${item['f_minor_business']}</td>`
-                    html += `<td class="text-nowrap">${item['f_bizname']}</td>`
-                    html += `<td class="text-nowrap">${item['f_shopname']}</td>`
-                    html += `<td class="text-nowrap">${item['f_registration_number']}</td>`
-                    html += `<td class="text-nowrap">${item['f_pay_type']}</td>`
-                    html += `<td class="text-nowrap">${item['f_pay_interval']}</td>`
-                    html += `<td class="text-nowrap">${item['f_price']}</td>`
+                    html += `<tr class="text-center">`;
+                    html += `    <td class="text-nowrap">${item['f_minor_business']}</td>`;
+                    html += `    <td class="text-nowrap">${item['f_bizname']}</td>`;
+                    html += `    <td class="text-nowrap">${item['f_shopname']}</td>`;
+                    html += `    <td class="text-nowrap">${item['f_registration_number']}</td>`;
+                    html += `    <td class="text-nowrap">${item['f_pay_type']}</td>`;
+                    html += `    <td class="text-nowrap">${item['f_pay_interval']}</td>`;
+                    html += `    <td class="text-nowrap">${item['f_price']}</td>`;
+                    html += `</tr>`;
                 });
                 document.querySelector("#charge_tbody").innerHTML = html;
             },
@@ -118,28 +68,12 @@
 
         let crud ={
             registBillForm: function () {
-                var formData = $('#billForm').serialize();
-                console.log(formData)
-                $.ajax({
-                    url: "{{route('billRegisterProcess')}}",
-                    // url: "/bill/register",
-                    type : "POST",
-                    cache: false,
-                    data: formData,
-                    success: function (args) {
-                        // if (args["status"] === "ok") {
-                        //     alert(args["msg"])
-                        // }
-                        console.log(args);
-                        self.location.reload();
-                    },
-                    error: function (error) {
-                        alert("error");
-                        console.log(error);
-                    },
-
-                })
-
+                // var formData = $('#billForm').serialize();
+                let method = "POST";
+                let url = "{{route("billRegisterProcess")}}";
+                let datas = $('#billForm').serialize();
+                let dataType = "json";
+                js.ajax_call(method, url, datas, dataType, true);
             },
         }
     </script>
@@ -210,7 +144,9 @@
                                 <div class="col-md-3">
                                     <select class="form-select alert-info text-black fw-bold" id="f_event" name="f_event">
                                         <option value="">업종</option>
-                                        <option value="업종option">업종option</option>
+                                        <option value="COFFEE">커피</option>
+                                        <option value="HEALTH">헬스장</option>
+                                        <option value="COFFEE">커피</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3 mx-2 ">
@@ -225,7 +161,6 @@
                                 <div class="col-md-1">
                                     상호명
                                 </div>
-
                                 <div class="col-md-3">
                                     <input class="form-control alert-warning" id="f_cp_name" name="f_cp_name" placeholder="상호명">
                                 </div>
@@ -376,12 +311,10 @@
                                 <div class="row my-1" >
                                     <div class="col-md-1 text-black fw-bold">음저협</div>
                                     <div class="col-md-2">
-                                        <div class="form-control">
-                                            공연사용료
-                                        </div>
+                                        <input class="form-control text-black" id="f_product1_komca" name="f_product1_komca" placeholder="공연사용료">
                                     </div>
                                     <div class="col-md-2 ">
-                                        <input class="form-control alert-warning text-black" id="f_asso_komca" name="f_asso_komca" placeholder="1,960">
+                                        <input class="form-control alert-warning text-black" id="f_unitprice_komca" name="f_unitprice_komca" placeholder="1,960">
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-select alert-warning text-black fw-bold" id="f_issue_type_komca" name="f_issue_type_komca">
@@ -402,12 +335,10 @@
                                 <div class="row my-1">
                                     <div class="col-md-1 text-black fw-bold">합저협</div>
                                     <div class="col-md-2">
-                                        <div class="form-control" >
-                                            공연보상금
-                                        </div>
+                                        <input class="form-control text-black" id="f_product1_koscap" name="f_product1_koscap" placeholder="공연보상금">
                                     </div>
                                     <div class="col-md-2 ">
-                                        <input class="form-control alert-warning text-black" id="f_asso_koscap" name="f_asso_koscap" placeholder="1,960">
+                                        <input class="form-control alert-warning text-black" id="f_unitprice_koscap" name="f_unitprice_koscap" placeholder="1,960">
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-select alert-warning text-black fw-bold" id="f_issue_type_koscap" name="f_issue_type_koscap">
@@ -428,12 +359,10 @@
                                 <div class="row my-1">
                                     <div class="col-md-1 text-black fw-bold">음실련</div>
                                     <div class="col-md-2">
-                                        <div class="form-control" >
-                                            공연사용료
-                                        </div>
+                                        <input class="form-control text-black" id="f_product1_fkmp" name="f_product1_fkmp" placeholder="공연사용료">
                                     </div>
                                     <div class="col-md-2">
-                                        <input class="form-control alert-warning text-black" id="f_asso_fkmp" name="f_asso_fkmp" placeholder="1,960">
+                                        <input class="form-control alert-warning text-black" id="f_unitprice_fkmp" name="f_unitprice_fkmp" placeholder="1,960">
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-select alert-warning text-black fw-bold" id="f_issue_type_fkmp" name="f_issue_type_fkmp">
@@ -454,12 +383,10 @@
                                 <div class="row my-1">
                                     <div class="col-md-1 text-black fw-bold">연제협</div>
                                     <div class="col-md-2">
-                                        <div class="form-control" >
-                                            공연보상금
-                                        </div>
+                                        <input class="form-control text-black" id="f_product1_kapp" name="f_product1_kapp" placeholder="공연보상금">
                                     </div>
                                     <div class="col-md-2 ">
-                                        <input class="form-control alert-warning text-black" id="f_asso_kapp" name="f_asso_kapp" placeholder="1,960">
+                                        <input class="form-control alert-warning text-black" id="f_unitprice_kapp" name="f_unitprice_kapp" placeholder="1,960">
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-select alert-warning text-black fw-bold" id="f_issue_type_kapp" name="f_issue_type_kapp">
@@ -492,7 +419,7 @@
                                 </div>
                                 <div class="col-md-4"></div>
                                 <div class="col-md-10 float-end">
-                                    <input class="form-control alert-info" placeholder="비고">
+                                    <input id="f_bigo" name="f_bigo" class="form-control alert-info" placeholder="비고">
                                 </div>
                             </div>
 
@@ -503,7 +430,7 @@
                                         <input class="form-control" id="f_product1" name="f_product1" placeholder="이용료">
                                     </div>
                                     <div class="col-md-2">
-                                        <input class="form-control alert-warning" id="f_count1" name="f_count1" placeholder="단가1">
+                                        <input class="form-control alert-warning" id="f_unitprice1" name="f_unitprice1" placeholder="단가1">
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-select alert-warning text-black fw-bold" id="f_issue_type_prod1" name="f_issue_type_prod1">
@@ -523,7 +450,7 @@
                                         <input class="form-control" id="f_product2" name="f_product2" placeholder="품목2">
                                     </div>
                                     <div class="col-md-2">
-                                        <input class="form-control alert-warning" id="f_count2" name="f_count2" placeholder="단가2">
+                                        <input class="form-control alert-warning" id="f_unitprice2" name="f_unitprice2" placeholder="단가2">
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-select alert-warning text-black fw-bold" id="f_issue_type_prod2" name="f_issue_type_prod2">
@@ -543,7 +470,7 @@
                                         <input class="form-control" id="f_product3" name="f_product3" placeholder="품목3">
                                     </div>
                                     <div class="col-md-2">
-                                        <input class="form-control alert-warning" id="f_count3" name="f_count3" placeholder="단가3">
+                                        <input class="form-control alert-warning" id="f_unitprice3" name="f_unitprice3" placeholder="단가3">
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-select alert-warning text-black fw-bold" id="f_issue_type_prod3" name="f_issue_type_prod3">
@@ -563,7 +490,7 @@
                                         <input class="form-control" id="f_product4" name="f_product4" placeholder="품목4">
                                     </div>
                                     <div class="col-md-2">
-                                        <input class="form-control alert-warning" id="f_count4" name="f_count4" placeholder="단가4">
+                                        <input class="form-control alert-warning" id="f_unitprice4" name="f_unitprice4" placeholder="단가4">
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-select alert-warning text-black fw-bold"  id="f_issue_type_prod4" name="f_issue_type_prod4">
