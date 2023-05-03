@@ -60,6 +60,10 @@ if (!Auth::check()) {
         Route::get("/deposit/match/2", [\App\Http\Controllers\DepositController::class, "match2"])->name("depositMatch2");
 
 
+        /**
+         * 계산서 CUD
+         */
+        Route::post("/bill/register", [\App\Http\Controllers\BillController::class, "billRegisterProcess"])->name("billRegisterProcess");
     });
 }
 

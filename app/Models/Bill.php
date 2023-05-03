@@ -23,7 +23,8 @@ class Bill extends Model
         "F_DAY1"=>"일자1", "F_PRODUCT1"=>"품목1", "F_STANDARD1"=>"규격1", "F_UNITPRICE1"=>"수량1", "F_COUNT1"=>"단가1", "F_PRICE1"=>"공급가액1", "F_TAX1"=>"세액1", "F_BIGO1"=>"품목비고1",
         "F_DAY2"=>"일자2", "F_PRODUCT2"=>"품목2", "F_STANDARD2"=>"규격2", "F_UNITPRICE2"=>"수량2", "F_COUNT2"=>"단가2", "F_PRICE2"=>"공급가액2", "F_TAX2"=>"세액2", "F_BIGO2"=>"품목비고2",
         "F_DAY3"=>"일자3", "F_PRODUCT3"=>"품목3", "F_STANDARD3"=>"규격3", "F_UNITPRICE3"=>"수량3", "F_COUNT3"=>"단가3", "F_PRICE3"=>"공급가액3", "F_TAX3"=>"세액3", "F_BIGO3"=>"품목비고3",
-        "F_DAY4"=>"일자4", "F_PRODUCT4"=>"품목4", "F_STANDARD4"=>"규격4", "F_UNITPRICE4"=>"수량4", "F_COUNT4"=>"단가4", "F_PRICE4"=>"공급가액4", "F_TAX4"=>"세액4", "F_BIGO4"=>"품목비고4", "F_ISSUE_TYPE"=>"발행타입"
+        "F_DAY4"=>"일자4", "F_PRODUCT4"=>"품목4", "F_STANDARD4"=>"규격4", "F_UNITPRICE4"=>"수량4", "F_COUNT4"=>"단가4", "F_PRICE4"=>"공급가액4", "F_TAX4"=>"세액4", "F_BIGO4"=>"품목비고4",
+        "F_ISSUE_TYPE"=>"발행타입"
     ];
 
 
