@@ -50,7 +50,8 @@ if (!Auth::check()) {
         Route::get("/bill/form/sub", [\App\Http\Controllers\BillController::class, "printForm"])->name("printBillForm");
         Route::get("/bill/integrate", [\App\Http\Controllers\BillController::class, "integrate"])->name("billIntegratedCollection");
         Route::get("/bill/cash", [\App\Http\Controllers\BillController::class, "cashReceipt"])->name("billCashReceipt");
-        Route::post("/bill/list", [\App\Http\Controllers\BillController::class, "list"])->name("billList");
+//        Route::post("/bill/list", [\App\Http\Controllers\BillController::class, "list"])->name("billList1");
+        Route::post("/bill/list", [\App\Http\Controllers\BillController::class, "listByNEY"])->name("billList2");
         /**
          * 입금내역
          */
@@ -64,6 +65,7 @@ if (!Auth::check()) {
          * 계산서 CUD
          */
         Route::post("/bill/register", [\App\Http\Controllers\BillController::class, "billRegisterProcess"])->name("billRegisterProcess");
+        Route::post("/bill/update", [\App\Http\Controllers\BillController::class, "billUpdateProcess"])->name("billUpdateProcess");
     });
 }
 

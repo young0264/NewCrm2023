@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bill;
+use App\Models\Bill_NEY;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -99,6 +100,67 @@ class BillController extends BaseController
                 )
             ]);
     }
+    public static function listByNEY(Request $request)
+    {
+
+        $wheres = "";
+        $params = [];
+
+        $items = Bill_NEY::list($wheres, $params);
+
+
+        $headers = array();
+        foreach ($items as $key => $item) {
+            if ($key > 0)
+                break;
+
+            foreach ($item as $header => $i) {
+                if ($header == "f_billid"
+                    || $header == "f_bizid"
+                    || $header == "f_shopid"
+                    || $header == "f_status"
+                    || $header == "f_standard1"
+                    || $header == "f_standard2"
+                    || $header == "f_standard3"
+                    || $header == "f_standard4"
+                    || $header == "f_count1"
+                    || $header == "f_count2"
+                    || $header == "f_count3"
+                    || $header == "f_count4"
+                    || $header == "f_tax1"
+                    || $header == "f_tax2"
+                    || $header == "f_tax3"
+                    || $header == "f_tax4"
+                    || $header == "f_bigo1"
+                    || $header == "f_bigo2"
+                    || $header == "f_bigo3"
+                    || $header == "f_bigo4"
+                    || $header == "f_day1"
+                    || $header == "f_day2"
+                    || $header == "f_day3"
+                    || $header == "f_day4"
+                    || $header == "f_unitprice1"
+                    || $header == "f_unitprice2"
+                    || $header == "f_unitprice3"
+                    || $header == "f_unitprice4"
+                    || $header == "f_issue_type"
+                ) {
+                    continue;
+                }
+                $headers[] = array("key" => $header, "name" => Bill::$column[strtoupper($header)]);
+            }
+        }
+
+        return response()->json(
+            [
+                "status" => "ok",
+                "result" => array(
+                    "header" => json_encode($headers),
+                    "items" => json_encode($items)
+                )
+            ]);
+    }
+
 
     public static function billRegisterProcess(Request $request)
     {
@@ -118,7 +180,8 @@ class BillController extends BaseController
          * 기본 데이터 파라미터 셋팅(공연권료와 이용료 분할을 제외한)
          */
         $basic_info_param = array(
-            "F_EVENT" => $request->input('f_event'),
+            "F_SHOPNAME" => $request->input('f_shopname'),
+            "F_CB" => $request->input('f_cb'),
             "F_BUSINESS" => $request->input('f_business'),
             "F_CP_NAME" => $request->input('f_cp_name'),
             "F_NAME1" => $request->input('f_name1'),
@@ -160,6 +223,7 @@ class BillController extends BaseController
                         $params["F_BIGO1"] = $request->input('f_bigo'.$i);
                         $params["F_BIGO"] = $request->input('f_bigo');
                         $params["F_ASSO"] = "NORMAL";
+                        $params["F_PRICE"] = $request->input('f_unitprice'.$i);
                         print_r("성공성공");
                         if (DB::table('T_BILL_NEY')->insert($params) === false) {
                             throw new \Exception("등록을 실패하였습니다." . $i);
@@ -167,7 +231,15 @@ class BillController extends BaseController
                     }
                 }
             } else if ($tax_type01 === "off") {
+                $total_price = 0;
                 $params = $basic_info_param;
+
+                $total_price += $request->input('f_unitprice1');
+                $total_price += $request->input('f_unitprice2');
+                $total_price += $request->input('f_unitprice3');
+                $total_price += $request->input('f_unitprice4');
+
+                $params["F_PRICE"] = $total_price;
                 $params["F_PRODUCT1"] = $request->input('f_product1');
                 $params["F_UNITPRICE1"] = $request->input('f_unitprice1');
                 $params["F_ISSUE_TYPE"] = $request->input('f_issue_type_prod1');
@@ -216,4 +288,11 @@ class BillController extends BaseController
         DB::commit();
         return redirect()->route('chargeMemberRegist');
     }
+
+
+    public static function billUpdateProcess(Request $request)
+    {
+        return view("index");
+    }
+
 }
