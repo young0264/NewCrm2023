@@ -102,12 +102,10 @@ class BillController extends BaseController
     }
     public static function listByNEY(Request $request)
     {
-
         $wheres = "";
         $params = [];
 
         $items = Bill_NEY::list($wheres, $params);
-
 
         $headers = array();
         foreach ($items as $key => $item) {
@@ -161,7 +159,26 @@ class BillController extends BaseController
             ]);
     }
 
+    public static function findNEYBillById(Request $request)
+    {
 
+        $item = Bill_NEY::findById($request->input('billId'), []);
+//        echo "<pre>";
+////        print_r($request -> input());
+//        print_r("===============");
+//        print_r($items);
+//        print_r("===============");
+////        print_r(22222222222222);
+//        exit;
+        return response()->json(
+            [
+                "status" => "ok",
+                "result" => array(
+                    "item" => json_encode($item)
+                )
+            ]);
+
+    }
     public static function billRegisterProcess(Request $request)
     {
         $tax_type0306 = $request->input('tax_type0306') === 'on' ? 'on' : 'off';

@@ -1,19 +1,133 @@
 {{--청구 대상 등록--}}
+
 @extends('layouts.app')
 @section('content')
-
     <script type="text/javascript">
+        var f_billForm_param = Array(
+            'f_shopname',
+            'f_cb',
+            'f_business',
+            'f_cp_name',
+            'f_name1',
+            'f_pay_type',
+            'f_rep_name',
+            'f_mobile1',
+            'f_pay_interval',
+            'f_registration_number',
+            'f_email1',
+            'f_history',
+            'f_addr',
+            'f_name2',
+            'f_reply',
+            'f_public_addr1',
+            'f_mobile2',
+            'f_statement',
+            'f_public_addr2',
+            'f_email2',
+            'f_tax_bill',
+            'f_product1',
+            'f_product2',
+            'f_product3',
+            'f_product4',
+            'f_unitprice1',
+            'f_unitprice2',
+            'f_unitprice3',
+            'f_unitprice4',
+            'f_issue_type',
+            'f_bigo1',
+            'f_bigo2',
+            'f_bigo3',
+            'f_bigo4');
+        //=========여기까지 기본 데이터 end ============//
+        //=========공연권료 / (세금)계산서 (위수탁) start TODO 컬럼명 분기 ============//
+        var f_billForm_param_0306 = Array(
+            'f_product1_komca',
+            'f_product1_koscap',
+            'f_product1_fkmp',
+            'f_product1_kapp',
+            'f_unitprice_komca',
+            'f_unitprice_koscap',
+            'f_unitprice_fkmp',
+            'f_unitprice_kapp',
+            'f_issue_type_komca',
+            'f_issue_type_koscap',
+            'f_issue_type_fkmp',
+            'f_issue_type_kapp',
+            'f_bigo1_komca',
+            'f_bigo1_koscap',
+            'f_bigo1_fkmp',
+            'f_bigo1_kapp',
+            'f_bigo_komca',
+            'f_bigo_koscap',
+            'f_bigo_fkmp',
+            'f_bigo_kapp',
+        );
+        //=========공연권료 / (세금)계산서 (위수탁) end ============//
 
+        //========= 이용료 분할 / (세금)계산서 (일반) TODO 컬럼명 분기 ============//
+        //checked -> db에서 row 4개를 찾고 이용료,단가,...,품목비고등 column1에 들어간거 2,3,4로 치환
+        //unchecked -> 한로우에서 때려넣으면 됨
+        var f_billForm_param_01 = Array(
+            'f_product1',
+            'f_product2',
+            'f_product3',
+            'f_product4',
+            'f_unitprice1',
+            'f_unitprice2',
+            'f_unitprice3',
+            'f_unitprice4',
+            'f_issue_type_prod1',
+            'f_issue_type_prod2',
+            'f_issue_type_prod3',
+            'f_issue_type_prod4',
+            'f_bigo1',
+            'f_bigo2',
+            'f_bigo3',
+            'f_bigo4');
+
+        // bill form 등록
+        let register = {
+            BillFormRegister: function () {
+                alert("hererer BillFormRegister");
+                let method = "POST";
+                let url = "{{route("billRegisterProcess")}}";
+                let datas = $('#billForm').serialize();
+                let dataType = "json";
+                js.ajax_call(method, url, datas, dataType, false, "", true);
+            },
+        };
+
+        //bill form 수정
+        let  update = {
+            result: null,
+            BillFormShow: function (billId) {
+
+
+                // 데이터를 전달할 요소의 값을 변경합니다.
+                // modalBody.innerHTML = `수정할 Bill ID는 ${billId} 입니다.`;
+
+                // 모달창을 엽니다.
+                const modal = new bootstrap.Modal(document.querySelector('#modal_setting_update'));
+                modal.show();
+
+                //파라미터로 들어온 bill_id값으로 NEY_Bill테이블에서 bill을 가져옵니다.
+                let res = js.ajax_call("POST", "{{route("findNEYBillById")}}", {"billId": billId}, "json", false, "", true)
+                //String타입을 json형식으로 변환해 result에 저장합니다.
+                this.result = JSON.parse(res['item'])[0];
+                // f_billForm_param 필드에 해당하는 값들을 수정해줍니다.
+                for (let i = 0; i < f_billForm_param.length; i++) {
+                    document.querySelector('#update-modal-body').querySelector('#'+f_billForm_param[i]).value =  this.result[f_billForm_param[i]];
+                }
+            },
+
+            process: function (billId) {
+
+            },
+        }
         document.addEventListener("DOMContentLoaded", ()=>{
             tables.initialize();
         });
-        function showUpdateForm(item) {
-            alert(123123123);
 
-            var modal = document.getElementById("modal_setting_update");
-            modal.style.display = 'block';
-            alert(item);
-        }
         let tables = {
             items: null,
             initialize:function(){
@@ -22,16 +136,16 @@
             },
             set:function(){
                 let method = "POST";
-                let url = "{{route("billList2")}}";
+                let url = "{{route("billList")}}";
                 let datas = {
                 };
                 let dataType = "json";
                 let ret = js.ajax_call(method, url, datas, dataType, false, "", true);
 
                 console.log("=======ajax_call======");
+                this.items = JSON.parse(ret['items']);
                 console.log(ret);
                 console.log("========ajax_call=====");
-                this.items = JSON.parse(ret['items']);
             },
             onDraw:function() {
                 this.onDrawBody();
@@ -44,12 +158,13 @@
                  */
                 let html = "";
                 this.items.forEach((item, idx) => {
+                    console.log("item : ", item);
                     html += `<tr class="text-center">`;
                     html += `    <td class="text-nowrap">${item['f_minor_business']}</td>`;
                     html += `    <td class="text-nowrap">${item['f_bizname']}</td>`;
-                    html += `    <td class="text-nowrap"  >
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal_setting_update">${item['f_shopname']}
-                                    </a></td>`;
+                    html += `    <td class="text-nowrap">
+                            <a href="#" onclick="update.BillFormShow('${item['f_billid']}')" > ${item['f_shopname']}</a>
+                                 </td>`;
                     html += `    <td class="text-nowrap">${item['f_registration_number']}</td>`;
                     html += `    <td class="text-nowrap">${item['f_pay_type']}</td>`;
                     html += `    <td class="text-nowrap">${item['f_pay_interval']}</td>`;
@@ -59,6 +174,7 @@
                 document.querySelector("#charge_tbody").innerHTML = html;
             },
         };
+
         <!--   data-bs-target="#modal_setting_update" , data-item_row=item-->
 
         {{--    체크박스 스위치버튼 isCheck에 따른 div 노출 유무     --}}
@@ -79,7 +195,7 @@
             },
         }
 
-        let crud ={
+        let crud = {
             registBillForm: function () {
                 // var formData = $('#billForm').serialize();
                 let method = "POST";
@@ -88,12 +204,9 @@
                 let dataType = "json";
                 js.ajax_call(method, url, datas, dataType, true);
             },
-        }
-
-
+        };
 
     </script>
-
 
 
     <div class="container-xxl flex-grow-1 container-p-y" >
@@ -295,7 +408,6 @@
                     </div>
                 </div>
                 {{--            content end        --}}
-
             </div>
         </div>
     </div>

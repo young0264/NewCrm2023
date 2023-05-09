@@ -38,7 +38,7 @@ class Bill_NEY extends Model
 
     public static function list($wheres="", $params) {
         $query = "select
-                        f_billid, f_bizname, f_shopname, f_price,
+                        f_billid, f_bizname, f_shopname, f_price, f_tax,
                         -- Tab1
                         f_pay_type, f_pay_interval, f_history, f_reply, f_statement, f_tax_bill, f_issuedate,
                         -- Tab2
@@ -55,8 +55,18 @@ class Bill_NEY extends Model
                         where f_billid is not null
                         {$wheres}
                         and rownum <= 10
-                    order by f_issuedate";
+                    order by f_regdate desc ";
 
+        return DB::select($query, $params);
+    }
+
+    public static function findById($billId, $params)
+    {
+        $query = "select * from T_BILL_NEY where f_billid = {$billId}";
+        $params = [];
+//        echo "<pre>";
+//        print_r(12312312312312312);
+//        exit;
         return DB::select($query, $params);
     }
 }

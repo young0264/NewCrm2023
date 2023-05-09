@@ -19,9 +19,9 @@
         showByChecked: function (checkboxId, isShowDivId) {
             console.log(checkboxId, isShowDivId);
             if (this.isChecked(checkboxId)) {
-                document.getElementById(isShowDivId).style.display="block";
-            }else{
-                document.getElementById(isShowDivId).style.display="none";
+                document.getElementById(isShowDivId).style.display = "block";
+            } else {
+                document.getElementById(isShowDivId).style.display = "none";
             }
         },
 
@@ -29,18 +29,9 @@
             var con = document.getElementById(checkboxId);
             return !!con.checked;
         },
-    }
+    };
 
-    let register ={
-        BillFormRegister: function () {
-// var formData = $('#billForm').serialize();
-            let method = "POST";
-            let url = "{{route("billRegisterProcess")}}";
-            let datas = $('#billForm').serialize();
-            let dataType = "json";
-            js.ajax_call(method, url, datas, dataType, true);
-        },
-    }
+
 </script>
 
 {{-- 청구 대상 등록 설정 모달 시작--}}

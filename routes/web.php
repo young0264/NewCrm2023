@@ -51,7 +51,8 @@ if (!Auth::check()) {
         Route::get("/bill/integrate", [\App\Http\Controllers\BillController::class, "integrate"])->name("billIntegratedCollection");
         Route::get("/bill/cash", [\App\Http\Controllers\BillController::class, "cashReceipt"])->name("billCashReceipt");
 //        Route::post("/bill/list", [\App\Http\Controllers\BillController::class, "list"])->name("billList1");
-        Route::post("/bill/list", [\App\Http\Controllers\BillController::class, "listByNEY"])->name("billList2");
+        Route::post("/bill/list", [\App\Http\Controllers\BillController::class, "listByNEY"])->name("billList");
+        Route::post("/bill/findById", [\App\Http\Controllers\BillController::class, "findNEYBillById"])->name("findNEYBillById");
         /**
          * 입금내역
          */
