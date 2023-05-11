@@ -12,12 +12,24 @@
 {{--    );--}}
 {{--@endphp--}}
 
-<script type="text/javascript">
+<script>
+
+    let register = {
+        BillFormRegister: function () {
+            let method = "POST";
+            let url = "{{route("billRegisterProcess")}}";
+            let datas = $('#billForm').serialize();
+            let dataType = "json";
+            console.log("datas : " + datas);
+            js.ajax_call(method, url, datas, dataType, false, "", true);
+            $('#modal_setting_register').modal('hide');
+            window.location.reload();
+        },
+    };
 
     let checkbox = {
         // (input.checkbox : id값 , 숨길 div : id값)
         showByChecked: function (checkboxId, isShowDivId) {
-            console.log(checkboxId, isShowDivId);
             if (this.isChecked(checkboxId)) {
                 document.getElementById(isShowDivId).style.display = "block";
             } else {
@@ -342,7 +354,7 @@
                                 @csrf
                                 <input class="hidden" type="hidden" id="mode" name="mode" value="insert">
                                 <button type="button" class="btn btn-primary" onclick="register.BillFormRegister()"> 신규등록</button>
-                                <button type="button" class="btn btn-secondary" id="modalCloseBtn"> 닫기</button>
+                                <button type="button" class="btn btn-secondary" id="modalCloseBtn" onclick="modalClose('modal_setting_register')"> 닫기</button>
                             </div>
 
                             <div class="col-md-11 float-end">

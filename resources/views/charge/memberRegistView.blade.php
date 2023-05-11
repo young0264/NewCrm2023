@@ -1,63 +1,22 @@
 {{--청구 대상 등록--}}
-
 @extends('layouts.app')
 @section('content')
-    <script type="text/javascript">
+    <script>
 
-        var f_billForm_param = Array(
-            'f_shopname',
-            'f_cb',
-            'f_business',
-            'f_cp_name',
-            'f_name1',
-            'f_pay_type',
-            'f_rep_name',
-            'f_mobile1',
-            'f_pay_interval',
-            'f_registration_number',
-            'f_email1',
-            'f_history',
-            'f_addr',
-            'f_name2',
-            'f_reply',
-            'f_public_addr1',
-            'f_mobile2',
-            'f_statement',
-            'f_public_addr2',
-            'f_email2',
-            'f_tax_bill',
-            'f_product1',
-            'f_product2',
-            'f_product3',
-            'f_product4',
-            'f_unitprice1',
-            'f_unitprice2',
-            'f_unitprice3',
-            'f_unitprice4',
-            'f_issue_type',
-            'f_bigo1',
-            'f_bigo2',
-            'f_bigo3',
-            'f_bigo4',
+        let f_billForm_param = Array(
+            'f_shopname', 'f_cb', 'f_business', 'f_cp_name', 'f_name1', 'f_pay_type', 'f_rep_name', 'f_mobile1', 'f_pay_interval',
+            'f_registration_number', 'f_email1', 'f_history', 'f_addr', 'f_name2', 'f_reply', 'f_public_addr1', 'f_mobile2', 'f_statement',
+            'f_public_addr2', 'f_email2', 'f_tax_bill', 'f_product1', 'f_product2', 'f_product3', 'f_product4', 'f_unitprice1',
+            'f_unitprice2', 'f_unitprice3', 'f_unitprice4', 'f_issue_type', 'f_bigo1', 'f_bigo2', 'f_bigo3', 'f_bigo4',
         );
-
 
         document.addEventListener("DOMContentLoaded", ()=>{
             tables.initialize();
         });
 
-        let register = {
-            BillFormRegister: function () {
-                alert("hererer BillFormRegister");
-                let method = "POST";
-                let url = "{{route("billRegisterProcess")}}";
-                let datas = $('#billForm').serialize();
-                let dataType = "json";
-                js.ajax_call(method, url, datas, dataType, false, "", true);
-                $('#modal_setting_register').modal('hide');
-
-            },
-        };
+        function modalClose(modalId) {
+            $('#'+modalId).modal('hide');
+        }
 
         let tables = {
             items: null,
@@ -68,15 +27,10 @@
             set:function(){
                 let method = "POST";
                 let url = "{{route("billList")}}";
-                let datas = {
-                };
+                let datas = {};
                 let dataType = "json";
                 let ret = js.ajax_call(method, url, datas, dataType, false, "", true);
-
-                console.log("=======ajax_call======");
                 this.items = JSON.parse(ret['items']);
-                console.log(ret);
-                console.log("========ajax_call=====");
             },
             onDraw:function() {
                 this.onDrawBody();
@@ -104,26 +58,6 @@
                 document.querySelector("#charge_tbody").innerHTML = html;
             },
         };
-
-
-        {{--    체크박스 스위치버튼 isCheck에 따른 div 노출 유무     --}}
-        let checkbox = {
-            // (input.checkbox : id값 , 숨길 div : id값)
-            showByChecked: function (checkboxId, isShowDivId) {
-                console.log(checkboxId, isShowDivId);
-                if (this.isChecked(checkboxId)) {
-                    document.getElementById(isShowDivId).style.display="block";
-                }else{
-                    document.getElementById(isShowDivId).style.display="none";
-                }
-            },
-
-            isChecked: function (checkboxId) {
-                var con = document.getElementById(checkboxId);
-                return !!con.checked;
-            },
-        }
-
     </script>
 
 
@@ -299,17 +233,6 @@
                                     </tr>
                                     </thead>
                                     <tbody class="text-center" id="charge_tbody">
-{{--                                    @for($i=0; $i<6; $i++)--}}
-{{--                                    <tr class="text-center">--}}
-{{--                                        <td class="text-nowrap">7323231A</td>--}}
-{{--                                        <td>더벤티</td>--}}
-{{--                                        <td>가산테라타</td>--}}
-{{--                                        <td>123-123-123</td>--}}
-{{--                                        <td>CMS</td>--}}
-{{--                                        <td>월납</td>--}}
-{{--                                        <td>1,200</td>--}}
-{{--                                    </tr>--}}
-{{--                                    @endfor--}}
                                     </tbody>
                                 </table>
                                 <div class="col-md text-center">

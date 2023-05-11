@@ -1,30 +1,30 @@
 <script>
+
     /**
      *  bill update form
      */
     let  update = {
-        result: null,
+        jsonOfBillInfo: null,
         billId: null,
 
         //bill form 가져오기
         BillFormShow: function (billId) {
             this.billId = billId;
-            // modalBody.innerHTML = `수정할 Bill ID는 ${billId} 입니다.`;
 
             // 모달창을 엽니다.
             const modal = new bootstrap.Modal(document.querySelector('#modal_setting_update'));
             modal.show();
 
             //DB에서 bill id값이 같은 row의 column을 가져옵니다.
-            let res = js.ajax_call("POST", "{{route("findBillById")}}", {"billId": billId}, "json", false, "", true);
+            let billInfo = js.ajax_call("POST", "{{route("findBillById")}}", {"billId": billId}, "json", false, "", true);
 
-            //String타입을 json형식으로 변환해 result에 저장합니다.
-            this.result = JSON.parse(res['item']);
+            //String타입을 json형식으로 변환해 jsonOfBillInfo 저장합니다.
+            this.jsonOfBillInfo = JSON.parse(billInfo['item']);
 
-            //input box의 id에 해당하는 value를 result에서 가져온 값으로 초기화해줍니다.
+            //input box의 id에 해당하는 value를 jsonOfBillInfo에서 가져온 값으로 초기화해줍니다.
             for (let idx in f_billForm_param) {
                 key = f_billForm_param[idx];
-                document.querySelector('#update-modal-body').querySelector("#" + key).value = this.result[0][f_billForm_param[idx]];
+                document.querySelector('#update-modal-body').querySelector("#" + key).value = this.jsonOfBillInfo[0][f_billForm_param[idx]];
             }
         },
 
@@ -33,13 +33,11 @@
             var data = {};
             data['f_billId'] = this.billId;
 
-            //div input값을 가져와 key value쌍 형태로 저장
+            //div input값을 가져와 key value쌍 형태로 data에 저장 후, JSON으로 변환
             $("#update-modal-body input").each(function() {
-                console.log("id : ", this.id, " this.value : ", $(this).val());
                 data[this.id] = $(this).val();
             });
 
-            // JSON 형태로 변환
             var jsonData = JSON.stringify(data);
 
             //DB에서 bill id값이 같은 row의 column들을 update해줍니다.
@@ -276,7 +274,7 @@
                             </div>
                             <div class="col-md-4"></div>
                             <div class="col-md-10 float-end">
-                                <input id="f_bigo" name="f_bigo" class="form-control alert-info" placeholder="비고" disabled>
+                                <input id="f_bigo" name="f_bigo" class="form-control alert-info" placeholder="비고">
                             </div>
                         </div>
 
@@ -316,7 +314,7 @@
 {{--                                @csrf--}}
 {{--                                <input class="hidden" type="hidden" id="mode" name="mode" value="update">--}}
                                 <button type="button" class="btn btn-primary" onclick="update.BillFormUpdate()"> 수정</button>
-                                <button type="button" class="btn btn-secondary"> 취소</button>
+                                <button type="button" class="btn btn-secondary" onclick="modalClose('modal_setting_update')"> 닫기</button>
                             </div>
 
                             <div class="col-md-11 float-end">

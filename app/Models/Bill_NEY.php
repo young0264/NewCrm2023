@@ -11,18 +11,11 @@ use Illuminate\Support\Facades\DB;
 //    'f_statement', 'f_public_addr2', 'f_email2', 'f_tax_bill', 'f_product1', 'f_product2', 'f_product3', 'f_product4',
 //    'f_unitprice1', 'f_unitprice2', 'f_unitprice3', 'f_unitprice4', 'f_issue_type', 'f_bigo1', 'f_bigo2', 'f_bigo3', 'f_bigo4',
 //);
-class Bill_NEY extends Model
-{
-
+class Bill_NEY extends Model{
 
     use HasFactory;
-//
-//    protected static $f_billForm_param = [
-//    'f_shopname', 'f_cb', 'f_business', 'f_cp_name', 'f_name1', 'f_pay_type', 'f_rep_name', 'f_mobile1', 'f_pay_interval',
-//    'f_registration_number', 'f_email1', 'f_history', 'f_addr', 'f_name2', 'f_reply', 'f_public_addr1', 'f_mobile2',
-//    'f_statement', 'f_public_addr2', 'f_email2', 'f_tax_bill', 'f_product1', 'f_product2', 'f_product3', 'f_product4',
-//    'f_unitprice1', 'f_unitprice2', 'f_unitprice3', 'f_unitprice4', 'f_issue_type', 'f_bigo1', 'f_bigo2', 'f_bigo3', 'f_bigo4',
-//];
+
+    private static $use_table = "T_BILL_NEY";
 
     // 해당 테이블의 키 컬럼 처리
     public static $column = [
@@ -48,23 +41,21 @@ class Bill_NEY extends Model
         "Y"=>"연납"
     ];
 
-
     public static function list($wheres="", $params) {
-        $query = "select * from (select
+
+
+        $query = "select * from (
+                    select
                         f_billid, f_bizname, f_shopname, f_price, f_tax,
-                        -- Tab1
                         f_pay_type, f_pay_interval, f_history, f_reply, f_statement, f_tax_bill, f_issuedate,
-                        -- Tab2
                         f_registration_number, f_minor_business, f_cp_name, f_rep_name, f_addr, f_business, f_event, f_public_addr1, f_public_addr2,
-                        -- Tab3
                         f_name1, f_mobile1, f_email1, f_name2, f_mobile2, f_email2,
-                        -- Tab4
-                        f_day1 ,f_product1, f_standard1, f_unitprice1, f_count1, f_price1, f_tax1, f_bigo1,
-                        f_day2, f_product2, f_standard2, f_unitprice2, f_count2, f_price2, f_tax2, f_bigo2,
-                        f_day3, f_product3, f_standard3, f_unitprice3, f_count3, f_price3, f_tax3, f_bigo3,
-                        f_day4, f_product4, f_standard4, f_unitprice4, f_count4, f_price4, f_tax4, f_bigo4,
+                        f_product1, f_standard1, f_unitprice1, f_count1, f_price1, f_tax1, f_bigo1,
+                        f_product2, f_standard2, f_unitprice2, f_count2, f_price2, f_tax2, f_bigo2,
+                        f_product3, f_standard3, f_unitprice3, f_count3, f_price3, f_tax3, f_bigo3,
+                        f_product4, f_standard4, f_unitprice4, f_count4, f_price4, f_tax4, f_bigo4,
                         f_issue_type
-                    from T_BILL_NEY
+                    from ".self::$use_table."
                         where f_billid is not null
                         {$wheres}
                     order by f_regdate desc) where rownum <= 10";
@@ -74,17 +65,17 @@ class Bill_NEY extends Model
 
 
     public static function findBillById($billId){
-        $query = "SELECT * FROM T_BILL_NEY WHERE f_billid=:f_billid";
+        $query = "SELECT * FROM ".self::$use_table." WHERE f_billid=:f_billid";
         return DB::select($query, array("f_billid"=>$billId));
     }
 
-    public static function updateBill($request){
-        $billId = $request['f_billId'];
-        array_shift($request); //identity값인 f_billId 삭제
-
-        return DB::table('T_BILL_NEY')
-            ->where(['F_BILLID'=> $billId])
-            ->update($request);
+    public static function updateBill($parameters, $wheres){
+        return DB::table(self::$use_table)
+            ->where($wheres)
+            ->update($parameters);
     }
 
+    public static function insertBill($parameters) {
+        return DB::table('T_BILL_NEY')->insert($parameters);
+    }
 }

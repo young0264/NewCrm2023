@@ -68,7 +68,6 @@ if (!Auth::check()) {
          * 계산서 CUD
          */
         Route::post("/bill/register", [\App\Http\Controllers\BillController::class, "billRegisterProcess"])->name("billRegisterProcess");
-        Route::post("/bill/update", [\App\Http\Controllers\BillController::class, "billUpdateProcess"])->name("billUpdateProcess");
     });
 }
 
