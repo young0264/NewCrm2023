@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bill;
 use App\Models\Bill_NEY;
+use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -159,26 +160,48 @@ class BillController extends BaseController
             ]);
     }
 
-    public static function findNEYBillById(Request $request)
-    {
+//    public static function findNEYBillBy0306(Request $request)
+//    {
+//        $item = Bill_NEY::findBillById($request->input('billId'));
+//        return response()->json(
+//            [
+//                "status" => "ok",
+//                "result" => array(
+//                    "item" => json_encode($item)
+//                )
+//            ]);
+//    }
 
-        $item = Bill_NEY::findById($request->input('billId'), []);
+    public static function BillFormUpdate(Request $request)
+    {
 //        echo "<pre>";
-////        print_r($request -> input());
-//        print_r("===============");
-//        print_r($items);
-//        print_r("===============");
-////        print_r(22222222222222);
+//        print_r("====================");
+//        print_r(json_decode($request->getContent(), true));
+//        print_r(($request->input()));
 //        exit;
+//        $result = Bill_NEY::updateBill(json_decode($request->getContent(), true));
+        Bill_NEY::updateBill(json_decode($request->getContent(), true));
+
+    }
+    public static function findBillById(Request $request)
+    {
+        $items = Bill_NEY::findBillById($request->input('billId'));
         return response()->json(
             [
                 "status" => "ok",
                 "result" => array(
-                    "item" => json_encode($item)
+                    "item" => json_encode($items)
                 )
-            ]);
-
+            ]
+        );
     }
+
+    public static function findLastBillGroupId()
+    {
+        return Bill_NEY::findLastBillGroupId();
+    }
+
+
     public static function billRegisterProcess(Request $request)
     {
         $tax_type0306 = $request->input('tax_type0306') === 'on' ? 'on' : 'off';
@@ -220,7 +243,6 @@ class BillController extends BaseController
             "F_TAX_BILL" => $request->input('f_tax_bill')
         );
 
-
         /**
          * [이용료 분할 / (세금)계산서 (일반)]
          *      on -> 각 품목마다 각 row로 insert
@@ -228,26 +250,32 @@ class BillController extends BaseController
          */
         $params = array();
 
+
         try {
+//            $latestBillGroupId = self::findLastBillGroupId();
+
             if ($tax_type01 === "on") {
                 for ($i = 1; $i <= 4; $i++) {
                     $params = $basic_info_param;
                     if (!empty($_POST['f_product' . $i])) {
                         $params["F_PRODUCT1"] = $request->input('f_product'.$i);
                         $params["F_UNITPRICE1"] = $request->input('f_unitprice'.$i);
-                        $params["F_TAX_TYPE"] = "01"; //이용료 분할 계산서 (일반 -> 01)
-                        $params["F_ISSUE_TYPE"] = $request->input('f_issue_type_prod'.$i);
                         $params["F_BIGO1"] = $request->input('f_bigo'.$i);
+                        $params["F_ISSUE_TYPE"] = $request->input('f_issue_type_prod'.$i);
                         $params["F_BIGO"] = $request->input('f_bigo');
-                        $params["F_ASSO"] = "NORMAL";
                         $params["F_PRICE"] = $request->input('f_unitprice'.$i);
-                        print_r("성공성공");
+
+                        $params["F_TAX_TYPE"] = "01"; //이용료 분할 계산서 (일반 -> 01)
+                        $params["F_ASSO"] = "NORMAL";
+//                        $params["F_BILL_GROUPID"] = $latestBillGroupId + 1;
+                        print_r("등록 성공");
                         if (DB::table('T_BILL_NEY')->insert($params) === false) {
-                            throw new \Exception("등록을 실패하였습니다." . $i);
+                            throw new Exception("등록을 실패하였습니다." . $i);
                         }
                     }
                 }
             } else if ($tax_type01 === "off") {
+
                 $total_price = 0;
                 $params = $basic_info_param;
 
@@ -276,6 +304,8 @@ class BillController extends BaseController
 
                 $params["F_BIGO"] = $request->input('f_bigo');
                 $params["F_ASSO"] = "NORMAL";
+
+//                $params["F_BILL_GROUPID"] = $latestBillGroupId + 1;
 
                 DB::table('T_BILL_NEY')->insert($params);
             }
@@ -309,6 +339,8 @@ class BillController extends BaseController
 
     public static function billUpdateProcess(Request $request)
     {
+
+
         return view("index");
     }
 

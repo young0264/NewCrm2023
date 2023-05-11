@@ -1,15 +1,67 @@
-{{--@php--}}
-{{--    $arr = array(--}}
-{{--        "Q"=>array(--}}
-{{--            0,1,2--}}
-{{--        ),--}}
-{{--        "H"=>array(--}}
-{{--            0,1,2,3,4,5--}}
-{{--        ),--}}
-{{--        "Y"=>array(--}}
-{{--            0,1,2,3,4,5,6,7,8,9,10,11--}}
-{{--        ),--}}
-{{--    );--}}
+<script>
+    /**
+     *  bill update form
+     */
+    let  update = {
+        result: null,
+        billId: null,
+
+        //bill form 가져오기
+        BillFormShow: function (billId) {
+            this.billId = billId;
+            // modalBody.innerHTML = `수정할 Bill ID는 ${billId} 입니다.`;
+
+            // 모달창을 엽니다.
+            const modal = new bootstrap.Modal(document.querySelector('#modal_setting_update'));
+            modal.show();
+
+            //DB에서 bill id값이 같은 row의 column을 가져옵니다.
+            let res = js.ajax_call("POST", "{{route("findBillById")}}", {"billId": billId}, "json", false, "", true);
+
+            //String타입을 json형식으로 변환해 result에 저장합니다.
+            this.result = JSON.parse(res['item']);
+
+            //input box의 id에 해당하는 value를 result에서 가져온 값으로 초기화해줍니다.
+            for (let idx in f_billForm_param) {
+                key = f_billForm_param[idx];
+                document.querySelector('#update-modal-body').querySelector("#" + key).value = this.result[0][f_billForm_param[idx]];
+            }
+        },
+
+
+        //bill form 수정 process
+        BillFormUpdate: function () {
+            var data = {};
+            data['f_billId'] = this.billId;
+            // this.billId
+            // for (let idx in f_billForm_param) {
+            //     key = f_billForm_param[idx];
+            //
+            //     // let querySelector = document.querySelector('#update-modal-body').getElementById("#" + key).stringify;
+            //     // let querySelector = document.seri('#update-modal-body').getElementById("#" + key).stringify;
+            //     // let querySelector = $('#update-modal-body').serialize();
+            //     // console.log(querySelector);
+            //     // console.log("querySelectorAll : ", JSON.parse(JSON.stringify(querySelector)));
+            // }
+
+            // 여기가 문제
+            //div input값을 가져와 key value쌍 형태로 저장
+
+            $("#update-modal-body input").each(function() {
+                console.log("id : ", this.id, " this.value : ", $(this).val());
+                data[this.id] = $(this).val();
+            });
+
+            // JSON 형태로 변환
+            var jsonData = JSON.stringify(data);
+
+            //DB에서 bill id값이 같은 row의 column들을 update해줍니다.
+            js.ajax_call("POST", "{{route("BillFormUpdate")}}", jsonData, "json", false, "", true);
+            $('#modal_setting_update').modal('hide');
+            window.location.reload();
+        },
+    }
+</script>
 
 {{-- 청구 대상 등록 설정 모달 시작--}}
 <div class="modal fade" id="modal_setting_update" tabindex="-1" aria-hidden="true" style="display:none">
@@ -25,10 +77,7 @@
                         <div class="btn-group">
                             <label class="btn-group fw-bold ">발행일</label>
                             <div class=" col-md-2 mx-1">
-                                {{--                                                        <label class="btn-group fw-bold ">발행일</label>--}}
-                                {{--                                                        <h6>발행일</h6>--}}
-{{--                                <input class="form-control alert-warning" value="{{$item_row['f_unitprice1']}}" placeholder="작성일자">--}}
-                                <input class="form-control alert-warning" placeholder="작성일자">
+{{--                                <input class="form-control alert-warning" placeholder="작성일자">--}}
                             </div>
                             <div class="col-sm-2 mx-1">
                                 <select id="f_tax_type" name="f_tax_type" class="btn btn-dark ">
@@ -45,12 +94,11 @@
                             </div>
                             <label class="mx-2">공연권료</label>
                             <div class=" col-sm-1 mx-1 text-black ">
-                                <input class="form-control " placeholder="4,000">
-                                {{--                                <input class="form-control " id="f_tax_type" value="03?" placeholder="4,000">--}}
+{{--                                <input class="form-control " placeholder="4,000">--}}
                             </div>
                             <label class="mx-2">면적</label>
                             <div class=" col-sm-1 mx-1 text-black">
-                                <input class="form-control" placeholder="60">
+{{--                                <input class="form-control" placeholder="60">--}}
                             </div>
                             <span class="text-muted">(㎡)</span>
                         </div>
@@ -273,13 +321,14 @@
                         <div class="btn-group">
                             <div class="col-md-12">
                                 <label>
-                                    <input class="form-check-input me-1" type="checkbox">계산서 즉시 생성
+{{--                                    <input class="form-check-input me-1" type="checkbox" disabled>--}}
+                                    계산서 즉시 생성
                                 </label>
                             </div>
                             <div class="col-md-6 text-center mx-1">
-                                @csrf
-                                <input class="hidden" type="hidden" id="mode" name="mode" value="insert">
-                                <button type="button" class="btn btn-primary" onclick="register.BillFormRegister()"> 수정</button>
+{{--                                @csrf--}}
+{{--                                <input class="hidden" type="hidden" id="mode" name="mode" value="update">--}}
+                                <button type="button" class="btn btn-primary" onclick="update.BillFormUpdate()"> 수정</button>
                                 <button type="button" class="btn btn-secondary"> 취소</button>
                             </div>
 

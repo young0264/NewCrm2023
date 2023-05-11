@@ -52,7 +52,11 @@ if (!Auth::check()) {
         Route::get("/bill/cash", [\App\Http\Controllers\BillController::class, "cashReceipt"])->name("billCashReceipt");
 //        Route::post("/bill/list", [\App\Http\Controllers\BillController::class, "list"])->name("billList1");
         Route::post("/bill/list", [\App\Http\Controllers\BillController::class, "listByNEY"])->name("billList");
-        Route::post("/bill/findById", [\App\Http\Controllers\BillController::class, "findNEYBillById"])->name("findNEYBillById");
+//        Route::post("/bill/findById0306", [\App\Http\Controllers\BillController::class, "findNEYBillBy0306"])->name("findNEYBillBy0306");
+        Route::post("/bill/findById", [\App\Http\Controllers\BillController::class, "findBillById"])->name("findBillById");
+        Route::post("/bill/BillFormUpdate", [\App\Http\Controllers\BillController::class, "BillFormUpdate"])->name("BillFormUpdate");
+
+
         /**
          * 입금내역
          */

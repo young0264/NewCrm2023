@@ -11,11 +11,11 @@
 {{--        ),--}}
 {{--    );--}}
 {{--@endphp--}}
-<script>
-    {{--    체크박스 스위치버튼 isCheck에 따른 div 노출 유무     --}}
+
+<script type="text/javascript">
 
     let checkbox = {
-// (input.checkbox : id값 , 숨길 div : id값)
+        // (input.checkbox : id값 , 숨길 div : id값)
         showByChecked: function (checkboxId, isShowDivId) {
             console.log(checkboxId, isShowDivId);
             if (this.isChecked(checkboxId)) {
@@ -30,7 +30,6 @@
             return !!con.checked;
         },
     };
-
 
 </script>
 
@@ -343,7 +342,7 @@
                                 @csrf
                                 <input class="hidden" type="hidden" id="mode" name="mode" value="insert">
                                 <button type="button" class="btn btn-primary" onclick="register.BillFormRegister()"> 신규등록</button>
-                                <button type="button" class="btn btn-secondary"> 취소</button>
+                                <button type="button" class="btn btn-secondary" id="modalCloseBtn"> 닫기</button>
                             </div>
 
                             <div class="col-md-11 float-end">
