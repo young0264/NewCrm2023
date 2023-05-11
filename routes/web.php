@@ -50,9 +50,7 @@ if (!Auth::check()) {
         Route::get("/bill/form/sub", [\App\Http\Controllers\BillController::class, "printForm"])->name("printBillForm");
         Route::get("/bill/integrate", [\App\Http\Controllers\BillController::class, "integrate"])->name("billIntegratedCollection");
         Route::get("/bill/cash", [\App\Http\Controllers\BillController::class, "cashReceipt"])->name("billCashReceipt");
-//        Route::post("/bill/list", [\App\Http\Controllers\BillController::class, "list"])->name("billList1");
         Route::post("/bill/list", [\App\Http\Controllers\BillController::class, "listByNEY"])->name("billList");
-//        Route::post("/bill/findById0306", [\App\Http\Controllers\BillController::class, "findNEYBillBy0306"])->name("findNEYBillBy0306");
         Route::post("/bill/findById", [\App\Http\Controllers\BillController::class, "findBillById"])->name("findBillById");
         Route::post("/bill/BillFormUpdate", [\App\Http\Controllers\BillController::class, "BillFormUpdate"])->name("BillFormUpdate");
 

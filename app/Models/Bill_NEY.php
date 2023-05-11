@@ -72,66 +72,19 @@ class Bill_NEY extends Model
         return DB::select($query, $params);
     }
 
-//    public static function findBillById($billId)
-//    {
-//        $query = "SELECT * FROM T_BILL_NEY WHERE f_billid = {$billId}";
-//        $params = [];
-//        return DB::select($query, $params);
-//    }
 
-    public static function findBillById($billId)
-    {
+    public static function findBillById($billId){
         $query = "SELECT * FROM T_BILL_NEY WHERE f_billid=:f_billid";
         return DB::select($query, array("f_billid"=>$billId));
     }
 
-    public static function updateBill($request)
-    {
-        $updates = [];
+    public static function updateBill($request){
         $billId = $request['f_billId'];
-        foreach ($request as $key => $value) {
-            if ($value) {
-                $updates[] = "$key = $value";
-            }
-        }
-        array_shift($updates);
-        array_shift($request);
-//        echo"<pre>";
-        $updates = implode(',', $updates);  // => billId = 157,f_shopname = 수정123,f_cp_name = 닫히나,f_name1 = 12
-//        print_r($updates);
-//        print_r($request);
-//        exit;
-
-//        $query = "UPDATE T_BILL_NEY SET $updates WHERE f_billId = '$billId'";
-//        return DB::update($query, array("F_BILLID"=>$billId));
-//        if (DB::table('T_BILL_NEY')->insert($params) === false) {
-//            throw new Exception("등록을 실패하였습니다." . $i);
-//        }
-
-//        $query = 'UPDATE T_BILL_NEY SET F_SHOPNAME = ?, F_CP_NAME = ?, F_NAME1 = ?, F_REP_NAME = ?, F_MOBILE1 = ?, F_REGISTRATION_NUMBER = ?, F_EMAIL1 = ?, f_addr = ? , f_name2 = ? ,
-//                      f_public_addr1 = ?, f_mobile2=?, f_public_addr2=? , f_email2=? , f_bigo=? , f_product1=?, f_unitprice1=?, f_bigo1=?, f_product2=?, f_unitprice2=? , f_bigo2=?,
-//                      f_product3=?,  f_unitprice3= ?, f_bigo3=?, f_product4= ?, f_unitprice4=?, f_bigo4=? WHERE F_BILLID = ?';
-
-//        return DB::update($query, array($request['f_shopname'], $request['f_cp_name'] , $request['f_name1'], $request['f_rep_name'], $request['f_mobile1'],
-//            $request['f_registration_number'], $request['f_email1'], $request['f_addr'], $request['f_name2'],$request['f_public_addr1'],
-//            $request['f_mobile2'], $request['f_public_addr2'], $request['f_email2'], $request['f_bigo'],$request['f_product1'], $request['f_unitprice1'],
-//            $request['f_bigo1'], $request['f_product2'],$request['f_unitprice2'], $request['f_bigo2'], $request['f_product3'], $request['f_unitprice3'],
-//            $request['f_bigo3'], $request['f_product4'],$request['f_unitprice4'], $request['f_bigo4'], $billId));
+        array_shift($request); //identity값인 f_billId 삭제
 
         return DB::table('T_BILL_NEY')
             ->where(['F_BILLID'=> $billId])
             ->update($request);
     }
-
-
-//
-//
-//
-//    public static function findLastBillGroupId()
-//    {
-//        $query = "select * from (select F_BILL_GROUPID from T_BILL_NEY order by F_REGDATE DESC) where rownum <= 1";
-//        $params = [];
-//        return DB::select($query, $params)[0]->f_bill_groupid;
-//    }
 
 }

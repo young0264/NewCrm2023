@@ -28,25 +28,12 @@
             }
         },
 
-
         //bill form 수정 process
         BillFormUpdate: function () {
             var data = {};
             data['f_billId'] = this.billId;
-            // this.billId
-            // for (let idx in f_billForm_param) {
-            //     key = f_billForm_param[idx];
-            //
-            //     // let querySelector = document.querySelector('#update-modal-body').getElementById("#" + key).stringify;
-            //     // let querySelector = document.seri('#update-modal-body').getElementById("#" + key).stringify;
-            //     // let querySelector = $('#update-modal-body').serialize();
-            //     // console.log(querySelector);
-            //     // console.log("querySelectorAll : ", JSON.parse(JSON.stringify(querySelector)));
-            // }
 
-            // 여기가 문제
             //div input값을 가져와 key value쌍 형태로 저장
-
             $("#update-modal-body input").each(function() {
                 console.log("id : ", this.id, " this.value : ", $(this).val());
                 data[this.id] = $(this).val();
