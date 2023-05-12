@@ -108,10 +108,10 @@ class BillController extends BaseController
 
         $items = Bill_NEY::list($wheres, $params);
         $headers = array();
+
         foreach ($items as $key => $item) {
             if ($key > 0)
                 break;
-
             foreach ($item as $header => $i) {
                 if ($header == "f_billid"
                     || $header == "f_bizid"
@@ -155,25 +155,54 @@ class BillController extends BaseController
             ]);
     }
 
+
+    /**
+     * @throws Exception
+     */
     public static function BillFormUpdate(Request $request){
 
-        // 수정할 데이터
-        $parameters = json_decode($request->getContent(), true);
-        // 검색할 데이터
-        $wheres = array("f_billId"=>$parameters['f_billId']);
-        unset($parameters['f_billId']);
-        Bill_NEY::updateBill($parameters, $wheres);
+        try {
+            // 수정할 데이터
+
+            $parameters = json_decode($request->getContent(), true);
+            // 검색할 데이터
+            $wheres = array("f_billId"=>$parameters['f_billId']);
+            unset($parameters['f_billId']);
+            if (empty($parameters || $wheres)) {
+                throw new Exception("수정에 실패하였습니다..");
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                "status" => "error",
+                "msg" => $e->getMessage()
+            ]);
+        }
+
+        if (!Bill_NEY::updateBill($parameters, $wheres)) {
+            throw new Exception("수정시 에러가 발생했습니다. 입력값들을 확인해주세요.");
+        }
     }
 
     public static function findBillById(Request $request){
 
-        $items = Bill_NEY::findBillById($request->input('billId'));
+        try {
+            $items = Bill_NEY::findBillById($request->input('billId'));
+            if(empty($items))
+                throw new Exception("검색 결과가 없습니다.");
+        } catch (Exception $e) {
+            return response()->json([
+                    "status" => "error",
+                    "msg" => $e->getMessage()
+                ]
+            );
+        }
+
         return response()->json(
             [
                 "status" => "ok",
-                "result" => array(
+                "result" => [
                     "item" => json_encode($items)
-                )
+                ]
             ]
         );
     }
@@ -222,27 +251,31 @@ class BillController extends BaseController
         );
 
         try {
+            DB::beginTransaction();
             $results = self::registBillForm($tax_type01, $basic_info_param, $request, $tax_type0306, $asso_array);
 
-            if (!empty($results)) {
-                foreach ($results as $key=>$result) {
-                    if (!Bill_NEY::insertBill($result)) {
-                        throw new Exception(sprintf("%s 번째 등록 시 에러가 발생했습니다.", $key), sprintf("err-%s", $key));
-                    }
-                }
+            if (empty($results)) {
+                throw new Exception("등록할 계산서가 없습니다. 계산서를 등록해주세요.");
             }
+
+            foreach ($results as $key=>$result) {
+                if(empty($result)){
+                    throw new Exception(sprintf("%s번째 계산서 등록에 실패하였습니다.", $key));
+                }
+                Bill_NEY::insertBill($result);
+            }
+
             DB::commit();
             return redirect()->route('chargeMemberRegist');
 
         } catch (Exception $e) {
-            $err_message = $e->getMessage();
-            return response()->json(array(
+            DB::rollBack();
+            return response()->json([
                 "status"=>$e->getCode(),
                 "msg"=>$e->getMessage()
-            ));
+            ]);
         }
     }
-
 
 
     /**
@@ -339,11 +372,11 @@ class BillController extends BaseController
                 $results[] = $params;
             }
         }
-
         return $results;
     }
 
     /**
+     * 01(일반), 0306(공연,위수탁) 계산서 등록
      * @param string $tax_type01
      * @param array $basic_info_param
      * @param Request $request
@@ -365,7 +398,5 @@ class BillController extends BaseController
         $results2 = self::registOf0306($tax_type0306, $asso_array, $basic_info_param, $request);
 
         return array_merge($results1, $results2);
-
     }
-
 }
