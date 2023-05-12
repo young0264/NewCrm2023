@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BillController extends BaseController
@@ -138,6 +139,7 @@ class BillController extends BaseController
                     || $header == "f_unitprice3"
                     || $header == "f_unitprice4"
                     || $header == "f_issue_type"
+                    || $header == "f_loginid"
                 ) {
                     continue;
                 }
@@ -252,13 +254,19 @@ class BillController extends BaseController
 
         try {
             DB::beginTransaction();
-            $results = self::registBillForm($tax_type01, $basic_info_param, $request, $tax_type0306, $asso_array);
-
+            $results = self::getBillAll($tax_type01, $basic_info_param, $request, $tax_type0306, $asso_array);
+            echo "<pre>";
+            print_r("===================");
+            print_r($results);
+//            exit;
             if (empty($results)) {
                 throw new Exception("등록할 계산서가 없습니다. 계산서를 등록해주세요.");
             }
 
+
+
             foreach ($results as $key=>$result) {
+
                 if(empty($result)){
                     throw new Exception(sprintf("%s번째 계산서 등록에 실패하였습니다.", $key));
                 }
@@ -288,11 +296,14 @@ class BillController extends BaseController
      * @return array
      * @throws Exception
      */
-    private static function registOf01(string $tax_type01, array $basic_info_param, Request $request): array{
+    private static function getArrOf01(string $tax_type01, array $basic_info_param, Request $request): array{
         $results = array();
         if ($tax_type01 === "on") {
             for ($i = 1; $i <= 4; $i++) {
                 $params = $basic_info_param;
+                $params["F_LOGINID"] = Auth::user()->email;
+                $params["F_BIG"] =  $request->input('f_bigo');
+
                 if (!empty($_POST['f_product' . $i])) {
                     $params["F_PRODUCT1"] = $request->input('f_product' . $i);
                     $params["F_UNITPRICE1"] = $request->input('f_unitprice' . $i);
@@ -300,7 +311,6 @@ class BillController extends BaseController
                     $params["F_ISSUE_TYPE"] = $request->input('f_issue_type_prod' . $i);
                     $params["F_BIGO"] = $request->input('f_bigo');
                     $params["F_PRICE"] = $request->input('f_unitprice' . $i);
-
                     $params["F_TAX_TYPE"] = "01"; //이용료 분할 계산서 (일반 -> 01)
                     $params["F_ASSO"] = "NORMAL";
 
@@ -355,12 +365,13 @@ class BillController extends BaseController
      * @param Request $request
      * @return array
      */
-    private static function registOf0306(string $tax_type0306, array $asso_array, array $basic_info_param, Request $request): array
+    private static function getArrOf0306(string $tax_type0306, array $asso_array, array $basic_info_param, Request $request): array
     {
         $results = array();
         if ($tax_type0306 == "on") {
             foreach ($asso_array as $key => $val) {
                 $params = $basic_info_param;
+                $params["F_LOGINID"] = Auth::user()->email;
                 $params["F_PRODUCT1"] = $request->input("f_product1_" . strtolower($key));
                 $params["F_UNITPRICE1"] = $request->input("f_unitprice_" . strtolower($key));
                 $params["F_ISSUE_TYPE"] = $request->input("f_issue_type_" . strtolower($key));
@@ -370,6 +381,9 @@ class BillController extends BaseController
                 $params["F_ASSO"] = $key;
 
                 $results[] = $params;
+                echo"<pre>";
+                print_r($params);
+                exit;
             }
         }
         return $results;
@@ -385,18 +399,24 @@ class BillController extends BaseController
      * @return array|null
      * @throws Exception
      */
-    private static function registBillForm(string $tax_type01, array $basic_info_param, Request $request, string $tax_type0306, array $asso_array): ?array
+    private static function getBillAll(string $tax_type01, array $basic_info_param, Request $request, string $tax_type0306, array $asso_array): ?array
     {
         /**
          * [ 이용료 분할 / (세금)계산서 (일반) ] 01 ] --> on일때(각 row insert), off일때(1개 row) 등록 할  array 라턴
          */
-        $results1 = self::registOf01($tax_type01, $basic_info_param, $request);
+        $results1 = self::getArrOf01($tax_type01, $basic_info_param, $request);
 
         /**
          * [공연권료 / (세금)계산서 (위수탁)] 03 06 ] --> on일떄(각 row insert), off(동작 x) 등록할  array 리턴
          */
-        $results2 = self::registOf0306($tax_type0306, $asso_array, $basic_info_param, $request);
+        $results2 = self::getArrOf0306($tax_type0306, $asso_array, $basic_info_param, $request);
+//        $subInfoArr = array(self::getSubInfoArr());
 
         return array_merge($results1, $results2);
     }
+
+//    private static function getSubInfoArr()
+//    {
+//        return ["F_LOGINID" => Auth::user() -> email];
+//    }
 }

@@ -13,17 +13,42 @@
 {{--@endphp--}}
 
 <script>
+    const loginId = null;
 
     let register = {
+        registerAll: function () {
+            this.BillBasicFormRegister();
+            this.BillFormRegister();
+        },
+
         BillFormRegister: function () {
             let method = "POST";
             let url = "{{route("billRegisterProcess")}}";
-            let datas = $('#billForm').serialize();
+            let data = $('#billForm').serialize();
             let dataType = "json";
-            console.log("datas : " + datas);
-            js.ajax_call(method, url, datas, dataType, false, "", true);
+            // console.log("data : " + data);
+            js.ajax_call(method, url, data, dataType, false, "", true);
+
             $('#modal_setting_register').modal('hide');
             window.location.reload();
+        },
+
+        BillBasicFormRegister: function () {
+            let method = "POST";
+            let url = "{{route("pfRegisterProcess")}}";
+            let data = {};
+            let dataType = "json";
+
+            const formData = new FormData(document.getElementById('billFormTax'));
+            data['f_cb'] = document.getElementById('f_cb').value;
+            for (const [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+
+            js.ajax_call(method, url, data, dataType, false, "", true);
+            $('#modal_setting_register').modal('hide');
+            window.location.reload();
+
         },
     };
 
@@ -42,67 +67,78 @@
             return !!con.checked;
         },
     };
-
 </script>
 
 {{-- 청구 대상 등록 설정 모달 시작--}}
 <div class="modal fade" id="modal_setting_register" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
-        <form id="billForm" name="billForm" >
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="fw-bold ">청구 대상 등록 설정</h3>
-                </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="fw-bold ">청구 대상 등록 설정</h3>
+            </div>
 
-                <div class="modal-body">
-                    <h5 class="row mx-3">서비스 이용료나 공연권료 등 생성할 품목과 계산서 종류를 설정합니다. </h5>
+            <div class="modal-body">
+                <h5 class="row mx-3">서비스 이용료나 공연권료 등 생성할 품목과 계산서 종류를 설정합니다. </h5>
 
+                <form id="billFormTax" name="billFormTax">
                     <div class="card-body">
-                        <div class="btn-group">
+                        <div class="btn-group my-2">
                             <label class="btn-group fw-bold ">발행일</label>
-                            <div class=" col-md-2 mx-1">
+                            <div class=" col-md-4 mx-2">
                                 {{--                                                        <label class="btn-group fw-bold ">발행일</label>--}}
                                 {{--                                                        <h6>발행일</h6>--}}
-                                <input class="form-control alert-warning" placeholder="작성일자">
+                                <input class="form-control alert-warning" id="f_issuedate" name="f_issuedate"
+                                       placeholder="작성일자">
                             </div>
-                            <div class="col-sm-2 mx-1">
-                                <select id="f_tax_type" name="f_tax_type" class="btn btn-dark ">
-                                    <option>계산서</option>
-                                    <option>현금영수증</option>
+                            <div class="col-sm-2 mx-2">
+                                <select id="f_tax_issue" name="f_tax_issue" class="btn btn-dark ">
+                                    <option value="normal">계산서</option>
+                                    <option value="cash">현금영수증</option>
                                 </select>
                             </div>
+                            <div class="col-sm-2 mx-2">
+                                <input class="form-control" id="f_opendate" name="f_opendate" placeholder="매장오픈일">
+                            </div>
+                            <div class="col-sm-2 mx-2">
+                                <input class="form-control" id="f_closedate" name="f_closedate" placeholder="매장폐점일">
+                            </div>
+                        </div>
+                        <div class="btn-group my-2">
                             {{--                            --}}
-                            <div class=" col-sm-2 mx-1">
-                                <select class="form-select text-black">
-                                    <option>농어촌</option>
-                                    <option>농촌</option>
-                                    <option>어촌</option>
+                            <div class=" col-sm-2 mx-4">
+                                <select id="f_village" name="f_village" class="form-select text-black">
+                                    <option value="">농어촌</option>
+                                    <option value="farm">농촌</option>
+                                    <option value="fishing">어촌</option>
                                 </select>
                             </div>
-                            <label class="mx-2">공연권료</label>
-                            <div class=" col-sm-1 mx-1 text-black ">
-                                <input class="form-control " placeholder="4,000">
+                            <label >공연권료</label>
+                            <div class=" col-sm-2 mx-4 text-black ">
+                                <input class="form-control" id="f_pf_price" name="f_pf_price" placeholder="공연권료">
                                 {{--                                <input class="form-control " id="f_tax_type" value="03?" placeholder="4,000">--}}
                             </div>
                             <label class="mx-2">면적</label>
-                            <div class=" col-sm-1 mx-1 text-black">
-                                <input class="form-control" placeholder="60">
+                            <div class=" col-sm-1 text-black">
+                                <input class="form-control" id="f_pyung" name="f_pyung" placeholder="60">
                             </div>
                             <span class="text-muted">(㎡)</span>
                         </div>
                     </div>
-
-                    <div class="card-body">
-                        <h5 style="border: 1px dashed #bbb; "></h5>
-                    </div>
-
+                    <input type="hidden" id="f_loginid" name="f_loginid" value="{{Auth::user()->email}}">
+                    {{--                        <input type="hidden" id="f_loginid" name="f_loginid" value="{{$_COOKIE['']}}">--}}
+                </form>
+                <div class="card-body">
+                    <h5 style="border: 1px dashed #bbb; "></h5>
+                </div>
+                <form id="billForm" name="billForm">
                     <div class="card-body row">
                         <div class="btn-group my-1">
                             <div class="col-md-1">
                                 매장명
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control alert-secondary" id="f_shopname" name="f_shopname" placeholder="매장명">
+                                <input class="form-control alert-secondary" id="f_shopname" name="f_shopname"
+                                       placeholder="매장명">
                             </div>
                             <div class="col-md-1 mx-2">
                                 <span></span>
@@ -117,7 +153,8 @@
                                 </select>
                             </div>
                             <div class="col-md-3 mx-2 ">
-                                <select class="form-select alert-info text-black fw-bold" id="f_business" name="f_business">
+                                <select class="form-select alert-info text-black fw-bold" id="f_business"
+                                        name="f_business">
                                     <option value="">업태</option>
                                     <option value="업태option">업태option</option>
                                 </select>
@@ -129,13 +166,15 @@
                                 상호명
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control alert-warning" id="f_cp_name" name="f_cp_name" placeholder="상호명">
+                                <input class="form-control alert-warning" id="f_cp_name" name="f_cp_name"
+                                       placeholder="상호명">
                             </div>
-                            <div class="col-md-1 mx-2">
-                                <span>담당자1</span>
+                            <div class="col-md-1 mx-2 nav-align-right" >
+                                담당자1
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control alert-secondary" id="f_name1" name="f_name1" placeholder="담당자1">
+                                <input class="form-control alert-secondary" id="f_name1" name="f_name1"
+                                       placeholder="담당자1">
                             </div>
                             <div class="col-md-3 mx-2">
                                 <select class="form-select text-black fw-bold" id="f_pay_type" name="f_pay_type">
@@ -151,18 +190,21 @@
                                 대표자명
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control alert-warning" id="f_rep_name" name="f_rep_name" placeholder="대표자명">
+                                <input class="form-control alert-warning" id="f_rep_name" name="f_rep_name"
+                                       placeholder="대표자명">
                             </div>
 
-                            <div class="col-md-1 mx-2 float-end">
-                                <span>연락처1</span>
+                            <div class="col-md-1 mx-2 float-end nav-align-right">
+                                연락처1
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control alert-secondary " id="f_mobile1" name="f_mobile1" placeholder="연락처1">
+                                <input class="form-control alert-secondary " id="f_mobile1" name="f_mobile1"
+                                       placeholder="연락처1">
                             </div>
 
                             <div class="col-md-3 mx-2">
-                                <select class="form-select text-black fw-bold" id="f_pay_interval" name="f_pay_interval">
+                                <select class="form-select text-black fw-bold" id="f_pay_interval"
+                                        name="f_pay_interval">
                                     <option value="">결제주기</option>
                                     <option value="M">월납</option>
                                     <option value="Q">분기납</option>
@@ -179,14 +221,16 @@
                                 사업자번호
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control alert-warning" id="f_registration_number" name="f_registration_number" placeholder="사업자번호">
+                                <input class="form-control alert-warning" id="f_registration_number"
+                                       name="f_registration_number" placeholder="사업자번호">
                             </div>
 
-                            <div class="col-md-1 mx-2 ">
-                                <span>이메일1</span>
+                            <div class="col-md-1 mx-2 nav-align-right">
+                                이메일1
                             </div>
                             <div class="col-md-3 alert-secondary">
-                                <input class="form-control alert-secondary" id="f_email1" name="f_email1" placeholder="이메일1">
+                                <input class="form-control alert-secondary" id="f_email1" name="f_email1"
+                                       placeholder="이메일1">
                             </div>
 
                             <div class="col-md-3 mx-2">
@@ -205,11 +249,12 @@
                                 <input class="form-control alert-secondary" id="f_addr" name="f_addr" placeholder="주소">
                             </div>
 
-                            <div class="col-md-1 mx-2">
-                                <span>담당자2</span>
+                            <div class="col-md-1 mx-2 nav-align-right">
+                                담당자2
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control alert-secondary" id="f_name2" name="f_name2" placeholder="담당자2">
+                                <input class="form-control alert-secondary" id="f_name2" name="f_name2"
+                                       placeholder="담당자2">
                             </div>
 
                             <div class="col-md-3 mx-2">
@@ -225,14 +270,16 @@
                                 발행주소1
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control  alert-secondary" id="f_public_addr1" name="f_public_addr1" placeholder="발행주소1">
+                                <input class="form-control  alert-secondary" id="f_public_addr1" name="f_public_addr1"
+                                       placeholder="발행주소1">
                             </div>
 
-                            <div class="col-md-1 mx-2">
-                                <span>연락처2</span>
+                            <div class="col-md-1 mx-2 nav-align-right">
+                                연락처2
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control alert-secondary" id="f_mobile2" name="f_mobile2" placeholder="연락처2">
+                                <input class="form-control alert-secondary" id="f_mobile2" name="f_mobile2"
+                                       placeholder="연락처2">
                             </div>
 
                             <div class="col-md-3 mx-2">
@@ -248,14 +295,16 @@
                                 발행주소2
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control alert-secondary" id="f_public_addr2" name="f_public_addr2" placeholder="발행주소2">
+                                <input class="form-control alert-secondary" id="f_public_addr2" name="f_public_addr2"
+                                       placeholder="발행주소2">
                             </div>
 
-                            <div class="col-md-1 mx-2">
-                                <span>이메일2</span>
+                            <div class="col-md-1 mx-2 nav-align-right">
+                                이메일2
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control alert-secondary" id="f_email2" name="f_email2" placeholder="이메일2">
+                                <input class="form-control alert-secondary" id="f_email2" name="f_email2"
+                                       placeholder="이메일2">
                             </div>
 
                             <div class="col-md-3 mx-2">
@@ -266,36 +315,43 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="card-body">
                         <div class="form-check form-switch mb-2">
                             <input class="form-check-input" type="checkbox"
-                                   id="tax_type0306" name="tax_type0306" onclick="checkbox.showByChecked('tax_type0306', 'showByCheckedDiv1')" checked />
+                                   id="tax_type0306" name="tax_type0306"
+                                   onclick="checkbox.showByChecked('tax_type0306', 'showByCheckedDiv1')" checked/>
                             <span class="form-check-label fw-bold  text-black"
                             >공연권료 / (세금)계산서 (위수탁)</span>
                         </div>
-                        <div id="showByCheckedDiv1" class="form-control row alert alert-secondary" >
+                        <div id="showByCheckedDiv1" class="form-control row alert alert-secondary">
                             @foreach (\App\Helpers\Common::assoArr() as $key => $val)
-                                <div class="row my-1" >
+                                <div class="row my-1">
                                     <div class="col-md-1 text-black fw-bold">{{$val['name']}}</div>
                                     <div class="col-md-2">
-                                        <input class="form-control text-black" id="f_product1_{{strtolower($key)}}" name="f_product1_{{strtolower($key)}}" placeholder="{{$val['product']}}">
+                                        <input class="form-control text-black" id="f_product1_{{strtolower($key)}}"
+                                               name="f_product1_{{strtolower($key)}}" placeholder="{{$val['product']}}">
                                     </div>
                                     <div class="col-md-2 ">
-                                        <input class="form-control alert-warning text-black" id="f_unitprice_{{strtolower($key)}}" name="f_unitprice_{{strtolower($key)}}" placeholder="1,960">
+                                        <input class="form-control alert-warning text-black"
+                                               id="f_unitprice_{{strtolower($key)}}"
+                                               name="f_unitprice_{{strtolower($key)}}" placeholder="1,960">
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-select alert-warning text-black fw-bold" id="f_issue_type_{{strtolower($key)}}" name="f_issue_type_{{strtolower($key)}}">
+                                        <select class="form-select alert-warning text-black fw-bold"
+                                                id="f_issue_type_{{strtolower($key)}}"
+                                                name="f_issue_type_{{strtolower($key)}}">
                                             <option value="">F_ISSUE_TYPE</option>
                                             <option value="01">영수(01)</option>
                                             <option value="02">청구(02)</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <input id="f_bigo1_{{strtolower($key)}}" name="f_bigo1_{{strtolower($key)}}" class="form-control" placeholder="품목비고1">
+                                        <input id="f_bigo1_{{strtolower($key)}}" name="f_bigo1_{{strtolower($key)}}"
+                                               class="form-control" placeholder="품목비고1">
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control" id="f_bigo_{{strtolower($key)}}" name="f_bigo_{{strtolower($key)}}" placeholder="비고">
+                                        <input class="form-control" id="f_bigo_{{strtolower($key)}}"
+                                               name="f_bigo_{{strtolower($key)}}" placeholder="비고">
                                     </div>
                                 </div>
                             @endforeach
@@ -309,7 +365,8 @@
                                 {{--                                <label class="form-check-label fw-bold text-black">이용료 분할 / (세금)계산서 (일반)</label>--}}
 
                                 <input class="form-check-input" type="checkbox"
-                                       id="tax_type01" name="tax_type01"  onclick="checkbox.showByChecked('tax_type1', null)" checked />
+                                       id="tax_type01" name="tax_type01"
+                                       onclick="checkbox.showByChecked('tax_type1', null)" checked/>
                                 <label class="form-check-label fw-bold text-black">이용료 분할 / (세금)계산서 (일반)</label>
 
                             </div>
@@ -322,22 +379,26 @@
                         <div id="showCheckedDiv2" class="form-control btn-group row alert alert-secondary">
                             @for ($i=1; $i<=4; $i++)
                                 <div class="row my-1">
-                                    <div class="col-md-1 text-black fw-bold" >품목{{$i}}</div>
+                                    <div class="col-md-1 text-black fw-bold">품목{{$i}}</div>
                                     <div class="col-md-2">
-                                        <input class="form-control" id="f_product{{$i}}" name="f_product{{$i}}" placeholder="이용료">
+                                        <input class="form-control" id="f_product{{$i}}" name="f_product{{$i}}"
+                                               placeholder="이용료">
                                     </div>
                                     <div class="col-md-2">
-                                        <input class="form-control alert-warning" id="f_unitprice{{$i}}" name="f_unitprice{{$i}}" placeholder="단가{{$i}}">
+                                        <input class="form-control alert-warning" id="f_unitprice{{$i}}"
+                                               name="f_unitprice{{$i}}" placeholder="단가{{$i}}">
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-select alert-warning text-black fw-bold" id="f_issue_type_prod{{$i}}" name="f_issue_type_prod{{$i}}">
+                                        <select class="form-select alert-warning text-black fw-bold"
+                                                id="f_issue_type_prod{{$i}}" name="f_issue_type_prod{{$i}}">
                                             <option value="">F_ISSUE_TYPE</option>
                                             <option value="01">영수(01)</option>
                                             <option value="02">청구(02)</option>
                                         </select>
                                     </div>
                                     <div class="col-md-5">
-                                        <input class="form-control alert-info" id="f_bigo{{$i}}" name="f_bigo{{$i}}" placeholder="품목비고1">
+                                        <input class="form-control alert-info" id="f_bigo{{$i}}" name="f_bigo{{$i}}"
+                                               placeholder="품목비고1">
                                     </div>
                                 </div>
                             @endfor
@@ -353,8 +414,11 @@
                             <div class="col-md-6 text-center mx-1">
                                 @csrf
                                 <input class="hidden" type="hidden" id="mode" name="mode" value="insert">
-                                <button type="button" class="btn btn-primary" onclick="register.BillFormRegister()"> 신규등록</button>
-                                <button type="button" class="btn btn-secondary" id="modalCloseBtn" onclick="modalClose('modal_setting_register')"> 닫기</button>
+                                <button type="button" class="btn btn-primary" onclick="register.registerAll()"> 신규등록
+                                </button>
+                                <button type="button" class="btn btn-secondary" id="modalCloseBtn"
+                                        onclick="modalClose('modal_setting_register')"> 닫기
+                                </button>
                             </div>
 
                             <div class="col-md-11 float-end">
@@ -363,9 +427,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 {{--                            모달끝--}}

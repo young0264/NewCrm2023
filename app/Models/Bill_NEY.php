@@ -43,7 +43,6 @@ class Bill_NEY extends Model{
 
     public static function list($wheres="", $params) {
 
-
         $query = "select * from (
                     select
                         f_billid, f_bizname, f_shopname, f_price, f_tax,
@@ -54,7 +53,7 @@ class Bill_NEY extends Model{
                         f_product2, f_standard2, f_unitprice2, f_count2, f_price2, f_tax2, f_bigo2,
                         f_product3, f_standard3, f_unitprice3, f_count3, f_price3, f_tax3, f_bigo3,
                         f_product4, f_standard4, f_unitprice4, f_count4, f_price4, f_tax4, f_bigo4,
-                        f_issue_type
+                        f_issue_type, f_loginid
                     from ".self::$use_table."
                         where f_billid is not null
                         {$wheres}
@@ -76,6 +75,7 @@ class Bill_NEY extends Model{
     }
 
     public static function insertBill($parameters) {
-        return DB::table('T_BILL_NEY')->insert($parameters);
+        return DB::table('T_BILL_NEY')
+            ->insert($parameters);
     }
 }

@@ -53,7 +53,12 @@ if (!Auth::check()) {
         Route::post("/bill/list", [\App\Http\Controllers\BillController::class, "listByNEY"])->name("billList");
         Route::post("/bill/findById", [\App\Http\Controllers\BillController::class, "findBillById"])->name("findBillById");
         Route::post("/bill/BillFormUpdate", [\App\Http\Controllers\BillController::class, "BillFormUpdate"])->name("BillFormUpdate");
+        Route::post("/bill/register", [\App\Http\Controllers\BillController::class, "billRegisterProcess"])->name("billRegisterProcess");
 
+        /**
+         * 계산서 상단 TAX
+         */
+        Route::post("tax/register", [\App\Http\Controllers\PFController::class, "pfRegisterProcess"])->name("pfRegisterProcess");
 
         /**
          * 입금내역
@@ -67,7 +72,6 @@ if (!Auth::check()) {
         /**
          * 계산서 CUD
          */
-        Route::post("/bill/register", [\App\Http\Controllers\BillController::class, "billRegisterProcess"])->name("billRegisterProcess");
     });
 }
 
