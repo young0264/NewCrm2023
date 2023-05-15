@@ -55,7 +55,6 @@ if (!Auth::check()) {
         Route::post("/bill/BillFormUpdate", [\App\Http\Controllers\BillController::class, "BillFormUpdate"])->name("BillFormUpdate");
         Route::post("/bill/register", [\App\Http\Controllers\BillController::class, "billRegisterProcess"])->name("billRegisterProcess");
 
-
         /**
          * 입금내역
          */
