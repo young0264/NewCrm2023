@@ -165,29 +165,32 @@ class BillController extends BaseController
     public static function BillFormUpdate(Request $request){
 
         try {
+            DB::beginTransaction();
+
             // 수정할 데이터
             $parameters = json_decode($request->getContent(), true);
             // 검색할 데이터
             $wheres = array("f_billId"=>$parameters['f_billId']);
             unset($parameters['f_billId']);
+
             if (empty($parameters || $wheres)) {
                 throw new Exception("수정에 실패하였습니다..");
+            }else if (!Bill_NEY::updateBill($parameters, $wheres)) {
+                throw new Exception("수정시 에러가 발생했습니다. 입력값들을 확인해주세요.");
             }
+
+            DB::commit();
+            return response()->json([
+                "status" => "ok",
+                "msg" => "정상적으로 수정되었습니다."
+            ]);
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->json([
                 "status" => "error",
                 "msg" => $e->getMessage()
             ]);
         }
-
-        if (!Bill_NEY::updateBill($parameters, $wheres)) {
-            throw new Exception("수정시 에러가 발생했습니다. 입력값들을 확인해주세요.");
-        }
-
-        return response()->json([
-            "status" => "ok",
-            "msg" => "정상적으로 수정되었습니다."
-        ]);
     }
 
     public static function findBillById(Request $request){
