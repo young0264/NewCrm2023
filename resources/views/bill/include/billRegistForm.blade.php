@@ -16,39 +16,16 @@
     const loginId = null;
 
     let register = {
-        registerAll: function () {
-            this.BillBasicFormRegister();
-            this.BillFormRegister();
-        },
-
         BillFormRegister: function () {
             let method = "POST";
             let url = "{{route("billRegisterProcess")}}";
             let data = $('#billForm').serialize();
             let dataType = "json";
-            // console.log("data : " + data);
-            js.ajax_call(method, url, data, dataType, false, "", true);
+            console.log("data : " + data);
+            js.ajax_call(method, url, data, dataType, true);
 
             $('#modal_setting_register').modal('hide');
             window.location.reload();
-        },
-
-        BillBasicFormRegister: function () {
-            let method = "POST";
-            let url = "{{route("pfRegisterProcess")}}";
-            let data = {};
-            let dataType = "json";
-
-            const formData = new FormData(document.getElementById('billFormTax'));
-            data['f_cb'] = document.getElementById('f_cb').value;
-            for (const [key, value] of formData.entries()) {
-                data[key] = value;
-            }
-
-            js.ajax_call(method, url, data, dataType, false, "", true);
-            $('#modal_setting_register').modal('hide');
-            window.location.reload();
-
         },
     };
 
@@ -80,7 +57,8 @@
             <div class="modal-body">
                 <h5 class="row mx-3">서비스 이용료나 공연권료 등 생성할 품목과 계산서 종류를 설정합니다. </h5>
 
-                <form id="billFormTax" name="billFormTax">
+                <form id="billForm" name="billForm">
+                    {{-- 상단 공연정보 시작 --}}
                     <div class="card-body">
                         <div class="btn-group my-2">
                             <label class="btn-group fw-bold ">발행일</label>
@@ -124,13 +102,21 @@
                             <span class="text-muted">(㎡)</span>
                         </div>
                     </div>
-                    <input type="hidden" id="f_loginid" name="f_loginid" value="{{Auth::user()->email}}">
-                    {{--                        <input type="hidden" id="f_loginid" name="f_loginid" value="{{$_COOKIE['']}}">--}}
-                </form>
-                <div class="card-body">
-                    <h5 style="border: 1px dashed #bbb; "></h5>
-                </div>
-                <form id="billForm" name="billForm">
+{{--                    @if(Auth::check())--}}
+{{--                        {{Auth::user()->email}}--}}
+{{--                    @endif--}}
+{{--                    <input type="hidden" id="f_loginid" name="f_loginid" value="{{Auth::user()->email}}">--}}
+
+                    @if(Auth::check() && !empty(Auth::user()->email))
+                        {{ Auth::user()->email }}
+                        <input type="hidden" id="f_loginid" name="f_loginid" value="{{ Auth::user()->email }}">
+                    @endif
+
+                    {{-- 공연정보 끝 --}}
+                    {{-- 계산서 기본데이터 Form 시작 --}}
+                    <div class="card-body">
+                        <h5 style="border: 1px dashed #bbb; "></h5>
+                    </div>
                     <div class="card-body row">
                         <div class="btn-group my-1">
                             <div class="col-md-1">
@@ -315,7 +301,9 @@
                             </div>
                         </div>
                     </div>
+                    {{-- 계산서 기본데이터 form 끝 --}}
                     <div class="card-body">
+                        {{-- 공연권료 / (세금)계산서 (위수탁) 시작 --}}
                         <div class="form-check form-switch mb-2">
                             <input class="form-check-input" type="checkbox"
                                    id="tax_type0306" name="tax_type0306"
@@ -356,7 +344,9 @@
                                 </div>
                             @endforeach
                         </div>
+                        {{-- 공연권료 / (세금)계산서 (위수탁) 끝 --}}
 
+                        {{-- 이용료 분할 / (세금)계산서 (일반) 시작  --}}
                         <div class="form-check btn-group form-switch mb-2 ">
                             <div class="col-md-12">
                                 {{--                                <input id="showChecked2" class="form-check-input" type="checkbox" checked/>--}}
@@ -375,7 +365,6 @@
                                 <input id="f_bigo" name="f_bigo" class="form-control alert-info" placeholder="비고">
                             </div>
                         </div>
-
                         <div id="showCheckedDiv2" class="form-control btn-group row alert alert-secondary">
                             @for ($i=1; $i<=4; $i++)
                                 <div class="row my-1">
@@ -403,7 +392,9 @@
                                 </div>
                             @endfor
                         </div>
+                        {{-- 이용료 분할 / (세금)계산서 (일반) 끝  --}}
                     </div>
+
                     <div class="card-body">
                         <div class="btn-group">
                             <div class="col-md-12">
@@ -414,7 +405,7 @@
                             <div class="col-md-6 text-center mx-1">
                                 @csrf
                                 <input class="hidden" type="hidden" id="mode" name="mode" value="insert">
-                                <button type="button" class="btn btn-primary" onclick="register.registerAll()"> 신규등록
+                                <button type="button" class="btn btn-primary" onclick="register.BillFormRegister()"> 신규등록
                                 </button>
                                 <button type="button" class="btn btn-secondary" id="modalCloseBtn"
                                         onclick="modalClose('modal_setting_register')"> 닫기

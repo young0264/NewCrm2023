@@ -3,11 +3,27 @@
     /**
      *  bill update form
      */
+    let f_billForm_param = Array(
+        'f_shopname', 'f_cb', 'f_business', 'f_cp_name', 'f_name1', 'f_pay_type', 'f_rep_name', 'f_mobile1', 'f_pay_interval',
+        'f_registration_number', 'f_email1', 'f_history', 'f_addr', 'f_name2', 'f_reply', 'f_public_addr1', 'f_mobile2', 'f_statement',
+        'f_public_addr2', 'f_email2', 'f_tax_bill', 'f_product1', 'f_product2', 'f_product3', 'f_product4', 'f_unitprice1',
+        'f_unitprice2', 'f_unitprice3', 'f_unitprice4', 'f_issue_type','f_bigo', 'f_bigo1', 'f_bigo2', 'f_bigo3', 'f_bigo4',
+
+    );
+
+    let f_billForm_param_pf = Array(
+        //공연정보
+        // "f_loginid",
+        "f_pf_price", "f_pyung", "f_issuedate", "f_opendate", "f_closedate"
+        , "f_tax_issue", "f_village"
+    );
+
+    let billForm_keys = f_billForm_param.concat(f_billForm_param_pf);
+
     let update = {
-        jsonOfBillInfo: null,
         billId: null,
         loginId: null,
-
+        jsonOfBillInfo: null,
         //bill form 정보 가져오기
         BillFormShow: function (billId, loginId) {
             this.billId = billId;
@@ -16,22 +32,18 @@
             // 모달창을 엽니다.
             const modal = new bootstrap.Modal(document.querySelector('#modal_setting_update'));
             modal.show();
-
             //DB에서 bill id값이 같은 row의 column을 가져옵니다.
-            let billInfo = js.ajax_call("POST", "{{route("findBillById")}}", {"billId": billId}, "json", false, "", true);
-
-            //String타입을 json형식으로 변환해 jsonOfBillInfo 저장합니다.
+            let billInfo = js.ajax_call("POST", "{{route("findBillById")}}", {"billId" : billId, "loginId" : loginId}, "json", false, "", true);
+            //String타입을 json형식으로 변환해 jsonOfBillInfo에 저장합니다.
             this.jsonOfBillInfo = JSON.parse(billInfo['item']);
 
             //TODO
             //input box의 id에 해당하는 value를 jsonOfBillInfo에서 가져온 값으로 초기화해줍니다.
-            for (let idx in f_billForm_param) {
-                key = f_billForm_param[idx];
-                document.querySelector('#update-modal-body').querySelector("#" + key).value = this.jsonOfBillInfo[0][f_billForm_param[idx]];
-            }
-            // f_billForm_param.forEach(function (key) {
-            //     document.querySelector('#update-modal-body').querySelector("#" + this.key).value = this.jsonOfBillInfo[0][this.key];
-            // });
+            billForm_keys.forEach(function (key) {
+                console.log("key : " + key);
+                console.log("value : " + update.jsonOfBillInfo[key]);
+                document.querySelector('#update-modal-body').querySelector("#" + key).value = update.jsonOfBillInfo[key];
+            });
 
         },
 
@@ -39,16 +51,15 @@
         BillFormUpdate: function () {
             var data = {};
             data['f_billId'] = this.billId;
+            data['f_loginId'] = this.loginId;
 
             //div input값을 가져와 key value쌍 형태로 data에 저장 후, JSON으로 변환
             $("#update-modal-body input").each(function () {
                 data[this.id] = $(this).val();
             });
 
-            var jsonData = JSON.stringify(data);
-
             //DB에서 bill id값이 같은 row의 column들을 update해줍니다.
-            js.ajax_call("POST", "{{route("BillFormUpdate")}}", jsonData, "json", false, "", true);
+            js.ajax_call("POST", "{{route("BillFormUpdate")}}", data, "json", false, "", true);
             $('#modal_setting_update').modal('hide');
             window.location.reload();
         },
@@ -66,58 +77,58 @@
                 <div class="update-modal-body" id="update-modal-body">
                     <h5 class="row mx-3">서비스 이용료나 공연권료 등 생성할 품목과 계산서 종류를 설정합니다. </h5>
                     {{--공연쪽 head 시작--}}
-{{--                    <div id="t_bill_body">--}}
-{{--                        <div class="card-body">--}}
-{{--                            <div class="btn-group my-2">--}}
-{{--                                <label class="btn-group fw-bold ">발행일</label>--}}
-{{--                                <div class=" col-md-4 mx-1">--}}
+                    <div id="t_bill_pf_body" >
+                        <div class="card-body">
+                            <div class="btn-group my-2">
+                                <label class="btn-group fw-bold ">발행일</label>
+                                <div class=" col-md-4 mx-1">
 {{--                                                                                            <label class="btn-group fw-bold ">발행일</label>--}}
 {{--                                                                                            <h6>발행일</h6>--}}
-{{--                                    <input class="form-control alert-warning" id="f_issuedate" name="f_issuedate"--}}
-{{--                                           placeholder="작성일자">--}}
-{{--                                </div>--}}
-{{--                                <div class="col-sm-2 mx-1">--}}
-{{--                                    <select id="f_tax_issue" name="f_tax_issue" class="btn btn-dark ">--}}
-{{--                                        <option value="normal">계산서</option>--}}
-{{--                                        <option value="cash">현금영수증</option>--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                                <div class="col-sm-2 mx-1">--}}
-{{--                                    <input class="form-control" id="f_opendate" name="f_opendate" placeholder="매장오픈일">--}}
-{{--                                </div>--}}
-{{--                                <div class="col-sm-2 mx-1">--}}
-{{--                                    <input class="form-control" id="f_closedate" name="f_closedate" placeholder="매장폐점일">--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div class="btn-group my-2">--}}
+                                    <input class="form-control alert-warning" id="f_issuedate" name="f_issuedate"
+                                           placeholder="작성일자" disabled>
+                                </div>
+                                <div class="col-sm-2 mx-1">
+                                    <select id="f_tax_issue" name="f_tax_issue" class="btn btn-dark " disabled>
+                                        <option value="normal">계산서</option>
+                                        <option value="cash">현금영수증</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2 mx-1">
+                                    <input class="form-control" id="f_opendate" name="f_opendate" placeholder="매장오픈일" disabled>
+                                </div>
+                                <div class="col-sm-2 mx-1">
+                                    <input class="form-control" id="f_closedate" name="f_closedate" placeholder="매장폐점일" disabled>
+                                </div>
+                            </div>
+                            <div class="btn-group my-2">
 
-{{--                                <div class=" col-sm-2 mx-4">--}}
-{{--                                    <select id="f_village" name="f_village" class="form-select text-black">--}}
-{{--                                        <option value="">농어촌</option>--}}
-{{--                                        <option value="farm">농촌</option>--}}
-{{--                                        <option value="fishing">어촌</option>--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                                <label >공연권료</label>--}}
-{{--                                <div class=" col-sm-2 mx-4 text-black ">--}}
-{{--                                    <input class="form-control" id="f_pf_price" name="f_pf_price" placeholder="공연권료">--}}
+                                <div class=" col-sm-2 mx-4">
+                                    <select id="f_village" name="f_village" class="form-select text-black" disabled>
+                                        <option value="">농어촌</option>
+                                        <option value="farm">농촌</option>
+                                        <option value="fishing">어촌</option>
+                                    </select>
+                                </div>
+                                <label >공연권료</label>
+                                <div class=" col-sm-2 mx-4 text-black ">
+                                    <input class="form-control" id="f_pf_price" name="f_pf_price" placeholder="공연권료" disabled>
 {{--                                                                    <input class="form-control " id="f_tax_type" value="03?" placeholder="4,000">--}}
-{{--                                </div>--}}
-{{--                                <label class="mx-2">면적</label>--}}
-{{--                                <div class=" col-sm-1 text-black">--}}
-{{--                                    <input class="form-control" id="f_pyung" name="f_pyung" placeholder="60">--}}
-{{--                                </div>--}}
-{{--                                <span class="text-muted">(㎡)</span>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
+                                </div>
+                                <label class="mx-2">면적</label>
+                                <div class=" col-sm-1 text-black">
+                                    <input class="form-control" id="f_pyung" name="f_pyung" placeholder="60" disabled>
+                                </div>
+                                <span class="text-muted">(㎡)</span>
+                            </div>
+                        </div>
+                    </div>
                     {{--공연쪽 head 끝--}}
 
                     <div class="card-body">
                         <h5 style="border: 1px dashed #bbb; "></h5>
                     </div>
 
-                    <div id="t_bill_tax_body">
+                    <div id="t_bill_body">
                         <div class="card-body row">
                             <div class="btn-group my-1">
                                 <div class="col-md-1">
@@ -345,31 +356,28 @@
                             </div>
                         </div>
                         <div class="card-body">
-                    <div class="btn-group">
-                            <div class="col-md-12">
-                                <label>
-                                    {{--                                    <input class="form-check-input me-1" type="checkbox" disabled>--}}
-                                    계산서 즉시 생성
-                                </label>
-                            </div>
-                            <div class="col-md-6 text-center mx-1">
-                                {{--                                @csrf--}}
-                                {{--                                <input class="hidden" type="hidden" id="mode" name="mode" value="update">--}}
-                                <button type="button" class="btn btn-primary" onclick="update.BillFormUpdate()"> 수정
-                                </button>
-                                <button type="button" class="btn btn-secondary"
-                                        onclick="modalClose('modal_setting_update')"> 닫기
-                                </button>
-                            </div>
+                            <div class="btn-group">
+                                <div class="col-md-12">
+                                    <label>
+                                        계산서 즉시 생성
+                                    </label>
+                                </div>
+                                <div class="col-md-6 text-center mx-1">
+                                    <button type="button" class="btn btn-primary" onclick="update.BillFormUpdate()"> 수정
+                                    </button>
+                                    <button type="button" class="btn btn-secondary"
+                                            onclick="modalClose('modal_setting_update')"> 닫기
+                                    </button>
+                                </div>
 
-                            <div class="col-md-11 float-end">
-                                <button type="button" class="btn btn-success float-end "> 중복내역
-                                </button>
+                                <div class="col-md-11 float-end">
+                                    <button type="button" class="btn btn-success float-end "> 중복내역
+                                    </button>
+                                </div>
                             </div>
                         </div>
-
-                </div>
                     </div>
+                </div>
             </div>
         </form>
     </div>
