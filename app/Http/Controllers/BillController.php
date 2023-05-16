@@ -168,17 +168,13 @@ class BillController extends BaseController
             DB::beginTransaction();
             $parameters = $request;
             $bill_wheres = array("f_billId"=>$parameters['f_billId']);
-            $bill_wheres_pf = array("f_loginId"=>$parameters['f_loginId']);
-            $BillPFInfo = self::getBillPFInfo();
-            unset($BillPFInfo[array_search("f_loginid", $BillPFInfo)]);
-//            $paramOfBill_pf = self::makeToAssocidateArray($BillPFInfo, $request);
-            $paramOfBill_basic = self::makeToAssocidateArray(self::getBillBasicInfo(), $request);
 
+            $BillBasicInfo= self::getBillBasicInfo();
+            $paramOfBill_basic = self::makeToAssocidateArray($BillBasicInfo, $request);
 
             if (empty($parameters || $bill_wheres)) {
-                throw new Exception("수정에 실패하였습니다..");
-//                || !Bill_PF_NEY::updateBill($paramOfBill_pf, $bill_wheres_pf)
-            }else if (!Bill_NEY::updateBill($paramOfBill_basic, $bill_wheres) ) {
+                throw new Exception("수정에 실패하였습니다.");
+            }else if (!Bill_NEY::updateBill($paramOfBill_basic, $bill_wheres)) {
                 throw new Exception("수정시 에러가 발생했습니다. 입력값들을 확인해주세요.");
             }
 
@@ -205,7 +201,6 @@ class BillController extends BaseController
             $bill_items = Bill_NEY::findBillById($request->input('billId'));
             $bill_pf_items = Bill_PF_NEY::findBillById($request->input('loginId'));
             $items =  (array)$bill_pf_items[0] + (array)$bill_items[0] ;
-
             if (empty($bill_items) || empty($bill_pf_items)) {
                 throw new Exception("검색 결과가 없습니다.");
             }
@@ -386,9 +381,6 @@ class BillController extends BaseController
          * $billData_01   : [ 이용료 분할 / (세금)계산서 (일반) ] 01 ] --> on일때(각 row insert), off일때(1개 row) 등록할  array 리턴
          * $billData_0306 : [공연권료 / (세금)계산서 (위수탁)] 03 06 ] --> on일떄(각 row insert), off(동작 x) 등록할  array 리턴
          */
-//        echo "<pre>";
-//        print_r($request->input('f_loginid'));
-//        exit;
         $billData_01 = self::getInfo_01($tax_type01, $basic_info_param, $request);
         $billData_0306 = self::getInfo_0306($tax_type0306, $basic_info_param, $request);
 
@@ -415,16 +407,12 @@ class BillController extends BaseController
         return array(
             'f_shopname', 'f_cb', 'f_business', 'f_cp_name', 'f_name1', 'f_pay_type', 'f_rep_name', 'f_mobile1',
             'f_pay_interval', 'f_registration_number', 'f_email1', 'f_history', 'f_addr', 'f_name2', 'f_reply',
-            'f_public_addr1', 'f_mobile2', 'f_statement', 'f_public_addr2', 'f_email2', 'f_tax_bill');
+            'f_public_addr1', 'f_mobile2', 'f_statement', 'f_public_addr2', 'f_email2', 'f_tax_bill','f_issue_type');
     }
 
     private static function getBillPFInfo()
     {
-        return array("f_loginid", "f_tax_issue", "f_pf_price", "f_pyung", "f_village", "f_issuedate", "f_opendate", "f_closedate", "f_cb",);
-    }
-    private static function getBillPFInfo_update()
-    {
-        return array("f_loginid", "f_tax_issue", "f_pf_price", "f_pyung", "f_village", "f_issuedate", "f_opendate", "f_closedate", "f_cb",);
+        return array("f_loginid", "f_tax_issue", "f_pf_price", "f_pyung", "f_village", "f_issuedate", "f_opendate", "f_closedate",);
     }
 
 }

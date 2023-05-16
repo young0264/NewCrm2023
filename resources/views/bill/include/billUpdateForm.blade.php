@@ -14,8 +14,7 @@
     let f_billForm_param_pf = Array(
         //공연정보
         // "f_loginid",
-        "f_pf_price", "f_pyung", "f_issuedate", "f_opendate", "f_closedate"
-        , "f_tax_issue", "f_village"
+        "f_pf_price", "f_pyung", "f_issuedate", "f_opendate", "f_closedate", "f_tax_issue", "f_village"
     );
 
     let billForm_keys = f_billForm_param.concat(f_billForm_param_pf);
@@ -32,19 +31,18 @@
             // 모달창을 엽니다.
             const modal = new bootstrap.Modal(document.querySelector('#modal_setting_update'));
             modal.show();
+
             //DB에서 bill id값이 같은 row의 column을 가져옵니다.
             let billInfo = js.ajax_call("POST", "{{route("findBillById")}}", {"billId" : billId, "loginId" : loginId}, "json", false, "", true);
+
             //String타입을 json형식으로 변환해 jsonOfBillInfo에 저장합니다.
             this.jsonOfBillInfo = JSON.parse(billInfo['item']);
 
             //TODO
             //input box의 id에 해당하는 value를 jsonOfBillInfo에서 가져온 값으로 초기화해줍니다.
             billForm_keys.forEach(function (key) {
-                console.log("key : " + key);
-                console.log("value : " + update.jsonOfBillInfo[key]);
                 document.querySelector('#update-modal-body').querySelector("#" + key).value = update.jsonOfBillInfo[key];
             });
-
         },
 
         //bill form 수정 process
@@ -53,9 +51,17 @@
             data['f_billId'] = this.billId;
             data['f_loginId'] = this.loginId;
 
-            //div input값을 가져와 key value쌍 형태로 data에 저장 후, JSON으로 변환
-            $("#update-modal-body input").each(function () {
-                data[this.id] = $(this).val();
+            //div input과 select값을 가져와 key value쌍 형태로 data에 저장 후, JSON으로 변환
+            $("#update-modal-body input, #update-modal-body select").each(function () {
+
+                //f_issue_type의 id는 1개로 고정이므로 null값이 덮어씌워지기 전에 따로 처리해줍니다.
+                if (this.id === 'f_issue_type') {
+                    if ($(this).val()) {
+                        data[this.id] = $(this).val();
+                    }
+                }else{
+                    data[this.id] = $(this).val();
+                }
             });
 
             //DB에서 bill id값이 같은 row의 column들을 update해줍니다.
@@ -82,8 +88,6 @@
                             <div class="btn-group my-2">
                                 <label class="btn-group fw-bold ">발행일</label>
                                 <div class=" col-md-4 mx-1">
-{{--                                                                                            <label class="btn-group fw-bold ">발행일</label>--}}
-{{--                                                                                            <h6>발행일</h6>--}}
                                     <input class="form-control alert-warning" id="f_issuedate" name="f_issuedate"
                                            placeholder="작성일자" disabled>
                                 </div>
@@ -151,8 +155,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3 mx-2 ">
-                                    <select class="form-select alert-info text-black fw-bold" id="f_business"
-                                            name="f_business">
+                                    <select class="form-select alert-info text-black fw-bold" id="f_business" name="f_business">
                                         <option value="">업태</option>
                                         <option value="업태option">업태option</option>
                                     </select>
