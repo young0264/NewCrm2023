@@ -77,7 +77,15 @@ class DepositController extends BaseController{
 
     public function export(Request $request)
     {
-        $param = ($request -> input())['parameter'];
+//        echo "<pre>";
+//        print_r($request->input());
+//        exit;
+        $param = array();
+        if (empty($request->input())) {
+            $param['parameter']=array();
+        }else{
+            $param = (@$request -> input())['parameter'];
+        }
         $sch_year = @$param['sch_year'];
         $sch_month = @$param['sch_month'];
         $sch_day = @$param['sch_day'];
