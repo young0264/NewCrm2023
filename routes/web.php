@@ -59,9 +59,10 @@ if (!Auth::check()) {
          * 입금내역
          */
         Route::get("/deposit/history", [\App\Http\Controllers\DepositController::class, "history"])->name("depositHistory");
-        Route::get("/deposit/search", [\App\Http\Controllers\DepositController::class, "search"])->name("depositSearch");
+        Route::get("/deposit/search", [\App\Http\Controllers\DepositController::class, "list"])->name("depositSearch"); //
         Route::get("/deposit/match/1", [\App\Http\Controllers\DepositController::class, "match1"])->name("depositMatch1");
         Route::get("/deposit/match/2", [\App\Http\Controllers\DepositController::class, "match2"])->name("depositMatch2");
+        Route::post("/deposit/save", [\App\Http\Controllers\DepositController::class, "save"])->name("depositUpload");
 
 
         /**

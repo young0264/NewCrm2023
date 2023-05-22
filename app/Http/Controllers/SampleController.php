@@ -68,18 +68,15 @@ class SampleController extends Controller
 
         // Collection 사용 방법
         $items = Excel::toArray(new SampleImport, Storage::disk('public')->path($path))[0];
-
         $results = array();
-        foreach ($items as $num=>$item) {
-            if ($num == 0)
-                $headers = $item;
 
-            if ($num == 0 || $num > 10)
-                continue;
+        foreach ($items as $num=>$item) {
+            if ($num == 0) $headers = $item;
+
+            if ($num == 0 || $num > 10) continue;
 
             $results[] = $item;
         }
-
         return response()->json(
             [
                 "status"=>"ok",
@@ -230,11 +227,11 @@ class SampleController extends Controller
 
 
         $aa = \Mointeng\SQLRelay\Connectors\OracleConnector::connect($config);
-        print_r($aa);
-        exit;
+//        print_r($aa);
+//        exit;
 //
 //
-        print_r($aa);
+//        print_r($aa);
 
 //        $relay = new OracleConnector($config);
 //        echo '<pre>';

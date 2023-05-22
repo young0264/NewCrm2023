@@ -2,6 +2,75 @@
 @extends('layouts.app')
 @section('content')
 
+<script>
+    function onSearch(formid) {
+        document.getElementById(formid).submit();
+    }
+
+    function modalClose(modalId) {
+        $('#'+modalId).modal('hide');
+    }
+    const excel = {
+        upload:function() {
+
+            const file = document.getElementById("file");
+            let form = new FormData();
+            const pay_systems = (document.getElementsByName("f_pay_system"));
+
+            form.append("file", file.files[0]);
+
+            pay_systems.forEach(function (item, index) {
+                if (item.checked) {
+                    alert(item.value);
+                    // checked_data['f_pay_system'] = item.value;
+                    form.append('f_pay_system', item.value);
+                }
+            });
+
+            $.ajax({
+                // ('excelImportProcess')
+                url : "{{route('depositUpload')}}",
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                type : "POST",
+                processData : false,
+                contentType : false,
+                data : form,
+                dataType : "json",
+                success: function (response) {
+                    if (response['status'] === "ok") {
+                        alert("deposit save status ok");
+                        modalClose('deposit_upload');
+                    }
+                },
+                error: function (err) {
+                    alert("error : " + err.responseText);
+                }
+            });
+        },
+
+        onBankSave: function (depositData) {
+
+            fetch('/deposit/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                body: JSON.stringify(depositData)
+            })
+                .then(response => {
+                    if (!response) {
+                        throw new Error('서버에서 응답이 없습니다.');
+                    }
+                    alert('등록 완');
+                })
+                .catch(error => {
+                    alert("error : " + error.message);
+                });
+        },
+    }
+</script>
+
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">정산 / 입금내역 / </span>입금내역 등록, 조회
@@ -17,27 +86,31 @@
                         <h4 class="card-header text-primary">입금 등록 현황</h4>
 
                         <div class="card-body">
-                            <div class="card-body">
+                            <form id="search_form">
+                                <div class="card-body">
                                 <div class="my-2">
                                     <div class="btn-group">
-                                        <select class="form-select">
-                                            <option>2023년</option>
-                                            <option>2022년</option>
-                                            <option>2021년</option>
+                                        <select class="form-select" id="sch_year" name="sch_year">
+                                            <option value="">연도선택</option>
+                                            <option value="2023" {{request('sch_year')=="2023" ? "selected" : ""}}>2023년</option>
+                                            <option value="2022" {{request('sch_year')=="2022" ? "selected" : ""}}>2022년</option>
+                                            <option value="2021" {{request('sch_year')=="2021" ? "selected" : ""}}>2021년</option>
                                         </select>
                                     </div>
                                     <div class="btn-group">
-                                        <select class="form-select">
-                                            <option>4월</option>
-                                            <option>3월</option>
-                                            <option>2월</option>
+                                        <select class="form-select" id="sch_month" name="sch_month">
+                                            <option value="">월선택</option>
+                                            @for($i=1; $i<=12; $i++)
+                                                <option value="{{sprintf("%02d", $i)}}" {{request('sch_month')==sprintf("%02d", $i) ? "selected" : ""}}>{{sprintf("%02d", $i)}}월</option>
+                                            @endfor
                                         </select>
                                     </div>
                                     <div class="btn-group">
-                                        <select class="form-select">
-                                            <option>일선택</option>
-                                            <option>1일</option>
-                                            <option>31일</option>
+                                        <select class="form-select" id="sch_day" name="sch_day">
+                                            <option value="">일선택</option>
+                                            @for($i=1; $i<=31; $i++)
+                                                <option value="{{sprintf("%02d", $i)}}" {{request('sch_day')==sprintf("%02d", $i) ? "selected" : ""}}>{{sprintf("%02d", $i)}}일</option>
+                                            @endfor
                                         </select>
                                     </div>
                                     <div class="btn-group">
@@ -52,21 +125,29 @@
                                 </div>
                                 <div>
                                     <div class="btn-group">
-                                        <select class="form-select">
-                                            <option>계좌</option>
-                                            <option>계좌1</option>
-                                            <option>계좌2</option>
+                                        <select class="form-select" name="f_account">
+                                            <option value="">계좌선택</option>
+                                            <option value="account_all">계좌전체</option>
+                                            <option value="592201-01-513261" {{request('f_account')=="592201-01-513261" ? "selected" : ""}}>592201-01-513261</option>
+                                            <option value="140-009-167369" {{request('f_account')=="140-009-167369" ? "selected" : ""}}>140-009-167369</option>
                                         </select>
                                     </div>
                                     <div class="btn-group">
-                                        <select class="form-select">
-                                            <option>검색 필드선택</option>
-                                            <option>필드1</option>
-                                            <option>필드22</option>
+                                        <select class="form-select" id="sch_cols" name="sch_cols">
+                                            <option value="">검색 필드선택</option>
+                                            <option value="sch_all" {{request('sch_cols')=="sch_all" ? "selected" : ""}}>전체</option>
+                                            <option value="f_company" {{request('sch_cols')=="f_company" ? "selected" : ""}}>기업명</option>
+                                            <option value="f_client" {{request('sch_cols')=="f_client" ? "selected" : ""}}>의뢰인</option>
+                                            <option value="f_payment" {{request('sch_cols')=="f_payment" ? "selected" : ""}}>입금액</option>
+                                            <option value="f_trans_type" {{request('sch_cols')=="f_trans_type" ? "selected" : ""}}>거래구분</option>
+                                            <option value="f_trade_branch" {{request('sch_cols')=="f_trade_branch" ? "selected" : ""}}>거래점</option>
                                         </select>
                                     </div>
                                     <div class="btn-group">
-                                        <input class="form-control" placeholder="검색어를 입력하세요.">
+                                        <input class="form-control" id="sch_val" name="sch_val" placeholder="검색어를 입력하세요.">
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn btn-success" onclick="onSearch('search_form')">검색</button>
                                     </div>
 
                                     <div class="btn-group float-end mx-1">
@@ -98,23 +179,25 @@
                                                     <div class="card-body">
                                                         <h5 class="text-black ">입금내역 유형을 선택하세요</h5>
                                                         <div class="alert-secondary rounded ">
-                                                            <div class="card-body row">
+                                                            <div class="card-body row" id="radio_check">
                                                                 <div class="my-2">
-                                                                    <input  type="radio"><span class="text-black fw-bold">무통장</span>
+                                                                    <input  type="radio" id="f_pay_system1" name="f_pay_system" value="무통장"><span class="text-black fw-bold mx-1">무통장</span>
                                                                 </div>
+
                                                                 <div class="my-2">
-                                                                    <input  type="radio"><span class="text-black fw-bold">CMS</span>
+                                                                    <input  type="radio" id="f_pay_system2" name="f_pay_system" value="CMS"><span class="text-black fw-bold mx-1">CMS</span>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
                                                         <h5 class="text-black ">입금내역 엑셀 파일을 선택하세요.</h5>
-                                                        <input class="form-control " type="file" id="formFileDisabled" disabled />
+                                                        <input type="file" class="form-control" id="file" name="file" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
                                                     </div>
                                                     <div class="text-center">
-                                                        <button class="btn btn-primary">업로드</button>
-                                                        <button class="btn btn-secondary">취소</button>
+                                                        <button class="btn btn-primary" type="button" id="btn"  onclick="excel.upload()">업로드</button>
+                                                        {{--  <button class="btn btn-primary">업로드</button>  --}}
+                                                        <button class="btn btn-secondary" onclick="modalClose('deposit_upload')">취소</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -122,11 +205,11 @@
                                     </div>
                                 </div>
                             </div>
-
+                            </form>
                             <table class="table">
                                 <thead class="table-primary">
                                 <tr>
-                                    <th>입금코드</th>
+                                    <th>기업명</th>
                                     <th>은행</th>
                                     <th>계좌</th>
                                     <th>거래일자</th>
@@ -134,60 +217,23 @@
                                     <th>입금액</th>
                                     <th>거래구분</th>
                                     <th>거래점</th>
+                                    <th>작성자</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="text-black">
-                                    <td>CMS</td>
-                                    <td>국민</td>
-                                    <td>5434153-01-54153135</td>
-                                    <td>2023-03-03</td>
-                                    <td><span class="badge badge-center bg-warning">C</span> YES24</td>
-                                    <td class="text-primary">61,600</td>
-                                    <td>전자금융</td>
-                                    <td>하나은행</td>
-                                </tr>
-                                <tr class="text-black">
-                                    <td>CMS</td>
-                                    <td>국민</td>
-                                    <td>5434153-01-54153135</td>
-                                    <td>2023-03-03</td>
-                                    <td><span class="badge badge-center bg-warning">C</span> YES24</td>
-                                    <td class="text-primary">61,600</td>
-                                    <td>전자금융</td>
-                                    <td>하나은행</td>
-                                </tr>
-                                <tr class="text-black">
-                                    <td>CMS</td>
-                                    <td>국민</td>
-                                    <td>5434153-01-54153135</td>
-                                    <td>2023-03-03</td>
-                                    <td><span class="badge badge-center bg-primary">무</span> YES24</td>
-                                    <td class="text-primary">61,600</td>
-                                    <td>전자금융</td>
-                                    <td>신한은행</td>
-                                </tr>
-                                <tr class="text-black">
-                                    <td>CMS</td>
-                                    <td>국민</td>
-                                    <td>5434153-01-54153135</td>
-                                    <td>2023-03-03</td>
-                                    <td><span class="badge badge-center bg-warning">C</span> YES24</td>
-                                    <td class="text-primary">61,600</td>
-                                    <td>전자금융</td>
-                                    <td>우리은행</td>
-                                </tr>
-                                <tr class="text-black">
-                                    <td>CMS</td>
-                                    <td>국민</td>
-                                    <td>5434153-01-54153135</td>
-                                    <td>2023-03-03</td>
-                                    <td><span class="badge badge-center bg-primary">무</span> YES24</td>
-                                    <td class="text-primary">61,600</td>
-                                    <td>전자금융</td>
-                                    <td>국민은행</td>
-                                </tr>
-
+                                @foreach($depositList as $deposit)
+                                    <tr>
+                                        <td>{{$deposit->f_company}}</td>
+                                        <td>{{$deposit->f_bank}}</td>
+                                        <td>{{$deposit->f_account}}</td>
+                                        <td>{{$deposit->f_trans_date}}</td>
+                                        <td>{{$deposit->f_client}}</td>
+                                        <td>{{$deposit->f_payment}}</td>
+                                        <td>{{$deposit->f_trans_type}}</td>
+                                        <td>{{$deposit->f_trade_branch}}</td>
+                                        <td>{{$deposit->f_user}}</td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -195,14 +241,14 @@
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item first">
-                                        <a class="page-link" href="javascript:void(0);"
-                                        ><i class="tf-icon bx bx-chevrons-left"></i
-                                            ></a>
+                                        <a class="page-link" href="javascript:void(0);">
+                                            <i class="tf-icon bx bx-chevrons-left"></i>
+                                        </a>
                                     </li>
                                     <li class="page-item prev">
-                                        <a class="page-link" href="javascript:void(0);"
-                                        ><i class="tf-icon bx bx-chevron-left"></i
-                                            ></a>
+                                        <a class="page-link" href="javascript:void(0);">
+                                            <i class="tf-icon bx bx-chevron-left"></i>
+                                        </a>
                                     </li>
                                     <li class="page-item">
                                         <a class="page-link" href="javascript:void(0);">1</a>
@@ -220,14 +266,14 @@
                                         <a class="page-link" href="javascript:void(0);">5</a>
                                     </li>
                                     <li class="page-item next">
-                                        <a class="page-link" href="javascript:void(0);"
-                                        ><i class="tf-icon bx bx-chevron-right"></i
-                                            ></a>
+                                        <a class="page-link" href="javascript:void(0);">
+                                            <i class="tf-icon bx bx-chevron-right"></i>
+                                        </a>
                                     </li>
                                     <li class="page-item last">
-                                        <a class="page-link" href="javascript:void(0);"
-                                        ><i class="tf-icon bx bx-chevrons-right"></i
-                                            ></a>
+                                        <a class="page-link" href="javascript:void(0);">
+                                            <i class="tf-icon bx bx-chevrons-right"></i>
+                                        </a>
                                     </li>
                                 </ul>
                             </nav>

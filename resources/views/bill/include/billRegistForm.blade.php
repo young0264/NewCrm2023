@@ -107,9 +107,9 @@
 {{--                    @endif--}}
 {{--                    <input type="hidden" id="f_loginid" name="f_loginid" value="{{Auth::user()->email}}">--}}
 
-                    @if(Auth::check() && !empty(Auth::user()->email))
-                        {{ Auth::user()->email }}
-                        <input type="hidden" id="f_loginid" name="f_loginid" value="{{ Auth::user()->email }}">
+                    @if(Auth::check() && !empty(Auth::user()->id))
+                        {{ Auth::user()->id }}
+                        <input type="hidden" id="f_loginid" name="f_loginid" value="{{ Auth::user()->id}}">
                     @endif
 
                     {{-- 공연정보 끝 --}}

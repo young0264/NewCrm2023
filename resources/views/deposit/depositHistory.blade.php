@@ -37,127 +37,32 @@
                                                     <!-- Content -->
                                                     <div class="container-xxl flex-grow-1 container-p-y">
                                                         <div class="d-flex flex-wrap" id="icons-container">
-
+                                                            @for($month=1; $month<=12; $month++)
                                                             <div class="mx-3">
-                                                                <h4 align="right">1월</h4>
-                                                                <div
-                                                                    class="card icon-card cursor-pointer text-center mb-4 mx-3">
-                                                                    <div class="card-body my-xxl-4 mx-xxl-4">
-                                                                        <h6><span class="badge badge-center bg-warning">C</span> 31일 09:40:52</h6>
-                                                                        <h6><span class="badge badge-center bg-primary">무</span> 31일 11:40:52</h6>
-                                                                        <a  href="javascript:void(0);"><span class="badge badge-center bg-warning">C</span> 31일 16:40:52</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="mx-3">
-                                                                <h4 align="right">2월</h4>
-                                                                <div
-                                                                    class="card icon-card cursor-pointer text-center mb-4 mx-3">
-                                                                    <div class="card-body my-xxl-4 mx-xxl-4">
-                                                                        <h6><span class="badge badge-center bg-primary">무</span> 31일 09:40:52</h6>
-                                                                        <h6><span class="badge badge-center bg-primary">무</span> 31일 11:40:52</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="mx-3">
-                                                                <h4 align="right">3월</h4>
-                                                                <div
-                                                                    class="card icon-card cursor-pointer text-center mb-4 mx-3">
-                                                                    <div class="card-body my-xxl-4 mx-xxl-4">
-                                                                        <h6><span class="badge badge-center bg-warning">C</span> 31일 09:40:52</h6>
-                                                                        <h6><span class="badge badge-center bg-primary">무</span> 31일 11:40:52</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="mx-3">
-                                                                <h4 align="right">4월</h4>
+                                                                <h4 align="right">{{$month}}월</h4>
                                                                 <div class="card icon-card cursor-pointer text-center mb-4 mx-3">
                                                                     <div class="card-body my-xxl-4 mx-xxl-4">
-                                                                        <h6><span class="badge badge-center bg-warning">C</span> 31일 09:40:52</h6>
-                                                                        <h6><span class="badge badge-center bg-warning">C</span> 31일 11:40:52</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="mx-3">
-                                                                <h4 align="right">5월</h4>
-                                                                <div
-                                                                    class="card icon-card cursor-pointer text-center mb-4 mx-3 alert-secondary">
-                                                                    <div class="card-body my-xxl-4 mx-xxl-4">
-                                                                        <h6 >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                        @if(isset($history_res[sprintf("%02d", $month)]))
+                                                                            @foreach ($history_res[sprintf("%02d", $month)] as $key => $res)
+                                                                                <h6 {!! $key=="0" ? "style='font-weight:bold'" : "" !!}>
+                                                                                    <a href="{{Storage::url($res['filepath'])}}">
+                                                                                        <span class="badge badge-center bg-primary">{{$res['pay_system']}}
+                                                                                        </span>
+                                                                                        {{$res['day_time']}}
+                                                                                    </a>
+                                                                                </h6>
+                                                                            @endforeach
+                                                                        @else
+                                                                        <h6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="mx-3">
-                                                                <h4 align="right">6월</h4>
-                                                                <div
-                                                                    class="card icon-card cursor-pointer text-center mb-4 mx-3 alert-secondary">
-                                                                    <div class="card-body my-xxl-4 mx-xxl-4">
-                                                                        <h6 >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h6>
+                                                                            <br><br><br><br><br>
+                                                                        </h6>
+                                                                        @endif
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="mx-3">
-                                                                <h4 align="right">7월</h4>
-                                                                <div
-                                                                    class="card icon-card cursor-pointer text-center mb-4 mx-3 alert-secondary">
-                                                                    <div class="card-body my-xxl-4 mx-xxl-4">
-                                                                        <h6 >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="mx-3">
-                                                                <h4 align="right">8월</h4>
-                                                                <div
-                                                                    class="card icon-card cursor-pointer text-center mb-4 mx-3 alert-secondary">
-                                                                    <div class="card-body my-xxl-4 mx-xxl-4">
-                                                                        <h6 >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="mx-3">
-                                                                <h4 align="right">9월</h4>
-                                                                <div
-                                                                    class="card icon-card cursor-pointer text-center mb-4 mx-3">
-                                                                    <div class="card-body my-xxl-4 mx-xxl-4">
-                                                                        <h6 class="text-white">22222공백222222</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="mx-3">
-                                                                <h4 align="right">10월</h4>
-                                                                <div
-                                                                    class="card icon-card cursor-pointer text-center mb-4 mx-3">
-                                                                    <div class="card-body my-xxl-4 mx-xxl-4">
-                                                                        <h6 class="text-white">22222공백222222</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="mx-3">
-                                                                <h4 align="right">11월</h4>
-                                                                <div
-                                                                    class="card icon-card cursor-pointer text-center mb-4 mx-3">
-                                                                    <div class="card-body my-xxl-4 mx-xxl-4">
-                                                                        <h6 class="text-white">22222공백222222</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="mx-3">
-                                                                <h4 align="right">12월</h4>
-                                                                <div
-                                                                    class="card icon-card cursor-pointer text-center mb-4 mx-3">
-                                                                    <div class="card-body my-xxl-4 mx-xxl-4">
-                                                                        <h6 class="text-white">22222공백222222</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            @endfor
                                                         </div>
                                                     </div>
                                                 </div>

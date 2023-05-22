@@ -19,6 +19,12 @@ class BillController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+//    protected BillService $billService;
+//    public function __construct(BillService $billService)
+//    {
+//        $this->billService = $billService;
+//    }
+
     public static function issue()
     {
         return view("bill.billIssueView");
@@ -44,7 +50,7 @@ class BillController extends BaseController
         return view("bill.cashReceiptSearch");
     }
 
-    public static function list(Request $request){
+    public function list(Request $request){
 
         $wheres = "and f_admin='BR'";
         $params = [];

@@ -75,10 +75,10 @@ class Bill_NEY extends Model{
     }
 
     /**
-     * @param $parameters : array
+     * @param $params : array
      * @return bool
      */
-    public static function insertBills($parameters) {
-        return DB::table('T_BILL_NEY')->insert($parameters);
+    public static function insertBills($params) {
+        return DB::table('T_BILL_NEY')->insert($params);
     }
 }

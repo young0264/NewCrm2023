@@ -60,7 +60,6 @@ class File
         $resFilepath = sprintf("/%s/%s", $folder, $resFilename);
         if (!$files->move($upload_path, $resFilename))
             return false;
-
         return array(
             "path"=>$resFilepath,
             "name"=>$name,
