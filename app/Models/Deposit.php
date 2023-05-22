@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 class Deposit extends Model {
 
     use HasFactory;
+    protected $table = 'T_DEPOSIT';
     protected $primaryKey = "id";
     public $timestamps = false;
     protected $fillable = [
@@ -36,5 +37,15 @@ class Deposit extends Model {
 //        return DB::table('T_DEPOSIT')->paginate(10);
 //        return DB::table('T_DEPOSIT')->get();
     }
+
+    public static function excelList($where, $params, $cols){
+        $query = "select {$cols} from t_deposit
+                      {$where}
+                          order by f_depositid desc";
+
+        return DB::select($query, $params);
+    }
+
+
 
 }

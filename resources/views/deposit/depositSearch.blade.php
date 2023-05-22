@@ -48,26 +48,24 @@
             });
         },
 
-        onBankSave: function (depositData) {
-
-            fetch('/deposit/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                body: JSON.stringify(depositData)
-            })
-                .then(response => {
-                    if (!response) {
-                        throw new Error('서버에서 응답이 없습니다.');
-                    }
-                    alert('등록 완');
-                })
-                .catch(error => {
-                    alert("error : " + error.message);
-                });
-        },
+        // onBankSave: function (depositData) {
+        //     fetch('/deposit/save', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        //         body: JSON.stringify(depositData)
+        //     })
+        //         .then(response => {
+        //             if (!response) {
+        //                 throw new Error('서버에서 응답이 없습니다.');
+        //             }
+        //             alert('등록 완');
+        //         })
+        //         .catch(error => {
+        //             alert("error : " + error.message);
+        //         });
+        // },
     }
 </script>
 
@@ -151,7 +149,9 @@
                                     </div>
 
                                     <div class="btn-group float-end mx-1">
-                                        <button class="btn btn-success float-end">결과 다운로드</button>
+                                        <a class="btn btn-success float-end"  href="{{route('downloadExcel',['parameter'=>request()->query()])}}">
+                                            엑셀 다운로드
+                                        </a>
                                     </div>
                                     <div class="btn-group float-end mx-1">
                                         <button
