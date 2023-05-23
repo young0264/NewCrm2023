@@ -15,6 +15,67 @@
 <script>
     const loginId = null;
 
+    function interval_option() {
+        let f_pay_interval = document.getElementById("f_pay_interval").value;
+        let f_interval_option = document.getElementById("f_interval_option");
+        alert(f_pay_interval);
+        if (f_pay_interval === "M") {
+            f_interval_option.innerHTML = `
+                <select class="form-select-sm bg-label-secondary"  id="f_interval_option" name="f_interval_option">
+                    <option>0</option>
+                </select>
+            `;
+        }else if(f_pay_interval === "Q"){
+            f_interval_option.innerHTML = `
+                <select class="form-select-sm bg-label-secondary"  id="f_interval_option" name="f_interval_option">
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                </select>
+            `;
+        }else if(f_pay_interval === "H"){
+            f_interval_option.innerHTML = `
+                <select class="form-select-sm bg-label-secondary" id="f_interval_option" name="f_interval_option">
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            `;
+        }else if(f_pay_interval === "Y"){
+            f_interval_option.innerHTML = `
+                <select class="form-select-sm bg-label-secondary" id="f_interval_option" name="f_interval_option">
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                </select>
+            `;
+        }else if (f_pay_interval === "T") {
+            f_interval_option.innerHTML = `
+                <select class="form-select-sm bg-label-secondary" id="f_interval_option" name="f_interval_option">
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                </select>
+            `;
+        }
+        // else if (f_pay_interval == "E") {
+        // }
+
+        }
+
     let register = {
         BillFormRegister: function () {
             let method = "POST";
@@ -22,6 +83,8 @@
             let data = $('#billForm').serialize();
             let dataType = "json";
             console.log("data : " + data);
+            alert(123);
+
             js.ajax_call(method, url, data, dataType, true);
 
             $('#modal_setting_register').modal('hide');
@@ -53,10 +116,8 @@
             <div class="modal-header">
                 <h3 class="fw-bold ">청구 대상 등록 설정</h3>
             </div>
-
             <div class="modal-body">
                 <h5 class="row mx-3">서비스 이용료나 공연권료 등 생성할 품목과 계산서 종류를 설정합니다. </h5>
-
                 <form id="billForm" name="billForm">
                     {{-- 상단 공연정보 시작 --}}
                     <div class="card-body">
@@ -69,10 +130,13 @@
                                        placeholder="작성일자">
                             </div>
                             <div class="col-sm-2 mx-2">
-                                <select id="f_tax_issue" name="f_tax_issue" class="btn btn-dark ">
+                                <select class="form-select alert-info text-black fw-bold" id="f_tax_issue" name="f_tax_issue">
                                     <option value="normal">계산서</option>
                                     <option value="cash">현금영수증</option>
                                 </select>
+{{--                                <select id="f_tax_issue" name="f_tax_issue" class="btn btn-dark ">--}}
+{{--                                    --}}
+{{--                                </select>--}}
                             </div>
                             <div class="col-sm-2 mx-2">
                                 <input class="form-control" id="f_opendate" name="f_opendate" placeholder="매장오픈일">
@@ -108,15 +172,12 @@
 {{--                    <input type="hidden" id="f_loginid" name="f_loginid" value="{{Auth::user()->email}}">--}}
 
                     @if(Auth::check() && !empty(Auth::user()->id))
-                        {{ Auth::user()->id }}
                         <input type="hidden" id="f_loginid" name="f_loginid" value="{{ Auth::user()->id}}">
                     @endif
 
                     {{-- 공연정보 끝 --}}
                     {{-- 계산서 기본데이터 Form 시작 --}}
-                    <div class="card-body">
-                        <h5 style="border: 1px dashed #bbb; "></h5>
-                    </div>
+                    <h5 style="border: 1px dashed #bbb; "></h5>
                     <div class="card-body row">
                         <div class="btn-group my-1">
                             <div class="col-md-1">
@@ -190,16 +251,18 @@
 
                             <div class="col-md-3 mx-2">
                                 <select class="form-select text-black fw-bold" id="f_pay_interval"
-                                        name="f_pay_interval">
+                                        name="f_pay_interval" onchange="interval_option(this.value)">
                                     <option value="">결제주기</option>
                                     <option value="M">월납</option>
                                     <option value="Q">분기납</option>
+                                    <option value="T">삼기납</option>
                                     <option value="H">반기납</option>
                                     <option value="Y">연납</option>
                                     <option value="E">기타</option>
                                 </select>
                             </div>
-                            <span class="badge badge-center bg-label-secondary">0</span>
+                            <select class="form-select-sm bg-label-secondary" id="f_interval_option" name="f_interval_option">
+                            </select>
                         </div>
 
                         <div class="btn-group my-1">

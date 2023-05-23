@@ -3,30 +3,30 @@
 namespace App\Http\Controllers;
 //use Deposit;
 //use App\Models\Deposit;
+use App\Helpers\Pagination;
 use App\Models\Deposit;
 use App\Helpers\File;
 use App\Imports\SampleImport;
 use App\Models\Deposit_File;
 use DateTime;
 use App\Exports\DepositExport;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use JetBrains\PhpStorm\NoReturn;
 use Maatwebsite\Excel\Facades\Excel;
 
-class DepositController extends BaseController{
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+class DepositController extends Controller {
 
     public static function history(Request $request){
 
+        $yyyy = array();
+        for ($i=date('Y'); $i>2018; $i--) {
+            $yyyy[] = $i;
+        }
+
         $query = "
-                SELECT F_CREATED_AT, F_PAY_SYSTEM, F_PATH
+                SELECT *
                     FROM T_DEPOSIT_FILE
                         WHERE extract(year from F_CREATED_AT) = :year
                             ORDER BY F_FILEID DESC";
@@ -35,7 +35,6 @@ class DepositController extends BaseController{
             'year' => 2023,
 //            'year' => $sch_year,
         ];
-//        echo"<pre>";
 
         $history_res = array();
         $items = DB::select($query, $binds);
@@ -43,9 +42,8 @@ class DepositController extends BaseController{
         $cnt = 0;
 
         foreach($items as $item){
-            $cnt += 1;
+
             $pay_system = mb_substr($item->f_pay_system, 0, 1);
-//            $pay_system = substr();
             $date = new DateTime($item->f_created_at);
             $month = ($date->format('m'));
             $day_time = ($date->format('d일 H:i:s'));
@@ -58,14 +56,16 @@ class DepositController extends BaseController{
             }
 
             $history_res[$month][] = array(
+                "fileid"=>$item->f_fileid,
                 "pay_system"=>$pay_system,
                 "month"=>$month,
                 "day_time"=>$day_time,
                 "filepath"=>$item->f_path
             );
+
         }
 
-        return view('deposit.depositHistory', ['history_res'=>$history_res]);
+        return view('deposit.depositHistory', ['history_res'=>$history_res, "yyyy"=>$yyyy]);
     }
 
     public static function match1(){
@@ -75,62 +75,9 @@ class DepositController extends BaseController{
         return view('deposit.depositMatching2');
     }
 
-    public function export(Request $request)
-    {
-//        echo "<pre>";
-//        print_r($request->input());
-//        exit;
-        $param = array();
-        if (empty($request->input())) {
-            $param['parameter']=array();
-        }else{
-            $param = (@$request -> input())['parameter'];
-        }
-        $sch_year = @$param['sch_year'];
-        $sch_month = @$param['sch_month'];
-        $sch_day = @$param['sch_day'];
-        $sch_cols = @$param['sch_cols'];
-        $sch_val = @$param['sch_val'];
-        $f_account = @$param['f_account'];
-        $where = "where f_depositid is not null";
-
-        if (!empty($sch_year)) {
-            $where .= " and EXTRACT(YEAR FROM TO_DATE(f_trans_date)) = '".$sch_year."'";
-        }
-        if (!empty($sch_month)) {
-            $where .= " and EXTRACT(MONTH FROM TO_DATE(f_trans_date)) = '".$sch_month."'";
-        }
-        if (!empty($sch_day)) {
-            $where .= " and EXTRACT(DAY FROM TO_DATE(f_trans_date)) = '".$sch_day."'";
-        }
-        if (!empty($f_account) && $f_account!="account_all") {
-            $where .= " and f_account = '".$f_account."'";
-        }
-        else if($f_account=="account_all"){
-            $where .= " and (f_account = '592201-01-513261' or f_account = '140-009-167369')";
-        }
-
-        if (!empty($sch_cols) && $sch_cols!="sch_all") {
-            $where .= " and $sch_cols like '%".$sch_val."%'";
-        }
-        if( $sch_cols=="sch_all" && !empty($sch_val)){
-            $where .= " and (f_company like '%".$sch_val."%'
-            or f_bank like '%".$sch_val."%'
-            or f_client like '%".$sch_val."%'
-            or f_payment like '%".$sch_val."%'
-            or f_trans_type like '%".$sch_val."%'
-            or f_trade_branch like '%".$sch_val."%'
-            or f_user like '%".$sch_val."%')";
-        }
-
-//        검색 데이터 가져오기
-        $headers = ['기업명', ' 은행', '계좌', '거래일자', '의뢰인', '입금액', '거래구분', '거래점', '작성자'];
-
-        return Excel::download(new DepositExport($headers, $where), 'deposit.xlsx');
-    }
-
-
     public static function list(Request $request){
+        echo Pagination::paging();
+        $mode = $request->input("mode");
         $sch_year = $request->input("sch_year");
         $sch_month = $request->input("sch_month");
         $sch_day = $request->input("sch_day");
@@ -169,21 +116,15 @@ class DepositController extends BaseController{
         }
 
 //        검색 데이터 가져오기
+
         $depositList = Deposit::list($where, []);
 
-        return view('deposit.depositSearch', compact('depositList'));
-    }
-
-    public static function download($filePath){
-        //파일 다운로드
-//        $file = Storage::disk('local')->get('file.txt');
-//        return response()->download($file);
-//        return response()->download(storage_path("app/public/$filePath"), $fileName);
-        if (Storage::exists($filePath)) {
-            $fileName = basename($filePath);
-            return response()->download(storage_path("app/public/{$filePath}"), $fileName);
+        if ($mode === "excel") {
+            $headers = ['기업명', ' 은행', '계좌', '거래일자', '의뢰인', '입금액', '거래구분', '거래점', '작성자'];
+            $filename = sprintf("%s_입금내역_%s.xlsx", date('Ymd'), time());
+            return Excel::download(new DepositExport($headers, $where), $filename);
         } else {
-            abort(404, 'File not found');
+            return view('deposit.depositSearch', compact('depositList'));
         }
     }
 
@@ -239,7 +180,6 @@ class DepositController extends BaseController{
             }
         }
 
-//        file . self.download($file_info['path']);
         Deposit::saveDeposit($results);
         DB::commit();
         return response()->json(
@@ -248,5 +188,15 @@ class DepositController extends BaseController{
                 "results"=>$results,
             ]
         );
+    }
+
+    public static function download(Request $request){
+        $item = Deposit_File::getOne($request->input("f_depositid"));
+
+        if (Storage::disk("public")->exists($item->f_path)) {
+            return response()->download(Storage::disk("public")->path($item->f_path));
+        } else {
+            abort(404, 'File not found');
+        }
     }
 }

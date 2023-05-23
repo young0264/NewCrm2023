@@ -100,7 +100,7 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{route('depositSearch')}}" class="menu-link" >
+                    <a href="{{route('depositList')}}" class="menu-link" >
                         <div data-i18n="Basic">입금내역 등록, 조회</div>
                     </a>
                 </li>

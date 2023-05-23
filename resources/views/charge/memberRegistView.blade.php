@@ -2,7 +2,6 @@
 @extends('layouts.app')
 @section('content')
     <script>
-
         document.addEventListener("DOMContentLoaded", ()=>{
             tables.initialize();
         });

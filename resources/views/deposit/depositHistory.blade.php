@@ -1,6 +1,14 @@
 @extends('layouts.app')
 @section('content')
 
+    <script>
+        let deposit = {
+            download:function(obj) {
+                location.href="{{route("downloadExcel")}}?f_depositid=" + $(obj).data("id");
+            }
+        }
+    </script>
+
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">
             <span class="text-muted fw-light">정산 / 입금내역 / </span>입금내역 등록 히스토리
@@ -17,9 +25,9 @@
                                 <h4 class="text-primary">입금 등록 현황</h4>
                                 <div class="btn-group">
                                     <select class="form-select">
-                                        <option>2023년</option>
-                                        <option>2018년</option>
-                                        <option>2011년</option>
+                                        @foreach ($yyyy as $y)
+                                            <option value="{{$y}}">{{$y}}년</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -45,9 +53,9 @@
                                                                         @if(isset($history_res[sprintf("%02d", $month)]))
                                                                             @foreach ($history_res[sprintf("%02d", $month)] as $key => $res)
                                                                                 <h6 {!! $key=="0" ? "style='font-weight:bold'" : "" !!}>
-                                                                                    <a href="{{Storage::url($res['filepath'])}}">
-                                                                                        <span class="badge badge-center bg-primary">{{$res['pay_system']}}
-                                                                                        </span>
+                                                                                    <a href="#" onclick="deposit.download(this)" data-id="{{$res['fileid']}}">
+                                                                                        <span class="badge badge-center bg-primary">{{$res['pay_system']}}</span>
+{{--                                                                                        {{$res['filepath']}}--}}
                                                                                         {{$res['day_time']}}
                                                                                     </a>
                                                                                 </h6>

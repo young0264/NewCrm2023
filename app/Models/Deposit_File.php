@@ -21,4 +21,10 @@ class Deposit_File extends Model
         return $file_id;
     }
 
+    public static function getOne($fileid) {
+        $binds = array("f_fileid"=>$fileid);
+        $query = "select * from t_deposit_file where f_fileid=:f_fileid";
+        return DB::select($query, $binds)[0];
+    }
+
 }

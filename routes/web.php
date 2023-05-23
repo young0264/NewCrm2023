@@ -65,16 +65,17 @@ if (!Auth::check()) {
          * 입금내역
          */
         Route::get("/deposit/history", [DepositController::class, "history"])->name("depositHistory");
-        Route::get("/deposit/search", [DepositController::class, "list"])->name("depositSearch"); //
+        Route::get("/deposit/list", [DepositController::class, "list"])->name("depositList"); //
         Route::get("/deposit/match/1", [DepositController::class, "match1"])->name("depositMatch1");
         Route::get("/deposit/match/2", [DepositController::class, "match2"])->name("depositMatch2");
         Route::post("/deposit/save", [DepositController::class, "save"])->name("depositUpload");
+        Route::get("/deposit/download", [DepositController::class, "download"])->name("downloadExcel");
 
 
         /**
          * 엑셀
          */
-        Route::get('/download/excel/', [DepositController::class, 'export'])->name('downloadExcel');
+//        Route::get('/download/excel/', [DepositController::class, 'export'])->name('downloadExcel');
 
     });
 }

@@ -1,7 +1,6 @@
 {{-- 정산 / 입금내역 / 입금내역 등록, 조회 --}}
 @extends('layouts.app')
 @section('content')
-
 <script>
     function onSearch(formid) {
         document.getElementById(formid).submit();
@@ -11,6 +10,9 @@
         $('#'+modalId).modal('hide');
     }
     const excel = {
+        download:function() {
+            location.href="{{route('depositList')}}?mode=excel&{{request()->getQueryString()}}";
+        },
         upload:function() {
 
             const file = document.getElementById("file");
@@ -142,14 +144,15 @@
                                         </select>
                                     </div>
                                     <div class="btn-group">
-                                        <input class="form-control" id="sch_val" name="sch_val" placeholder="검색어를 입력하세요.">
+                                        <input class="form-control" id="sch_val" name="sch_val" value="{{request('sch_val')}}" placeholder="검색어를 입력하세요.">
                                     </div>
                                     <div class="btn-group">
                                         <button class="btn btn-success" onclick="onSearch('search_form')">검색</button>
                                     </div>
 
                                     <div class="btn-group float-end mx-1">
-                                        <a class="btn btn-success float-end"  href="{{route('downloadExcel',['parameter'=>request()->query()])}}">
+{{--                                        <a class="btn btn-success float-end" onclick="" href="{{route('downloadExcel',['parameter'=>request()->query()])}}">--}}
+                                        <a class="btn btn-success float-end" href="#" onclick="excel.download()" >
                                             엑셀 다운로드
                                         </a>
                                     </div>
@@ -181,11 +184,11 @@
                                                         <div class="alert-secondary rounded ">
                                                             <div class="card-body row" id="radio_check">
                                                                 <div class="my-2">
-                                                                    <input  type="radio" id="f_pay_system1" name="f_pay_system" value="무통장"><span class="text-black fw-bold mx-1">무통장</span>
+                                                                    <input  type="radio" id="f_pay_system1" name="f_pay_system" value="무통장" checked><label for="f_pay_system1" class="text-black fw-bold mx-1">무통장</label>
                                                                 </div>
 
                                                                 <div class="my-2">
-                                                                    <input  type="radio" id="f_pay_system2" name="f_pay_system" value="CMS"><span class="text-black fw-bold mx-1">CMS</span>
+                                                                    <input  type="radio" id="f_pay_system2" name="f_pay_system" value="CMS"><label for="f_pay_system2" class="text-black fw-bold mx-1">CMS</label>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -250,6 +253,7 @@
                                             <i class="tf-icon bx bx-chevron-left"></i>
                                         </a>
                                     </li>
+
                                     <li class="page-item">
                                         <a class="page-link" href="javascript:void(0);">1</a>
                                     </li>
@@ -265,6 +269,7 @@
                                     <li class="page-item">
                                         <a class="page-link" href="javascript:void(0);">5</a>
                                     </li>
+
                                     <li class="page-item next">
                                         <a class="page-link" href="javascript:void(0);">
                                             <i class="tf-icon bx bx-chevron-right"></i>
