@@ -247,7 +247,7 @@
                                     </li>
 
                                     @for($i = $start_page; $i <=$end_page; $i++)
-                                        <li class="page-item">
+                                        <li class="page-item {{request('page') == $i ? "active" : ""}}" >
                                             <a class="page-link" onclick="pagination({{$i}})">{{$i}}</a>
                                         </li>
                                     @endfor
