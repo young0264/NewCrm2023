@@ -2,19 +2,27 @@
 @extends('layouts.app')
 @section('content')
 <script>
+    function pagination(pageNumber) {
+        var urlparams = new URLSearchParams(window.location.search);
+        location.href = "{{route('depositList')}}?"+urlparams + "&page="+pageNumber;
+    }
+
     function onSearch(formid) {
-        document.getElementById(formid).submit();
+        var formData = new FormData(document.getElementById(formid));
+        formData.append('page','1');
+        formData.submit();
     }
 
     function modalClose(modalId) {
         $('#'+modalId).modal('hide');
     }
+
     const excel = {
         download:function() {
             location.href="{{route('depositList')}}?mode=excel&{{request()->getQueryString()}}";
         },
-        upload:function() {
 
+        upload:function() {
             const file = document.getElementById("file");
             let form = new FormData();
             const pay_systems = (document.getElementsByName("f_pay_system"));
@@ -49,25 +57,6 @@
                 }
             });
         },
-
-        // onBankSave: function (depositData) {
-        //     fetch('/deposit/save', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        //         body: JSON.stringify(depositData)
-        //     })
-        //         .then(response => {
-        //             if (!response) {
-        //                 throw new Error('서버에서 응답이 없습니다.');
-        //             }
-        //             alert('등록 완');
-        //         })
-        //         .catch(error => {
-        //             alert("error : " + error.message);
-        //         });
-        // },
     }
 </script>
 
@@ -86,6 +75,7 @@
                         <h4 class="card-header text-primary">입금 등록 현황</h4>
 
                         <div class="card-body">
+{{--                            <form id="search_form" action="{{route('depositList')}}">--}}
                             <form id="search_form">
                                 <div class="card-body">
                                 <div class="my-2">
@@ -212,6 +202,7 @@
                             <table class="table">
                                 <thead class="table-primary">
                                 <tr>
+                                    <th>아이디</th>
                                     <th>기업명</th>
                                     <th>은행</th>
                                     <th>계좌</th>
@@ -226,6 +217,7 @@
                                 <tbody>
                                 @foreach($depositList as $deposit)
                                     <tr>
+                                        <td>{{$deposit->f_depositid}}</td>
                                         <td>{{$deposit->f_company}}</td>
                                         <td>{{$deposit->f_bank}}</td>
                                         <td>{{$deposit->f_account}}</td>
@@ -244,39 +236,29 @@
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item first">
-                                        <a class="page-link" href="javascript:void(0);">
+                                        <a class="page-link"  onclick="pagination(1)">
                                             <i class="tf-icon bx bx-chevrons-left"></i>
                                         </a>
                                     </li>
                                     <li class="page-item prev">
-                                        <a class="page-link" href="javascript:void(0);">
+                                        <a class="page-link" onclick="pagination({{$now_page-1}})" >
                                             <i class="tf-icon bx bx-chevron-left"></i>
                                         </a>
                                     </li>
 
-                                    <li class="page-item">
-                                        <a class="page-link" href="javascript:void(0);">1</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="javascript:void(0);">2</a>
-                                    </li>
-                                    <li class="page-item active">
-                                        <a class="page-link" href="javascript:void(0);">3</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="javascript:void(0);">4</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="javascript:void(0);">5</a>
-                                    </li>
+                                    @for($i = $start_page; $i <=$end_page; $i++)
+                                        <li class="page-item">
+                                            <a class="page-link" onclick="pagination({{$i}})">{{$i}}</a>
+                                        </li>
+                                    @endfor
 
                                     <li class="page-item next">
-                                        <a class="page-link" href="javascript:void(0);">
+                                        <a class="page-link" onclick="pagination({{$now_page+1}})">
                                             <i class="tf-icon bx bx-chevron-right"></i>
                                         </a>
                                     </li>
                                     <li class="page-item last">
-                                        <a class="page-link" href="javascript:void(0);">
+                                        <a class="page-link" onclick="pagination({{$max_page}})">
                                             <i class="tf-icon bx bx-chevrons-right"></i>
                                         </a>
                                     </li>

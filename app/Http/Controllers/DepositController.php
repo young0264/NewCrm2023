@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 //use Deposit;
 //use App\Models\Deposit;
-use App\Helpers\Pagination;
 use App\Models\Deposit;
 use App\Helpers\File;
 use App\Imports\SampleImport;
@@ -64,7 +63,6 @@ class DepositController extends Controller {
             );
 
         }
-
         return view('deposit.depositHistory', ['history_res'=>$history_res, "yyyy"=>$yyyy]);
     }
 
@@ -76,7 +74,6 @@ class DepositController extends Controller {
     }
 
     public static function list(Request $request){
-        echo Pagination::paging();
         $mode = $request->input("mode");
         $sch_year = $request->input("sch_year");
         $sch_month = $request->input("sch_month");
@@ -85,6 +82,7 @@ class DepositController extends Controller {
         $sch_val = $request->input("sch_val");
         $f_account = $request->input("f_account");
         $where = "where f_depositid is not null";
+
 
         if (!empty($sch_year)) {
             $where .= " and EXTRACT(YEAR FROM TO_DATE(f_trans_date)) = '".$sch_year."'";
@@ -116,15 +114,28 @@ class DepositController extends Controller {
         }
 
 //        검색 데이터 가져오기
+        $page =  $request->input('page') ?? 1;
+        $paged_data = Deposit::list($where, [], $page);
 
-        $depositList = Deposit::list($where, []);
+        $now_page = $page;
+        $max_page = $paged_data['max_page'];
+        $start_page = $paged_data['start_page'];
+        $end_page = $paged_data['end_page'];
+        $depositList = $paged_data['depositList'];
+
 
         if ($mode === "excel") {
             $headers = ['기업명', ' 은행', '계좌', '거래일자', '의뢰인', '입금액', '거래구분', '거래점', '작성자'];
             $filename = sprintf("%s_입금내역_%s.xlsx", date('Ymd'), time());
             return Excel::download(new DepositExport($headers, $where), $filename);
         } else {
-            return view('deposit.depositSearch', compact('depositList'));
+            return view('deposit.depositSearch',[
+                'depositList' => $depositList,
+                'now_page' => $now_page,
+                'start_page' => $start_page,
+                'end_page' => $end_page,
+                'max_page' => $max_page,
+            ]);
         }
     }
 
