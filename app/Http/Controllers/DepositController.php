@@ -19,9 +19,9 @@ class DepositController extends Controller {
 
     public static function history(Request $request){
 
-        $yyyy = array();
+        $years = array();
         for ($i=date('Y'); $i>2018; $i--) {
-            $yyyy[] = $i;
+            $years[] = $i;
         }
 
         $query = "
@@ -31,8 +31,7 @@ class DepositController extends Controller {
                             ORDER BY F_FILEID DESC";
 
         $binds = [
-            'year' => 2023,
-//            'year' => $sch_year,
+            'year' => $request->input("sch_year"),
         ];
 
         $history_res = array();
@@ -63,7 +62,7 @@ class DepositController extends Controller {
             );
 
         }
-        return view('deposit.depositHistory', ['history_res'=>$history_res, "yyyy"=>$yyyy]);
+        return view('deposit.depositHistory', ['history_res'=>$history_res, "years"=>$years]);
     }
 
     public static function match1(){

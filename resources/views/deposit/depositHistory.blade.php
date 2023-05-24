@@ -2,6 +2,11 @@
 @section('content')
 
     <script>
+        function yearSelect(selectElement) {
+            var selectedYear = selectElement.value;
+            location.href="{{route("depositHistory")}}?sch_year=" + selectedYear;
+        }
+
         let deposit = {
             download:function(obj) {
                 location.href="{{route("downloadExcel")}}?f_depositid=" + $(obj).data("id");
@@ -24,9 +29,10 @@
                             <div class="card-header">
                                 <h4 class="text-primary">입금 등록 현황</h4>
                                 <div class="btn-group">
-                                    <select class="form-select">
-                                        @foreach ($yyyy as $y)
-                                            <option value="{{$y}}">{{$y}}년</option>
+                                    <select class="form-select" onchange="yearSelect(this)">
+                                        <option value="">검색 연도 선택</option>
+                                        @foreach ($years as $year)
+                                            <option value="{{$year}}" {{request('sch_year')==$year ? "selected" : ""}}>{{$year}}년</option>
                                         @endforeach
                                     </select>
                                 </div>
