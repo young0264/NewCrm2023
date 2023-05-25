@@ -1,12 +1,13 @@
 <?php
 /**
+ * [PAGINATION NAVIGATION INCLUDE]
+ *
  * $currentPage : 현재 페이지
  * $start_page : navigation 시작점
  * $end_page : navigation 끝점
  * $max_page : 페이지 끝장
  */
 ?>
-
 
 <div class="page-navigation">
     <nav aria-label="Page navigation">

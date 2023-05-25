@@ -237,7 +237,6 @@
                             {{-- page navigation 시작 --}}
                             @include('fragments.pageNavigation')
                             {{-- page navigation 끝 --}}
-
                         </div>
                     </div>
                 </div>
