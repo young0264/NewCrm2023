@@ -113,15 +113,8 @@ class DepositController extends Controller {
         }
 
 //        검색 데이터 가져오기
-        $page =  $request->input('page') ?? 1;
-        $paged_data = Deposit::list($where, [], $page);
-
-        $now_page = $page;
-        $max_page = $paged_data['max_page'];
-        $start_page = $paged_data['start_page'];
-        $end_page = $paged_data['end_page'];
-        $depositList = $paged_data['depositList'];
-
+        $currentPage =  $request->input('page') ?? 1;
+        $paged_data = Deposit::list($where, [], $currentPage);
 
         if ($mode === "excel") {
             $headers = ['기업명', ' 은행', '계좌', '거래일자', '의뢰인', '입금액', '거래구분', '거래점', '작성자'];
@@ -129,11 +122,11 @@ class DepositController extends Controller {
             return Excel::download(new DepositExport($headers, $where), $filename);
         } else {
             return view('deposit.depositSearch',[
-                'depositList' => $depositList,
-                'now_page' => $now_page,
-                'start_page' => $start_page,
-                'end_page' => $end_page,
-                'max_page' => $max_page,
+                'depositList' => $paged_data['depositList'],
+                'now_page' => $currentPage,
+                'start_page' => $paged_data['start_page'],
+                'end_page' => $paged_data['end_page'],
+                'max_page' => $paged_data['max_page'],
             ]);
         }
     }

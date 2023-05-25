@@ -2,6 +2,13 @@
 @extends('layouts.app')
 @section('content')
     <script>
+        function onSearch(formid) {
+            var formData = new FormData(document.getElementById(formid));
+            alert(formData);
+            formData.append('page','1');
+            formData.submit();
+        }
+
         document.addEventListener("DOMContentLoaded", ()=>{
             tables.initialize();
         });
@@ -74,11 +81,11 @@
                                         <div class="demo-inline-spacing">
                                             <div class="btn-group">
                                                 <div class="btn-group mx-1">
-                                                    <select class="form-select">
-                                                        <option>결제수단</option>
-                                                        <option>카드</option>
-                                                        <option>현금</option>
-                                                        <option>후불</option>
+                                                    <select class="form-select" id="f_pay_type" name="f_pay_type">
+                                                        <option value="">결제수단</option>
+                                                        <option value="card">카드</option>
+                                                        <option value="cash">현금</option>
+                                                        <option value="post_payment">후불</option>
                                                     </select>
                                                 </div>
                                                 <div class="btn-group mx-1">
@@ -163,7 +170,8 @@
                             <!-- Notifications -->
                             <h4 class="card-header text-center text-primary">청구 대상</h4>
                             <div class="card-body">
-                                <div class="form-floating">
+                                <div id="sch_form">
+                                    <div class="form-floating">
                                     <div class="mb-3">
                                         <div class="demo-inline-spacing">
                                             <div class="btn-group">
@@ -191,8 +199,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                </div>
                                 <div class="form-floating col-md-4">
-                                    <div class="mb-3">
+                                    <div class="btn-group my-2">
                                         <input
                                             class="form-control"
                                             type="text"
@@ -200,6 +209,9 @@
                                             placeholder="검색어를 입력하세요."
                                             readonly
                                         />
+                                    </div>
+                                    <div class="btn-group my-2">
+                                        <button class="btn btn-info" onclick="onSearch('sch_form')">검색12</button>
                                     </div>
                                 </div>
                                 <div class="form-floating">
@@ -221,7 +233,7 @@
                                         <th class="text-nowrap text-center">브랜드</th>
                                         <th class="text-nowrap text-center">매장명</th>
                                         <th class="text-nowrap text-center">사업자번호</th>
-                                        <th class="text-nowrap text-center">결제방식</th>
+                                        <th class="text-nowrap text-center">결제수단</th>
                                         <th class="text-nowrap text-center">결제주기</th>
                                         <th class="text-nowrap text-center">단가</th>
                                     </tr>

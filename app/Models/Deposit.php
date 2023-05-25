@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\Pagination;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -27,35 +28,31 @@ class Deposit extends Model {
         return DB::table('T_DEPOSIT')->insert($params);
     }
 
-    public static function list($where, $params, $page)
+    public static function list($where, $params, $currentPage)
     {
-        $query = "select * from t_deposit
-                      {$where}
-                          order by f_depositid desc";
-        $depositList = DB::select($query, $params);
+        $query = "select * from t_deposit {$where} order by f_depositid desc";
+        $count_query = "select count(*) from t_deposit {$where}";
+        $total_data_cnt = DB::select($count_query, $params)[0]->{'count(*)'};
 
-        $total_data_cnt = count($depositList);
-        $max_page = ceil($total_data_cnt / 10);
+        $paged_data = Pagination::paginate($query, $total_data_cnt, $currentPage, 10 ,2);
 
-        $start_page = max(1, $page-2);
-        $end_page = min($max_page, $page+2);
-
-        $paged_depositList = self::pagination($query, $page, $total_data_cnt);
+        $paged_depositList = DB::select($paged_data['paged_query'],[]);
 
         $result = [
             'depositList' => $paged_depositList,
-            'start_page' => $start_page,
-            'end_page' => $end_page,
-            'max_page' => $max_page
+            'start_page' => $paged_data['start_page'],
+            'end_page' => $paged_data['end_page'],
+            'max_page' => $paged_data['max_page']
         ];
+
         return $result;
     }
 
-    public static function pagination($query, $page, $total_data_cnt){
+    public static function pagination($query, $currentPage){
 
         // == 페이징 == //
-        $PAGE_SIZE = 10;
-        $skip_page = ($page - 1) * $PAGE_SIZE;
+        $rowsPerPage = 10;
+        $skip_page = ($currentPage - 1) * $rowsPerPage;
 
         $query = "select * from
             (select t.*, ROWNUM AS rn from
@@ -65,12 +62,12 @@ class Deposit extends Model {
                                 where f_depositid is not null
                                 order by f_depositid desc
                                 )
-                          where rownum <= ($skip_page+$PAGE_SIZE)
+                          where rownum <= ($skip_page+$rowsPerPage)
                           ) t
                                       )
          where rn > $skip_page
          order by f_depositid desc
-         fetch first $PAGE_SIZE rows only";
+         fetch first $rowsPerPage rows only";
 
         return DB::select($query,[]);
     }
@@ -79,7 +76,6 @@ class Deposit extends Model {
         $query = "select {$cols} from t_deposit
                       {$where}
                           order by f_depositid desc";
-
         return DB::select($query, $params);
     }
 }

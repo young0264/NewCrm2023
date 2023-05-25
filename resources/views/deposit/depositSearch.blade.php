@@ -4,7 +4,8 @@
 <script>
     function pagination(pageNumber) {
         var urlparams = new URLSearchParams(window.location.search);
-        location.href = "{{route('depositList')}}?"+urlparams + "&page="+pageNumber;
+        var urlparams = urlparams.toString().replace(/(&|\?|^)page=\d+/gi, '');
+        location.href = "{{route('depositList')}}?" + urlparams + "&page="+pageNumber;
     }
 
     function onSearch(formid) {

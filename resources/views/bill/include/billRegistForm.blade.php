@@ -18,7 +18,6 @@
     function interval_option() {
         let f_pay_interval = document.getElementById("f_pay_interval").value;
         let f_interval_option = document.getElementById("f_interval_option");
-        alert(f_pay_interval);
         if (f_pay_interval === "M") {
             f_interval_option.innerHTML = `
                 <select class="form-select-sm bg-label-secondary"  id="f_interval_option" name="f_interval_option">
