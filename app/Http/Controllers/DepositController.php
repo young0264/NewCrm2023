@@ -123,7 +123,7 @@ class DepositController extends Controller {
         } else {
             return view('deposit.depositSearch',[
                 'depositList' => $paged_data['depositList'],
-                'now_page' => $currentPage,
+                'currentPage' => $currentPage,
                 'start_page' => $paged_data['start_page'],
                 'end_page' => $paged_data['end_page'],
                 'max_page' => $paged_data['max_page'],

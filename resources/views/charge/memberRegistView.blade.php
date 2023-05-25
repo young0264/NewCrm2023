@@ -219,7 +219,7 @@
                                     <button type="button"
                                             class="btn btn-primary me-4 float-end"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#modal_setting_register"> 비회원 신규등록
+                                            data-bs-target="#modal_setting_register"> 비회원 신규 등록
                                     </button>
 
                                 </div>

@@ -234,37 +234,10 @@
                             </table>
                         </div>
                         <div class="card-body align">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item first">
-                                        <a class="page-link"  onclick="pagination(1)">
-                                            <i class="tf-icon bx bx-chevrons-left"></i>
-                                        </a>
-                                    </li>
-                                    <li class="page-item prev">
-                                        <a class="page-link" onclick="pagination({{$now_page-1}})" >
-                                            <i class="tf-icon bx bx-chevron-left"></i>
-                                        </a>
-                                    </li>
+                            {{-- page navigation 시작 --}}
+                            @include('fragments.pageNavigation')
+                            {{-- page navigation 끝 --}}
 
-                                    @for($i = $start_page; $i <=$end_page; $i++)
-                                        <li class="page-item {{request('page') == $i ? "active" : ""}}" >
-                                            <a class="page-link" onclick="pagination({{$i}})">{{$i}}</a>
-                                        </li>
-                                    @endfor
-
-                                    <li class="page-item next">
-                                        <a class="page-link" onclick="pagination({{$now_page+1}})">
-                                            <i class="tf-icon bx bx-chevron-right"></i>
-                                        </a>
-                                    </li>
-                                    <li class="page-item last">
-                                        <a class="page-link" onclick="pagination({{$max_page}})">
-                                            <i class="tf-icon bx bx-chevrons-right"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
                         </div>
                     </div>
                 </div>
