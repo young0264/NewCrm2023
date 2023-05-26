@@ -57,14 +57,15 @@
             this.items.forEach((item, idx) => {
                 html += `<tr class="text-center">`;
                 html += `    <td class="text-nowrap">${item['f_billid']}</td>`;
-                html += `    <td class="text-nowrap">${item['f_bizname']}</td>`;
+                html += `    <td class="text-nowrap">${item['f_bizname'] === null ? "값없음" : item['f_bizname']}</td>`;
                 html += `    <td class="text-nowrap">
-                                <a href="#" onclick="update.BillFormShow('${item['f_billid']}', '${item['f_loginid']}')"> ${item['f_shopname']}</a>
+                                <a href="#" onclick="update.BillFormShow('${item['f_billid']}', '${item['f_loginid']}')">${item['f_shopname'] === null ? "값없음" : item['f_shopname']} </a>
                              </td>`;
-                html += `    <td class="text-nowrap">${item['f_registration_number']}</td>`;
-                html += `    <td class="text-nowrap">${item['f_pay_type']}</td>`;
-                html += `    <td class="text-nowrap">${item['f_pay_interval']}</td>`;
-                html += `    <td class="text-nowrap">${item['f_price']}</td>`;
+
+                html += `    <td class="text-nowrap">${item['f_registration_number'] === null ? "값없음" : item['f_registration_number']}</td>`;
+                html += `    <td class="text-nowrap">${item['f_pay_type'] === null ? "값없음" : item['f_pay_type']}</td>`;
+                html += `    <td class="text-nowrap">${item['f_pay_interval'] === null ? "값없음" : item['f_pay_interval']}</td>`;
+                html += `    <td class="text-nowrap">${item['f_price'] === null ? "값없음" : item['f_price']}</td>`;
                 html += `</tr>`;
             });
             document.querySelector("#charge_tbody").innerHTML = html;
@@ -74,7 +75,7 @@
 </script>
     <div class="container-xxl flex-grow-1 container-p-y" >
         <h4 class="fw-bold py-3 mb-4">
-            <span class="text-muted fw-light">정산 / 이용료 청구 / </span>청구 대상 등록
+            <span class="text-muted fw-light">정산 / 이용료 청구 / </span>청구 대상 등록12
         </h4>
 
         <div class="form-floating">
