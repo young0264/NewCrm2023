@@ -25,7 +25,6 @@
          */
         initialize:function(){
             this.set();
-            this.onDraw();
         },
 
         set:function(){
@@ -35,6 +34,7 @@
             let dataType = "json";
             let ret = js.ajax_call(method, url, data, dataType, false, "", true);
             this.items = JSON.parse(ret['items']);
+            this.onDraw();
         },
 
         onSearch: function (formid) {
@@ -199,21 +199,22 @@
                                                         <option>비신탁</option>
                                                     </select>
                                                 </div>
-                                                <div class="btn-group">
-                                                    <select class="form-select" id="sch_key" name="sch_key">
-                                                        <option value="tonghap">통합</option>
-                                                        <option value="f_billid">billid(점포코드)<option>
-                                                        <option value="f_bizname">브랜드</option>
-                                                        <option value="f_shopname">매장명</option>
-                                                        <option value="f_registration_number">사업자번호</option>
-                                                        <option value="f_interval">결제주기</option>
-                                                        <option value="f_price">단가</option>
-                                                    </select>
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-floating col-md-4">
+                                    <div class="form-floating">
+                                        <div class="btn-group">
+                                            <select class="form-select" id="sch_key" name="sch_key">
+                                                <option value="tonghap">통합</option>
+                                                <option value="f_billid">점포코드</option>
+                                                <option value="f_bizname">브랜드</option>
+                                                <option value="f_shopname">매장명</option>
+                                                <option value="f_registration_number">사업자번호</option>
+                                                <option value="f_interval">결제주기</option>
+                                                <option value="f_price">단가</option>
+                                            </select>
+                                        </div>
                                         <div class="btn-group my-2">
                                             <input
                                                 class="form-control"

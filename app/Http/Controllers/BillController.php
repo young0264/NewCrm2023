@@ -135,6 +135,7 @@ class BillController extends BaseController
             $binds =array("sch_val"=> "%".$request->input("sch_val")."%");
         }
         $items = Bill_NEY::list($wheres, $binds);
+
         foreach ($items as $key => $item) {
             if ($key > 0) {
                 break;
@@ -173,6 +174,9 @@ class BillController extends BaseController
             }
         }
 
+//        echo "<pre>";
+//        print_r($items);
+//        exit;
         return response()->json(
             [
                 "status" => "ok",
