@@ -11,69 +11,31 @@
 {{--        ),--}}
 {{--    );--}}
 {{--@endphp--}}
-
+<?php
+    $pay_interval_arr = array(
+        "M"=>0,
+        "Q"=>2,
+        "H"=>5,
+        "Y"=>11,
+        "T"=>3,
+    );
+    ?>
 <script>
     const loginId = null;
 
     function interval_option() {
         let f_pay_interval = document.getElementById("f_pay_interval").value;
-        let f_interval_option = document.getElementById("f_interval_option");
-        if (f_pay_interval === "M") {
-            f_interval_option.innerHTML = `
-                <select class="form-select-sm bg-label-secondary"  id="f_interval_option" name="f_interval_option">
-                    <option>0</option>
-                </select>
-            `;
-        }else if(f_pay_interval === "Q"){
-            f_interval_option.innerHTML = `
-                <select class="form-select-sm bg-label-secondary"  id="f_interval_option" name="f_interval_option">
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                </select>
-            `;
-        }else if(f_pay_interval === "H"){
-            f_interval_option.innerHTML = `
-                <select class="form-select-sm bg-label-secondary" id="f_interval_option" name="f_interval_option">
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select>
-            `;
-        }else if(f_pay_interval === "Y"){
-            f_interval_option.innerHTML = `
-                <select class="form-select-sm bg-label-secondary" id="f_interval_option" name="f_interval_option">
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                    <option>11</option>
-                </select>
-            `;
-        }else if (f_pay_interval === "T") {
-            f_interval_option.innerHTML = `
-                <select class="form-select-sm bg-label-secondary" id="f_interval_option" name="f_interval_option">
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                </select>
-            `;
-        }
-        // else if (f_pay_interval == "E") {
-        // }
+//        let f_interval_option = document.getElementById("f_interval_option");
+        let f_interval_option = document.querySelector("#f_interval_option");
+        let pay_interval_arr = {"M":0, "Q":2, "H":5, "Y":11, "T":3 };
+        let html = "";
 
+        for (let i = 0; i <= pay_interval_arr[f_pay_interval]; i++) {
+            html += `<option>${i.toString().padStart(2, '0')}</option>`;
         }
+
+        f_interval_option.innerHTML = html;
+    }
 
     let register = {
         BillFormRegister: function () {
@@ -133,9 +95,9 @@
                                     <option value="normal">계산서</option>
                                     <option value="cash">현금영수증</option>
                                 </select>
-{{--                                <select id="f_tax_issue" name="f_tax_issue" class="btn btn-dark ">--}}
-{{--                                    --}}
-{{--                                </select>--}}
+                                {{--                                <select id="f_tax_issue" name="f_tax_issue" class="btn btn-dark ">--}}
+                                {{--                                    --}}
+                                {{--                                </select>--}}
                             </div>
                             <div class="col-sm-2 mx-2">
                                 <input class="form-control" id="f_opendate" name="f_opendate" placeholder="매장오픈일">
@@ -165,10 +127,10 @@
                             <span class="text-muted">(㎡)</span>
                         </div>
                     </div>
-{{--                    @if(Auth::check())--}}
-{{--                        {{Auth::user()->email}}--}}
-{{--                    @endif--}}
-{{--                    <input type="hidden" id="f_loginid" name="f_loginid" value="{{Auth::user()->email}}">--}}
+                    {{--                    @if(Auth::check())--}}
+                    {{--                        {{Auth::user()->email}}--}}
+                    {{--                    @endif--}}
+                    {{--                    <input type="hidden" id="f_loginid" name="f_loginid" value="{{Auth::user()->email}}">--}}
 
                     @if(Auth::check() && !empty(Auth::user()->id))
                         <input type="hidden" id="f_loginid" name="f_loginid" value="{{ Auth::user()->id}}">
