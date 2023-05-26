@@ -110,16 +110,35 @@ class BillController extends BaseController
     }
 
     public static function listByNEY(Request $request){
-
         $wheres = "";
-        $params = [];
-
-        $items = Bill_NEY::list($wheres, $params);
+        $binds = [];
         $headers = array();
+        if ($request->has("f_pay_type") and $request->filled("f_pay_type")) {
+            $wheres .= "and (f_pay_type = :f_pay_type)";
+            $binds = array("f_pay_type"=>$request->input("f_pay_type"));
+        }
+        if ($request->has("sch_key") and $request->filled("sch_key")
+            and $request->has("sch_val") and $request->filled("sch_val")) {
 
+            if ($request->input("sch_key") == "tonghap") {
+                $wheres .= "and
+                            (f_bizname like :sch_val
+                                or f_shopname like :sch_val
+                                or f_pay_type like :sch_val
+                                or f_registration_number like :sch_val
+                                or f_pay_interval like :sch_val
+                                or f_price like :sch_val
+                            )";
+            } else {
+                $wheres .= "{$request->input("sch_key")} like %:sch_val%";
+            }
+            $binds =array("sch_val"=> "%".$request->input("sch_val")."%");
+        }
+        $items = Bill_NEY::list($wheres, $binds);
         foreach ($items as $key => $item) {
-            if ($key > 0)
+            if ($key > 0) {
                 break;
+            }
             foreach ($item as $header => $i) {
                 if ($header == "f_billid"
                     || $header == "f_bizid"
@@ -150,7 +169,7 @@ class BillController extends BaseController
                 ) {
                     continue;
                 }
-                $headers[] = array("key" => $header, "name" => Bill::$column[strtoupper($header)]);
+                $headers[] = array("key" => $header, "name" => Bill_NEY::$column[strtoupper($header)]);
             }
         }
 
@@ -161,7 +180,8 @@ class BillController extends BaseController
                     "header" => json_encode($headers),
                     "items" => json_encode($items)
                 )
-            ]);
+            ]
+        );
     }
 
 
@@ -169,6 +189,7 @@ class BillController extends BaseController
      * @throws Exception
      */
     public static function BillFormUpdate(Request $request){
+
 
         try {
             DB::beginTransaction();
