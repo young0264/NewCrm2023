@@ -158,12 +158,6 @@ class DepositController extends Controller {
 
         $items = Excel::toArray(new SampleImport, Storage::disk('public')->path($file_info['path']))[0];
 
-//        echo"<pre>";
-//        print_r("=========ss==========");
-//        print_r($file_info['path']);
-//        download 에러
-//        self::download($file_info['path']);
-//        print_r("=========ee==========");
         $results = array();
         foreach ($items as $key=>$item) {
             if ($key > 0) {

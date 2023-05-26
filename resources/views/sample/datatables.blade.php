@@ -55,9 +55,9 @@
 
             this.items.forEach((item, idx)=>{
                 this.headers.forEach((header, header_idx)=>{
-                    if (this.dataset[header][item[header]] === undefined)
+                    if (this.dataset[header][item[header]] === undefined) {
                         this.dataset[header][item[header]] = [];
-
+                    }
                     this.dataset[header][item[header]].push(item['f_billid']);
                 })
             });

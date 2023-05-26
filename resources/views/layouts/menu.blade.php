@@ -46,7 +46,7 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item ">
-                    <a href="{{route('chargeMemberRegist')}}" class="menu-link">
+                    <a href="{{route('chargeMember')}}" class="menu-link">
                         <div data-i18n="Account">청구 대상 등록</div>
                     </a>
                 </li>

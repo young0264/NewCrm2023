@@ -12,10 +12,7 @@ class TaxController
 {
 
     public function taxRegisterProcess(Request $request){
-//        $billTaxKeys = array("F_LOGINID", "F_TAX_ISSUE", "F_PF_PRICE", "F_PYUNG", "F_VILLAGE", "F_ISSUEDATE");
-//        echo "<pre>";
-//        print_r($request->input());
-//        exit;
+
         $billTaxParams = array(
             "F_LOGINID" => $request->input('f_loginid'),
             "F_TAX_ISSUE" => $request->input('f_tax_issue'),
@@ -28,10 +25,6 @@ class TaxController
             "F_CB" => $request->input('f_cb')
         );
 
-//        echo "<pre>";
-//        print_r($billTaxParams);
-//        exit;
-
         try{
             Bill_TAX_NEY::insertBill($billTaxParams);
             DB::commit();
@@ -40,7 +33,7 @@ class TaxController
 
             echo $e->getMessage();
         }finally{
-            return redirect()->route('chargeMemberRegist');
+            return redirect()->route('chargeMember');
         }
 
     }

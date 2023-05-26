@@ -44,9 +44,8 @@ if (!Auth::check()) {
         /**
          * 이용료청구
          */
-//
-        Route::get("/charge/chargeMember", [ChargeController::class, "chargeMemberRegist"])->name("chargeMemberRegist");
-        Route::get("/charge/chargeNonMember", [ChargeController::class, "chargeNonMemberRegist"])->name("chargeNonMemberRegist");
+        Route::get("/charge/NonMember", [ChargeController::class, "chargeNonMemberRegist"])->name("chargeNonMemberRegist");
+        Route::get("/charge/member", [ChargeController::class, "chargeMember"])->name("chargeMember");
 
         /**
          * 계산서
