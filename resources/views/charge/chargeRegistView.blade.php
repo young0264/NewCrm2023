@@ -227,7 +227,7 @@
 
                                         </div>
                                         <div class="btn-group my-2">
-                                            <button type="button" class="btn btn-info" onclick="tables.onSearch('sch_form')">검색22</button>
+                                            <button type="button" class="btn btn-info" onclick="tables.onSearch('sch_form')">검색</button>
                                         </div>
                                     </div>
                                 </form>

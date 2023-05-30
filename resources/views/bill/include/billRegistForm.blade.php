@@ -24,11 +24,14 @@
     const loginId = null;
 
     function interval_option() {
+        alert(111222);
         let f_pay_interval = document.getElementById("f_pay_interval").value;
-//        let f_interval_option = document.getElementById("f_interval_option");
-        let f_interval_option = document.querySelector("#f_interval_option");
+       let f_interval_option = document.getElementById("f_interval_option");
+        // let f_interval_option = document.querySelector("#f_interval_option");
         let pay_interval_arr = {"M":0, "Q":2, "H":5, "Y":11, "T":3 };
         let html = "";
+        console.log("f_pay_interval : " + f_pay_interval);
+        console.log("f_interval_option : " + f_interval_option);
 
         for (let i = 0; i <= pay_interval_arr[f_pay_interval]; i++) {
             html += `<option>${i.toString().padStart(2, '0')}</option>`;
@@ -44,7 +47,6 @@
             let data = $('#billForm').serialize();
             let dataType = "json";
             console.log("data : " + data);
-            alert(123);
 
             js.ajax_call(method, url, data, dataType, true);
 

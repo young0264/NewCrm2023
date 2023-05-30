@@ -4,7 +4,7 @@
      *  bill update form
      */
     let f_billForm_param = Array(
-        'f_shopname', 'f_cb', 'f_business', 'f_cp_name', 'f_name1', 'f_pay_type', 'f_rep_name', 'f_mobile1', 'f_pay_interval',
+        'f_shopname', 'f_cb', 'f_business', 'f_cp_name', 'f_name1', 'f_pay_type', 'f_rep_name', 'f_mobile1', 'f_pay_interval', 'f_interval_option',
         'f_registration_number', 'f_email1', 'f_history', 'f_addr', 'f_name2', 'f_reply', 'f_public_addr1', 'f_mobile2', 'f_statement',
         'f_public_addr2', 'f_email2', 'f_tax_bill', 'f_product1', 'f_product2', 'f_product3', 'f_product4', 'f_unitprice1',
         'f_unitprice2', 'f_unitprice3', 'f_unitprice4', 'f_issue_type','f_bigo', 'f_bigo1', 'f_bigo2', 'f_bigo3', 'f_bigo4',
@@ -38,15 +38,25 @@
             //String타입을 json형식으로 변환해 jsonOfBillInfo에 저장합니다.
             this.jsonOfBillInfo = JSON.parse(billInfo['item']);
 
+            console.log(this.jsonOfBillInfo);
             //TODO
-            //input box의 id에 해당하는 value를 jsonOfBillInfo에서 가져온 값으로 초기화해줍니다.
+            //input-box의 id에 매칭되는 value값을 jsonOfBillInfo에서 가져온 값으로 초기화해줍니다.
             billForm_keys.forEach(function (key) {
-                document.querySelector('#update-modal-body').querySelector("#" + key).value = update.jsonOfBillInfo[key];
+                if (key === 'f_interval_option' || key === 'f_pay_interval') {
+                    document.querySelector('#update-modal-body').querySelector("#" + key + "_update").value = update.jsonOfBillInfo[key];
+
+                }else{
+                    document.querySelector('#update-modal-body').querySelector("#" + key).value = update.jsonOfBillInfo[key];
+
+                }
             });
+
+            interval_option_update();
         },
 
         //bill form 수정 process
         BillFormUpdate: function () {
+            console.log(22222222);
             var data = {};
             data['f_billId'] = this.billId;
             data['f_loginId'] = this.loginId;
@@ -69,6 +79,22 @@
             $('#modal_setting_update').modal('hide');
             window.location.reload();
         },
+
+    }
+
+    function interval_option_update() {
+        let f_pay_interval_update = document.getElementById("f_pay_interval_update").value;
+        let f_interval_option_update = document.getElementById("f_interval_option_update");
+        // let f_interval_option = document.querySelector("#f_interval_option");
+        let pay_interval_arr = {"M":0, "Q":2, "H":5, "Y":11, "T":3 };
+        let html = "";
+        console.log("f_interval_option_update : " + f_interval_option_update);
+
+        for (let i = 0; i <= pay_interval_arr[f_pay_interval_update]; i++) {
+            html += `<option>${i.toString().padStart(2, '0')}</option>`;
+        }
+
+        f_interval_option_update.innerHTML = html;
     }
 </script>
 
@@ -204,17 +230,20 @@
                                 </div>
 
                                 <div class="col-md-3 mx-2">
-                                    <select class="form-select text-black fw-bold" id="f_pay_interval"
-                                            name="f_pay_interval">
+                                    <select class="form-select text-black fw-bold" id="f_pay_interval_update"
+                                            name="f_pay_interval" onchange="interval_option_update(this.value)">
                                         <option value="">결제주기</option>
                                         <option value="M">월납</option>
                                         <option value="Q">분기납</option>
+                                        <option value="T">삼기납</option>
                                         <option value="H">반기납</option>
                                         <option value="Y">연납</option>
                                         <option value="E">기타</option>
                                     </select>
                                 </div>
-                                <span class="badge badge-center bg-label-secondary">0</span>
+{{--                                <span class="badge badge-center bg-label-secondary">0</span>--}}
+                                <select class="form-select-sm bg-label-secondary" id="f_interval_option_update" name="f_interval_option">
+                                </select>
                             </div>
 
                             <div class="btn-group my-1">
