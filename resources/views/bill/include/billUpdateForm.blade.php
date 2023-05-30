@@ -8,7 +8,6 @@
         'f_registration_number', 'f_email1', 'f_history', 'f_addr', 'f_name2', 'f_reply', 'f_public_addr1', 'f_mobile2', 'f_statement',
         'f_public_addr2', 'f_email2', 'f_tax_bill', 'f_product1', 'f_product2', 'f_product3', 'f_product4', 'f_unitprice1',
         'f_unitprice2', 'f_unitprice3', 'f_unitprice4', 'f_issue_type','f_bigo', 'f_bigo1', 'f_bigo2', 'f_bigo3', 'f_bigo4',
-
     );
 
     let f_billForm_param_pf = Array(
@@ -23,6 +22,7 @@
         billId: null,
         loginId: null,
         jsonOfBillInfo: null,
+
         //bill form 정보 가져오기
         BillFormShow: function (billId, loginId) {
             this.billId = billId;
@@ -38,25 +38,21 @@
             //String타입을 json형식으로 변환해 jsonOfBillInfo에 저장합니다.
             this.jsonOfBillInfo = JSON.parse(billInfo['item']);
 
-            console.log(this.jsonOfBillInfo);
-            //TODO
-            //input-box의 id에 매칭되는 value값을 jsonOfBillInfo에서 가져온 값으로 초기화해줍니다.
+            //f_interval_option에 해당하는 select-box의 option을 채워줍니다.
+            interval_option_update();
+
+            //input-box의 id와 value에 매칭되는 값을 넣어줍니다.
             billForm_keys.forEach(function (key) {
                 if (key === 'f_interval_option' || key === 'f_pay_interval') {
-                    document.querySelector('#update-modal-body').querySelector("#" + key + "_update").value = update.jsonOfBillInfo[key];
-
+                    document.querySelector("#" + key + "_update").value = update.jsonOfBillInfo[key];
                 }else{
                     document.querySelector('#update-modal-body').querySelector("#" + key).value = update.jsonOfBillInfo[key];
-
                 }
             });
-
-            interval_option_update();
         },
 
         //bill form 수정 process
         BillFormUpdate: function () {
-            console.log(22222222);
             var data = {};
             data['f_billId'] = this.billId;
             data['f_loginId'] = this.loginId;
@@ -68,11 +64,10 @@
                     if ($(this).val()) {
                         data[this.id] = $(this).val();
                     }
-                }else if(this.id == 'f_pay_interval_update' || this.id == 'f_interval_option_update'){
+                }else if(this.id === 'f_pay_interval_update' || this.id === 'f_interval_option_update'){
                     subStr_id = this.id.substr(0, this.id.length-7);
                     data[subStr_id] = $(this).val();
-                }
-                else{
+                }else{
                     data[this.id] = $(this).val();
                 }
             });
@@ -97,12 +92,9 @@
         // let f_interval_option = document.querySelector("#f_interval_option");
         let pay_interval_arr = {"M":0, "Q":2, "H":5, "Y":11, "T":3 };
         let html = "";
-        console.log("f_interval_option_update : " + f_interval_option_update);
-
         for (let i = 0; i <= pay_interval_arr[f_pay_interval_update]; i++) {
-            html += `<option>${i.toString().padStart(2, '0')}</option>`;
+            html += `<option value=${i.toString().padStart(2, '0')}>${i.toString().padStart(2, '0')}</option>`;
         }
-
         f_interval_option_update.innerHTML = html;
     }
 </script>
@@ -149,7 +141,7 @@
                                     </select>
                                 </div>
                                 <label >공연권료</label>
-                                <div class=" col-sm-2 mx-4 text-black ">
+                                <div class=" col-sm-2 mx-4 text-black">
                                     <input class="form-control" id="f_pf_price" name="f_pf_price" placeholder="공연권료" disabled>
 {{--                                                                    <input class="form-control " id="f_tax_type" value="03?" placeholder="4,000">--}}
                                 </div>
@@ -252,6 +244,7 @@
                                 </div>
 {{--                                <span class="badge badge-center bg-label-secondary">0</span>--}}
                                 <select class="form-select-sm bg-label-secondary" id="f_interval_option_update" name="f_interval_option">
+
                                 </select>
                             </div>
 

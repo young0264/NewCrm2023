@@ -201,7 +201,6 @@ class BillController extends BaseController
 
             $BillInfoKeys = self::getBillInput();
             $paramOfBill_basic = self::makeToAssocidateArray($BillInfoKeys, $request);
-
             if (empty($parameters || $bill_wheres)) {
                 throw new Exception("수정에 실패하였습니다.");
             }else if (!Bill_NEY::updateBill($paramOfBill_basic, $bill_wheres)) {
@@ -423,18 +422,18 @@ class BillController extends BaseController
      * @param Request $request : request 값
      * @return array key => value  연관배열
      */
-    private static function makeToAssocidateArray(array $lower_arr, Request $request): array
+    private static function makeToAssocidateArray(array $BillInfoKeys, Request $request): array
     {
         $arr = array();
-        foreach ($lower_arr as $lower_value) {
-            $arr[strtoupper($lower_value)] = $request->input($lower_value);
+        foreach ($BillInfoKeys as $key) {
+            $arr[strtoupper($key)] = $request->input($key);
         }
         return $arr;
     }
 
     private static function getBillInput()
     {
-        return self::getBillDivisionInfo()+ self::getBillBasicInfo();
+        return array_merge(self::getBillBasicInfo(), self::getBillDivisionInfo());
     }
     private static function getBillBasicInfo()
     {
