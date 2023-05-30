@@ -14,6 +14,7 @@ class Pagination
      * @param $rowsPerPage : 한 페이지에 보여줄 row 개수
      * return : 페이징을 적용시킬 query, Model로 return
      */
+
     /**
      * @param $query : 페이징을 적용시킬 데이터의 query
      * @param $total_data_cnt : 페이징을 적용시킬 데이터의 갯수
@@ -22,6 +23,7 @@ class Pagination
      * @param $pageNavRange : 페이징 네비게이션에 보여줄 페이지 범위
      * @return array : 페이징을 적용시킬 query, Model로 return
      */
+
     public static function paginate($query, $total_data_cnt,  $currentPage, $rowsPerPage, $pageNavRange)
     {
         $skip_page = ($currentPage - 1) * $rowsPerPage;

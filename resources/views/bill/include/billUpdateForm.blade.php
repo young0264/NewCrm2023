@@ -63,13 +63,16 @@
 
             //div input과 select값을 가져와 key value쌍 형태로 data에 저장 후, JSON으로 변환
             $("#update-modal-body input, #update-modal-body select").each(function () {
-
                 //f_issue_type의 id는 1개로 고정이므로 null값이 덮어씌워지기 전에 따로 처리해줍니다.
                 if (this.id === 'f_issue_type') {
                     if ($(this).val()) {
                         data[this.id] = $(this).val();
                     }
-                }else{
+                }else if(this.id == 'f_pay_interval_update' || this.id == 'f_interval_option_update'){
+                    subStr_id = this.id.substr(0, this.id.length-7);
+                    data[subStr_id] = $(this).val();
+                }
+                else{
                     data[this.id] = $(this).val();
                 }
             });
@@ -118,8 +121,8 @@
                     <div id="t_bill_pf_body" >
                         <div class="card-body">
                             <div class="btn-group my-2">
-                                <label class="btn-group fw-bold ">발행일</label>
-                                <div class=" col-md-4 mx-1">
+                                <label class="btn-group fw-bold">발행일</label>
+                                <div class="col-md-4 mx-1">
                                     <input class="form-control alert-warning" id="f_issuedate" name="f_issuedate"
                                            placeholder="작성일자" disabled>
                                 </div>

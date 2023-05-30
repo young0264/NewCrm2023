@@ -194,14 +194,13 @@ class BillController extends BaseController
      */
     public static function BillFormUpdate(Request $request){
 
-
         try {
             DB::beginTransaction();
             $parameters = $request;
             $bill_wheres = array("f_billId"=>$parameters['f_billId']);
 
-            $BillBasicInfo= self::getBillBasicInfo();
-            $paramOfBill_basic = self::makeToAssocidateArray($BillBasicInfo, $request);
+            $BillInfoKeys = self::getBillInput();
+            $paramOfBill_basic = self::makeToAssocidateArray($BillInfoKeys, $request);
 
             if (empty($parameters || $bill_wheres)) {
                 throw new Exception("수정에 실패하였습니다.");
@@ -433,12 +432,25 @@ class BillController extends BaseController
         return $arr;
     }
 
+    private static function getBillInput()
+    {
+        return self::getBillDivisionInfo()+ self::getBillBasicInfo();
+    }
     private static function getBillBasicInfo()
     {
         return array(
             'f_shopname', 'f_cb', 'f_business', 'f_cp_name', 'f_name1', 'f_pay_type', 'f_rep_name', 'f_mobile1',
             'f_pay_interval', 'f_interval_option', 'f_registration_number', 'f_email1', 'f_history', 'f_addr', 'f_name2', 'f_reply',
             'f_public_addr1', 'f_mobile2', 'f_statement', 'f_public_addr2', 'f_email2', 'f_tax_bill','f_issue_type');
+    }
+
+    private static function getBillDivisionInfo()
+    {
+        return array('f_bigo',
+            'f_product1', 'f_product2', 'f_product3', 'f_product4',
+            'f_unitprice1', 'f_unitprice2', 'f_unitprice3', 'f_unitprice4',
+            'f_bigo1', 'f_bigo2', 'f_bigo3', 'f_bigo4'
+        );
     }
 
     private static function getBillPFInfo()
