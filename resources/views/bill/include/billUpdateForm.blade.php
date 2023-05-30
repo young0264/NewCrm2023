@@ -75,9 +75,15 @@
             });
 
             //DB에서 bill id값이 같은 row의 column들을 update해줍니다.
+            try{
             js.ajax_call("POST", "{{route("BillFormUpdate")}}", data, "json", false, "", true);
+            alert("청구 대상 수정이 완료되었습니다.");
             $('#modal_setting_update').modal('hide');
             window.location.reload();
+            }catch (e) {
+                alert("청구 대상 수정에 실패하였습니다.");
+                console.log(e);
+            }
         },
 
     }
