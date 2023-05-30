@@ -101,7 +101,7 @@
                                     <div class="btn-group">
                                         <div class=" col-md-3">
                                             <div class="card-body">
-                                                <h5>작성일자<span class="font-semibold">&emsp;20240413</span></h5>
+                                                <h4 class="text-center">작성일자<span class="font-semibold">&emsp;20240413</span></h4>
                                                 <h5 class="text-danger text-center">(06:위수탁)</h5>
                                                 <h5 class="text-danger text-center">(01:일반)</h5>
                                                 <h5 style="border: 1px dashed #bbb; "></h5>
@@ -240,10 +240,10 @@
                                                                value="20240413">
                                                     </div>
                                                     {{--                                                계산서 음실연--}}
-                                                    <label>&emsp;일자1</label>
+                                                    <label>&emsp;일자1&emsp;</label>
                                                     <div class="btn-group col-md-10 ">
                                                         <select
-                                                            class="btn-group col-md-3 alert alert-warning text-black container-fluid">
+                                                            class="btn-group col-md-3 alert alert-warning text-black ">
                                                             <option>1</option>
                                                             <option>31</option>
                                                         </select>
@@ -258,10 +258,10 @@
                                                         <input class="form-control container-fluid my-2"
                                                                value="20240413">
                                                     </div>
-                                                    <label>&emsp;일자2</label>
+                                                    <label>&emsp;일자2&emsp;</label>
                                                     <div class="btn-group col-md-10">
                                                         <select
-                                                            class="btn-group col-md-3 alert alert-warning container-fluid text-black">
+                                                            class="btn-group col-md-3 alert alert-warning text-black">
                                                             <option>1</option>
                                                             <option>31</option>
                                                         </select>
@@ -277,10 +277,10 @@
                                                                value="20240413">
                                                     </div>
 
-                                                    <label>&emsp;일자3</label>
+                                                    <label>&emsp;일자3&emsp;</label>
                                                     <div class="btn-group col-md-10">
                                                         <select
-                                                            class="btn-group col-md-3 alert alert-warning container-fluid text-black">
+                                                            class="btn-group col-md-3 alert alert-warning text-black">
                                                             <option>1</option>
                                                             <option>31</option>
                                                         </select>
