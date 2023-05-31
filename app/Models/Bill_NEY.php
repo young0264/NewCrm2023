@@ -42,7 +42,6 @@ class Bill_NEY extends Model{
     ];
 
     public static function list($wheres="", $params) {
-
         $query = "select
                     *
                     from
@@ -57,13 +56,12 @@ class Bill_NEY extends Model{
                             f_product3, f_standard3, f_unitprice3, f_count3, f_price3, f_tax3, f_bigo3,
                             f_product4, f_standard4, f_unitprice4, f_count4, f_price4, f_tax4, f_bigo4,
                             f_issue_type, f_loginid
-                            from ".self::$use_table."
+                            from T_BILL_NEY
                                 where f_billid is not null
                                 {$wheres}
                                     order by f_billid desc
                         )
                         where rownum <= 10";
-
         return DB::select($query, $params);
     }
 
