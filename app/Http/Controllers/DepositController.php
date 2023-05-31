@@ -111,7 +111,10 @@ class DepositController extends Controller {
         $currentPage =  $request->input('page') ?? 1;
         $binds = array();
         $paged_data = Deposit::list($where, $binds, $currentPage);
-
+//        echo "<pre>";
+//        print_r($paged_data['paged_depositList']);
+//        exit;
+//        f_payment
 
         /**
          * 페이지네이션
@@ -165,6 +168,7 @@ class DepositController extends Controller {
 
         $results = array();
         foreach ($items as $key=>$item) {
+            $paymentToInt = intval(str_replace(',', '', $item[5]));
             if ($key > 0) {
                 $results[] = array(
                     'F_COMPANY'=>$item[0],
@@ -172,7 +176,7 @@ class DepositController extends Controller {
                     'F_ACCOUNT'=>$item[2],
                     'F_TRANS_DATE'=>$item[3],
                     'F_CLIENT'=>$item[4],
-                    'F_PAYMENT'=>$item[5],
+                    'F_PAYMENT'=>$paymentToInt,
                     'F_TRANS_TYPE'=>$item[6],
                     'F_TRADE_BRANCH'=>$item[7],
                     "F_USER"=>Auth::user()->id,

@@ -224,7 +224,7 @@
                                         <td>{{$deposit->f_account}}</td>
                                         <td>{{$deposit->f_trans_date}}</td>
                                         <td>{{$deposit->f_client}}</td>
-                                        <td>{{$deposit->f_payment}}</td>
+                                        <td>{{number_format($deposit->f_payment, 0, ',', ',')}}</td>
                                         <td>{{$deposit->f_trans_type}}</td>
                                         <td>{{$deposit->f_trade_branch}}</td>
                                         <td>{{$deposit->f_user}}</td>
