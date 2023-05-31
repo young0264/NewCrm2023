@@ -2,11 +2,11 @@
 @extends('layouts.app')
 @section('content')
 <script>
-    function pagination(pageNumber) {
-        var urlparams = new URLSearchParams(window.location.search);
-        var urlparams = urlparams.toString().replace(/(&|\?|^)page=\d+/gi, '');
-        location.href = "{{route('depositList')}}?" + urlparams + "&page="+pageNumber;
-    }
+    {{--function pagination(pageNumber) {--}}
+    {{--    var urlparams = new URLSearchParams(window.location.search);--}}
+    {{--    var urlparams = urlparams.toString().replace(/(&|\?|^)page=\d+/gi, '');--}}
+    {{--    location.href = "{{route('depositList')}}?" + urlparams + "&page="+pageNumber;--}}
+    {{--}--}}
 
     function onSearch(formid) {
         var formData = new FormData(document.getElementById(formid));
@@ -175,7 +175,7 @@
                                                         <div class="alert-secondary rounded ">
                                                             <div class="card-body row" id="radio_check">
                                                                 <div class="my-2">
-                                                                    <input  type="radio" id="f_pay_system1" name="f_pay_system" value="무통장" checked><label for="f_pay_system1" class="text-black fw-bold mx-1">무통장</label>
+                                                                    <input  type="radio" id="f_pay_system1" name="f_pay_system" value="무통장"><label for="f_pay_system1" class="text-black fw-bold mx-1">무통장</label>
                                                                 </div>
 
                                                                 <div class="my-2">
