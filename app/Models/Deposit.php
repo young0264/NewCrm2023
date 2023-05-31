@@ -22,8 +22,6 @@ class Deposit extends Model {
         'updated_at',
     ];
 
-
-
     public static function saveDeposit($params){
         return DB::table('T_DEPOSIT')->insert($params);
     }
@@ -34,18 +32,16 @@ class Deposit extends Model {
         $count_query = "select count(*) from t_deposit {$where}";
         $total_data_cnt = DB::select($count_query, $params)[0]->{'count(*)'};
 
-        $paged_data = Pagination::paginate($query, $total_data_cnt, $currentPage, 10 ,2);
+        $paged_data = Pagination::paginate($query, $total_data_cnt, $currentPage, 10 ,10);
+        $paged_depositList = DB::select($paged_data['paged_query'], []);
 
-        $paged_depositList = DB::select($paged_data['paged_query'],[]);
-
-        $result = [
-            'depositList' => $paged_depositList,
+        return [
+            'paged_depositList' => $paged_depositList,
             'start_page' => $paged_data['start_page'],
             'end_page' => $paged_data['end_page'],
-            'max_page' => $paged_data['max_page']
+            'max_page' => $paged_data['max_page'],
+            'page_gap' => $paged_data['page_gap']
         ];
-
-        return $result;
     }
 
     public static function pagination($query, $currentPage){

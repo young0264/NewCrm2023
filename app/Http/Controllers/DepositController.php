@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-//use Deposit;
-//use App\Models\Deposit;
 use App\Models\Deposit;
 use App\Helpers\File;
 use App\Imports\SampleImport;
@@ -45,9 +43,6 @@ class DepositController extends Controller {
             $date = new DateTime($item->f_created_at);
             $month = ($date->format('m'));
             $day_time = ($date->format('d일 H:i:s'));
-
-//            xxxxxxxxxxx
-//            echo Storage::disk("public")->url("/temp/20230519/20230519_ef791b9c17359f1521a9bb9237ac566e.csv");
 
             if (!empty($history_res[$month]) &&  count($history_res[$month]) > 2) {
                 continue;
@@ -114,25 +109,35 @@ class DepositController extends Controller {
 
 //        검색 데이터 가져오기
         $currentPage =  $request->input('page') ?? 1;
-        $paged_data = Deposit::list($where, [], $currentPage);
+        $binds = array();
+        $paged_data = Deposit::list($where, $binds, $currentPage);
 
+
+        /**
+         * 페이지네이션
+         * 1. 쿼리의 전체 카운트를 불러온다. select count(1) ......
+         * 2. 전체 카운트로 계산된 페이지네이션의 값들을 가져온다. (전체 카운트를 가지고, 페이징 태그랑 스타트 엔드 )
+         * 3. 값들로 리스트 갯수 만큼 불러온다. (rownum 에다가 스타트 엔드만큼만 가져온다)
+         */
         if ($mode === "excel") {
             $headers = ['기업명', ' 은행', '계좌', '거래일자', '의뢰인', '입금액', '거래구분', '거래점', '작성자'];
             $filename = sprintf("%s_입금내역_%s.xlsx", date('Ymd'), time());
             return Excel::download(new DepositExport($headers, $where), $filename);
         } else {
             return view('deposit.depositSearch',[
-                'depositList' => $paged_data['depositList'],
+                'depositList' => $paged_data['paged_depositList'],
                 'currentPage' => $currentPage,
                 'start_page' => $paged_data['start_page'],
                 'end_page' => $paged_data['end_page'],
                 'max_page' => $paged_data['max_page'],
+                'page_gap' => $paged_data['page_gap']
             ]);
         }
     }
 
 
     /**
+     * deposit 저장
      * 파일 업로드 기능 처리
      * /app/Helpers/File.php
      * 엑셀에서 데이터 가져오기 (엑셀 설명서)
