@@ -39,7 +39,7 @@
             this.jsonOfBillInfo = JSON.parse(billInfo['item']);
 
             //f_interval_option에 해당하는 select-box의 option을 채워줍니다.
-            interval_option_update();
+            interval_option_update(this.jsonOfBillInfo['f_pay_interval']);
 
             //input-box의 id와 value에 매칭되는 값을 넣어줍니다.
             billForm_keys.forEach(function (key) {
@@ -60,6 +60,7 @@
             //div input과 select값을 가져와 key value쌍 형태로 data에 저장 후, JSON으로 변환
             $("#update-modal-body input, #update-modal-body select").each(function () {
                 //f_issue_type의 id는 1개로 고정이므로 null값이 덮어씌워지기 전에 따로 처리해줍니다.
+                let subStr_id = "";
                 if (this.id === 'f_issue_type') {
                     if ($(this).val()) {
                         data[this.id] = $(this).val();
@@ -74,25 +75,22 @@
 
             //DB에서 bill id값이 같은 row의 column들을 update해줍니다.
             try{
-            js.ajax_call("POST", "{{route("BillFormUpdate")}}", data, "json", false, "", true);
-            alert("청구 대상 수정이 완료되었습니다.");
-            $('#modal_setting_update').modal('hide');
-            window.location.reload();
+                js.ajax_call("POST", "{{route("BillFormUpdate")}}", data, "json", false, "", true);
+                alert("청구 대상 수정이 완료되었습니다.");
+                $('#modal_setting_update').modal('hide');
+                window.location.reload();
             }catch (e) {
                 alert("청구 대상 수정에 실패하였습니다.");
                 console.log(e);
             }
         },
-
     }
 
-    function interval_option_update() {
-        let f_pay_interval_update = document.getElementById("f_pay_interval_update").value;
+    function interval_option_update(f_pay_interval) {
         let f_interval_option_update = document.getElementById("f_interval_option_update");
-        // let f_interval_option = document.querySelector("#f_interval_option");
         let pay_interval_arr = {"M":0, "Q":2, "H":5, "Y":11, "T":3 };
         let html = "";
-        for (let i = 0; i <= pay_interval_arr[f_pay_interval_update]; i++) {
+        for (let i = 0; i <= pay_interval_arr[f_pay_interval]; i++) {
             html += `<option value=${i.toString().padStart(2, '0')}>${i.toString().padStart(2, '0')}</option>`;
         }
         f_interval_option_update.innerHTML = html;
