@@ -18,8 +18,10 @@ class DepositExport implements FromCollection, WithHeadings, WithColumnWidths, W
     protected $headers;
     protected $params;
 
-    public function __construct($headers, $params)
+    public function __construct($headers)
     {
+        $params = "where f_depositid is not null";
+
         $this -> headers = $headers;
         $this -> params = $params;
     }

@@ -50,6 +50,7 @@ if (!Auth::check()) {
         /**
          * 계산서
          */
+        Route::get("/bill/test", [BillController::class, "ttt"])->name("billtest");
         Route::get("/bill/issue", [BillController::class, "issue"])->name("billIssue");
         Route::get("/bill/form", [BillController::class, "form"])->name("billForm");
         Route::get("/bill/form/sub", [BillController::class, "printForm"])->name("printBillForm");
@@ -63,11 +64,11 @@ if (!Auth::check()) {
         /**
          * 입금내역
          */
-        Route::get("/deposit/history", [DepositController::class, "history"])->name("depositHistory");
+        Route::get("/deposit/history", [DepositController::class, "showHistory"])->name("depositHistory");
         Route::get("/deposit/list", [DepositController::class, "list"])->name("depositList"); //
         Route::get("/deposit/match/1", [DepositController::class, "match1"])->name("depositMatch1");
         Route::get("/deposit/match/2", [DepositController::class, "match2"])->name("depositMatch2");
-        Route::post("/deposit/save", [DepositController::class, "save"])->name("depositUpload");
+        Route::post("/deposit/save", [DepositController::class, "fileUpload"])->name("depositUpload");
         Route::get("/deposit/download", [DepositController::class, "download"])->name("downloadExcel");
 
 

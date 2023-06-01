@@ -32,8 +32,8 @@
             let url = "{{route("billList")}}";
             let data = this.data;
             let dataType = "json";
-            let ret = js.ajax_call(method, url, data, dataType, false, "", true);
-            this.items = JSON.parse(ret['items']);
+            let result = js.ajax_call(method, url, data, dataType, false, "", true);
+            this.items = JSON.parse(result['items']);
             this.onDraw();
         },
 
@@ -70,7 +70,6 @@
             });
             document.querySelector("#charge_tbody").innerHTML = html;
         },
-
     };
 </script>
     <div class="container-xxl flex-grow-1 container-p-y" >

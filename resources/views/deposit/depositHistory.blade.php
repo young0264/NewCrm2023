@@ -56,8 +56,8 @@
                                                                 <h4 align="right">{{$month}}월</h4>
                                                                 <div class="card icon-card cursor-pointer text-center mb-4 mx-3">
                                                                     <div class="card-body my-xxl-4 mx-xxl-4">
-                                                                        @if(isset($history_res[sprintf("%02d", $month)]))
-                                                                            @foreach ($history_res[sprintf("%02d", $month)] as $key => $res)
+                                                                        @if(isset($history_result[sprintf("%02d", $month)]))
+                                                                            @foreach ($history_result[sprintf("%02d", $month)] as $key => $res)
                                                                                 <h6 {!! $key=="0" ? "style='font-weight:bold'" : "" !!}>
                                                                                     <a href="#" onclick="deposit.download(this)" data-id="{{$res['fileid']}}">
                                                                                         <span class="badge badge-center bg-primary">{{$res['pay_system']}}</span>

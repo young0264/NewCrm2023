@@ -5,8 +5,14 @@ use App\Models\Deposit;
 use App\Helpers\File;
 use App\Imports\SampleImport;
 use App\Models\Deposit_File;
+use App\Service\DepositService;
 use DateTime;
 use App\Exports\DepositExport;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse as JsonResponseAlias;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,129 +21,72 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class DepositController extends Controller {
 
-    public static function history(Request $request){
-
-        $years = array();
-        for ($i=date('Y'); $i>2018; $i--) {
-            $years[] = $i;
-        }
-
-        $query = "
-                SELECT *
-                    FROM T_DEPOSIT_FILE
-                        WHERE extract(year from F_CREATED_AT) = :year
-                            ORDER BY F_FILEID DESC";
-
-        $binds = [
-            'year' => $request->input("sch_year"),
-        ];
-
-        $history_res = array();
-        $items = DB::select($query, $binds);
-
-        $cnt = 0;
-
-        foreach($items as $item){
-
-            $pay_system = mb_substr($item->f_pay_system, 0, 1);
-            $date = new DateTime($item->f_created_at);
-            $month = ($date->format('m'));
-            $day_time = ($date->format('d일 H:i:s'));
-
-            if (!empty($history_res[$month]) &&  count($history_res[$month]) > 2) {
-                continue;
-            }
-
-            $history_res[$month][] = array(
-                "fileid"=>$item->f_fileid,
-                "pay_system"=>$pay_system,
-                "month"=>$month,
-                "day_time"=>$day_time,
-                "filepath"=>$item->f_path
-            );
-
-        }
-        return view('deposit.depositHistory', ['history_res'=>$history_res, "years"=>$years]);
+    protected DepositService $depositService;
+    public function __construct(DepositService $depositService)
+    {
+        $this->depositService = $depositService;
     }
 
-    public static function match1(){
-        return view('deposit.depositMatching');
+
+    /**
+     * @param Request $request
+     * @throws \Exception
+     */
+    public function showHistory(Request $request){
+
+        try {
+            $result = $this->depositService->getHistoryInfo($request);
+        } catch (Exception $e) {
+            return response()->json([
+                "status" => "error",
+                "msg" => $e->getMessage()
+            ]);
+        }
+
+        return view('deposit.depositHistory',
+            ['history_result'=>$result["history_result"],
+            "years"=>$result["years"]]
+        );
     }
-    public static function match2(){
-        return view('deposit.depositMatching2');
-    }
-
-    public static function list(Request $request){
-        $mode = $request->input("mode");
-        $sch_year = $request->input("sch_year");
-        $sch_month = $request->input("sch_month");
-        $sch_day = $request->input("sch_day");
-        $sch_cols = $request->input("sch_cols");
-        $sch_val = $request->input("sch_val");
-        $f_account = $request->input("f_account");
-        $where = "where f_depositid is not null";
 
 
-        if (!empty($sch_year)) {
-            $where .= " and EXTRACT(YEAR FROM TO_DATE(f_trans_date)) = '".$sch_year."'";
-        }
-        if (!empty($sch_month)) {
-            $where .= " and EXTRACT(MONTH FROM TO_DATE(f_trans_date)) = '".$sch_month."'";
-        }
-        if (!empty($sch_day)) {
-            $where .= " and EXTRACT(DAY FROM TO_DATE(f_trans_date)) = '".$sch_day."'";
-        }
-        if (!empty($f_account) && $f_account!="account_all") {
-            $where .= " and f_account = '".$f_account."'";
-        }
-        else if($f_account=="account_all"){
-            $where .= " and (f_account = '592201-01-513261' or f_account = '140-009-167369')";
-        }
-
-        if (!empty($sch_cols) && $sch_cols!="sch_all") {
-            $where .= " and $sch_cols like '%".$sch_val."%'";
-        }
-        if( $sch_cols=="sch_all" && !empty($sch_val)){
-            $where .= " and (f_company like '%".$sch_val."%'
-            or f_bank like '%".$sch_val."%'
-            or f_client like '%".$sch_val."%'
-            or f_payment like '%".$sch_val."%'
-            or f_trans_type like '%".$sch_val."%'
-            or f_trade_branch like '%".$sch_val."%'
-            or f_user like '%".$sch_val."%')";
-        }
-
-//        검색 데이터 가져오기
-        $currentPage =  $request->input('page') ?? 1;
-        $binds = array();
-        $paged_data = Deposit::list($where, $binds, $currentPage);
-//        echo "<pre>";
-//        print_r($paged_data['paged_depositList']);
-//        exit;
-//        f_payment
-
+    public function list(Request $request){
         /**
-         * 페이지네이션
-         * 1. 쿼리의 전체 카운트를 불러온다. select count(1) ......
-         * 2. 전체 카운트로 계산된 페이지네이션의 값들을 가져온다. (전체 카운트를 가지고, 페이징 태그랑 스타트 엔드 )
-         * 3. 값들로 리스트 갯수 만큼 불러온다. (rownum 에다가 스타트 엔드만큼만 가져온다)
+         * $mode가 excel이면 download
+         * 아니면 검색조건에 맞는 view
          */
+        $mode = $request->input("mode");
+
         if ($mode === "excel") {
             $headers = ['기업명', ' 은행', '계좌', '거래일자', '의뢰인', '입금액', '거래구분', '거래점', '작성자'];
             $filename = sprintf("%s_입금내역_%s.xlsx", date('Ymd'), time());
-            return Excel::download(new DepositExport($headers, $where), $filename);
-        } else {
-            return view('deposit.depositSearch',[
-                'depositList' => $paged_data['paged_depositList'],
-                'currentPage' => $currentPage,
-                'start_page' => $paged_data['start_page'],
-                'end_page' => $paged_data['end_page'],
-                'max_page' => $paged_data['max_page'],
-                'page_gap' => $paged_data['page_gap']
-            ]);
+            return Excel::download(new DepositExport($headers), $filename);
         }
-    }
 
+        try {
+            $result = $this->depositService->makeSearchConditions($request);
+        } catch (Exception $e) {
+            return
+                response()->json(
+                [
+                    "status"=>"error",
+                    "message"=>$e->getMessage(),
+                ]
+            );
+        }
+
+        $paged_data = $result["paged_data"];
+        $currentPage = $result["currentPage"];
+
+        return view('deposit.depositSearch',[
+            'depositList' => $paged_data['paged_depositList'],
+            'currentPage' => $currentPage,
+            'start_page' => $paged_data['start_page'],
+            'end_page' => $paged_data['end_page'],
+            'max_page' => $paged_data['max_page'],
+            'page_gap' => $paged_data['page_gap']
+        ]);
+    }
 
     /**
      * deposit 저장
@@ -148,46 +97,11 @@ class DepositController extends Controller {
      * $path = "/temp/20230411/20230411_eb6076be29e795cb3a09deaedd415dc8.xlsx";
      * $path =  <pre> /temp/20230517/20230517_48bbf1ac710bc4d886e59424acaedb50.csv
      */
-    public static function save(Request $request): \Illuminate\Http\JsonResponse{
-        DB::beginTransaction();
-        $file_info = File::upload($request->file("file"), "temp");
-//        $path = $request->file("file")->store('path');
-        $f_pay_system = $request->input('f_pay_system');
-        $file_param = [
-            'F_NAME' => $file_info['name'],
-            'F_PATH' => $file_info['path'],
-            'F_SIZE' => $file_info['size'],
-            'F_EXT' => $file_info['ext'],
-            "F_PAY_SYSTEM"=>$f_pay_system,
-            'F_USER' => Auth::user()->id,
-        ];
+    public function fileUpload(Request $request): JsonResponseAlias
+    {
 
-        $fileId = Deposit_File::saveFile($file_param);
+        $results = $this->depositService->fileUpload($request);
 
-        $items = Excel::toArray(new SampleImport, Storage::disk('public')->path($file_info['path']))[0];
-
-        $results = array();
-        foreach ($items as $key=>$item) {
-            $paymentToInt = intval(str_replace(',', '', $item[5]));
-            if ($key > 0) {
-                $results[] = array(
-                    'F_COMPANY'=>$item[0],
-                    'F_BANK'=>$item[1],
-                    'F_ACCOUNT'=>$item[2],
-                    'F_TRANS_DATE'=>$item[3],
-                    'F_CLIENT'=>$item[4],
-                    'F_PAYMENT'=>$paymentToInt,
-                    'F_TRANS_TYPE'=>$item[6],
-                    'F_TRADE_BRANCH'=>$item[7],
-                    "F_USER"=>Auth::user()->id,
-                    "F_PAY_SYSTEM"=>$f_pay_system,
-                    "F_FILEID"=>$fileId
-                );
-            }
-        }
-
-        Deposit::saveDeposit($results);
-        DB::commit();
         return response()->json(
             [
                 "status"=>"ok",
@@ -196,13 +110,33 @@ class DepositController extends Controller {
         );
     }
 
-    public static function download(Request $request){
-        $item = Deposit_File::getOne($request->input("f_depositid"));
+
+    /**
+     * 입금내역 등록 히스토리 다운로드
+     */
+    public function download(Request $request){
+
+        try {
+            $item = $this -> depositService -> findByDepositId($request->input("f_depositid"));
+        } catch (Exception $e) {
+            return response()->json([
+                "status" => "error",
+                "msg" => $e->getMessage()
+            ]);
+        }
 
         if (Storage::disk("public")->exists($item->f_path)) {
             return response()->download(Storage::disk("public")->path($item->f_path));
         } else {
             abort(404, 'File not found');
         }
+    }
+
+    public static function match1(){
+        return view('deposit.depositMatching');
+    }
+
+    public static function match2(){
+        return view('deposit.depositMatching2');
     }
 }
