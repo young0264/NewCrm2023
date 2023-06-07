@@ -65,6 +65,7 @@ class BillService
      * bill. 이용료청구 수정
      * @throws Exception
      */
+//    TODO : array로 넘기면 transaction을 controller에서 처리해야함
     public function billUpdate(Request $request)
     {
         DB::beginTransaction();
@@ -74,12 +75,17 @@ class BillService
         $paramOfBill_basic = self::makeToAssocidateArray($BillInfoKeys, $request);
 
         if (empty($request || $bill_wheres)) {
-            throw new Exception("수정에 실패하였습니다.");
-        }else if (!Bill_NEY::updateBill($paramOfBill_basic, $bill_wheres)) {
-            throw new Exception("수정시 에러가 발생했습니다. 입력값들을 확인해주세요.");
+            DB::rollBack();
+            return array("status"=>false, "msg"=>"수정에 실패하였습니다.");
         }
-
+        if (!Bill_NEY::updateBill($paramOfBill_basic, $bill_wheres)) {
+            DB::rollBack();
+            return array("status"=>false, "수정시 에러가 발생했습니다. 입력값들을 확인해주세요.");
+        }
         DB::commit();
+
+        return array("status"=>true, "수정에 성공하였습니다.");
+
     }
 
     public function findBillById(Request $request)

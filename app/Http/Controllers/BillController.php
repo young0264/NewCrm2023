@@ -51,20 +51,19 @@ class BillController extends BaseController
      */
     public function BillFormUpdate(Request $request){
 
-        try {
-            $this->billService->billUpdate($request);
+        $result = $this->billService->billUpdate($request);
 
-            return response()->json([
-                "status" => "ok",
-                "msg" => "정상적으로 수정되었습니다."
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
+        if (!$result['status']) {
             return response()->json([
                 "status" => "error",
-                "msg" => $e->getMessage()
+                "msg" => $result['msg']
             ]);
         }
+        return response()->json([
+            "status" => "ok",
+            "msg" => "정상적으로 수정되었습니다."
+        ]);
+
     }
 
     /**
@@ -119,6 +118,10 @@ class BillController extends BaseController
     public static function issue()
     {
         return view("bill.billIssueView");
+    }
+    public static function issuePage()
+    {
+        return view("bill.billIssuePage");
     }
 
     public static function form()
