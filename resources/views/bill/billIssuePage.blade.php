@@ -206,7 +206,7 @@
             },
 
             /**
-             * table head select box 그리기
+             * table head select box(검색) 그리기
              */
             //TODO : 이미지에 맞춘다고 button으로 구현함 -> select box
             makeTableSelectBox: function () {
@@ -216,19 +216,31 @@
                 this.headers.forEach((head, idx) => {
                     let className = this.getClassNameByTabs(head['key']);
 
+                    // 시작
+                    // tableHeadHtml += `<th class="text-nowrap text-center ${className}"> \n
+                    //                     <div class="btn-group "> \n`
+                    // tableHeadHtml += `<button type="button" class="btn btn-outline-primary  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">${head['name']}</button> \n
+                    //                     <ul class="dropdown-menu"> \n`
+                    //
+                    // this.selectOptionData[head['key']].forEach((item, idx) => {
+                    //     tableHeadHtml += `<li><a class="dropdown-item" href="javascript:void(0);">${item}</a></li> \n`;
+                    // });
+                    //
+                    // tableHeadHtml += `   <li><hr class="dropdown-divider"/></li> \n
+                    //                      <li><a class="dropdown-item" href="javascript:void(0);">Separated link</a></li>\n
+                    //                     </ul>`
+                    // tableHeadHtml += `</ul> </div> </th>`;
+                    // 끝
+
                     tableHeadHtml += `<th class="text-nowrap text-center ${className}"> \n
-                                        <div class="btn-group "> \n`
-                    tableHeadHtml += `<button type="button" class="btn btn-outline-primary  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">${head['name']}</button> \n
-                                        <ul class="dropdown-menu"> \n`
+                                        <div class="btn-group "> \n
+                                            <select class="form-select" style="width:130px; max-width:95%">
+                                                <option value="">${head['name']}</option>`
 
                     this.selectOptionData[head['key']].forEach((item, idx) => {
-                        tableHeadHtml += `<li><a class="dropdown-item" href="javascript:void(0);">${item}</a></li> \n`;
+                        tableHeadHtml += `<option value="${item}"><a href="javascript:void(0);"></a>${item}</option>`;
                     });
 
-                    tableHeadHtml += `   <li><hr class="dropdown-divider"/></li> \n
-                                         <li><a class="dropdown-item" href="javascript:void(0);">Separated link</a></li>\n
-                                        </ul>`
-                    tableHeadHtml += `</ul> </div> </th>`;
                 });
                 tableHeadHtml += `</tr>`;
 
@@ -319,7 +331,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <!-- Notifications -->
-                            <h4 class="card-header text-primary">계산서 발행 리스트</h4>
+                            <h4 class="card-header text-primary">계산서 발행 리스트2</h4>
 
                             <div class="card-body">
                                 {{--1~12번 년월 선택 start--}}
