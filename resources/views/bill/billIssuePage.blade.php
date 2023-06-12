@@ -1,5 +1,3 @@
-{{-- --}}
-
 @extends('layouts.app')
 @section('content')
 
@@ -8,7 +6,6 @@
         let checkbox = {
             // (input.checkbox : id값 , 숨길 div : id값)
             showByChecked: function (checkboxId, isShowDivId) {
-                // console.log(checkboxId, isShowDivId);
                 if (this.isChecked(checkboxId)) {
                     document.getElementById(isShowDivId).style.display = "block";
                 } else {
@@ -30,7 +27,6 @@
             const mouse_end = async (event) => {
                 let is_right_click = (event.which === 3) || (event.button === 2);
                 if (is_right_click) {
-                    // console.log(event);
                     // 기본 Context Menu가 나오지 않게 차단
                     event.preventDefault();
 
@@ -38,8 +34,8 @@
 
                     // 노출 설정
                     ctxMenu.style.display = 'block';
-                    // 위치 설정
 
+                    // 위치 설정
                     ctxMenu.style.top = event.pageY + 'px';
                     ctxMenu.style.left = event.pageX + 'px';
                 } else {
@@ -62,12 +58,6 @@
         });
 
         let tables = {
-            /**
-             * initialize : set()을 통해 화면 셋팅
-             * set : db 조회 후 화면 셋팅
-             * onSearch : 검색시 검색 할 data 초기화 후 set() 호출
-             * onDraw : html에 데이터 입력
-             */
             headers: null,
             items: null,
             data: {},
@@ -90,8 +80,6 @@
                 this.dataSet();
                 this.selectOptionsInit();
                 this.onDraw();
-                // console.log("selectOptionData : ", this.selectOptionData);
-                console.log("set : ", this.tab1);
             },
 
             /**
@@ -132,12 +120,13 @@
              * tab선택시 data 변경
              */
             onTabChange: function (obj) {
-                alert($(obj).data("tab"));
-
                 $(".table_tab").hide();
                 $("." + $(obj).data("tab")).show();
             },
 
+            /**
+             * 기본 리스트정보 가져오기
+             */
             dataSet: function () {
                 let method = "POST";
                 let url = "{{route("billList")}}";
@@ -147,7 +136,6 @@
 
                 this.headers = JSON.parse(result['header']);
                 this.items = JSON.parse(result['items']);
-
             },
 
             onDraw: function () {
@@ -159,25 +147,16 @@
             onDrawSelectOptions: function () {
 
                 //컬럼 일괄 업데이트 버튼 추가
-                document.getElementById("select_group_update").innerHTML = this.makeUpdateSelectBox();
-                document.getElementById("table_head_select").innerHTML = this.makeTableSelectBox();
-                document.getElementById("table_body").innerHTML = this.makeTableBody();
+                document.getElementById("select_group_update").innerHTML = this.drawUpdateSelectBox();
+                document.getElementById("table_head_select").innerHTML = this.drawTableSelectBox();
+                document.getElementById("table_body").innerHTML = this.drawTableBody();
             },
 
-            //table header 그리기
-            onDrawTableHeader: function () {
-
-            },
-
-            //table body 그리기
-            onDrawTableBody: function () {
-
-            },
 
             /**
              * update group select box 그리기
              */
-            makeUpdateSelectBox: function () {
+            drawUpdateSelectBox: function () {
                 let updateSelectBoxHtml = "";
 
                 updateSelectBoxHtml += `
@@ -208,8 +187,7 @@
             /**
              * table head select box(검색) 그리기
              */
-            //TODO : 이미지에 맞춘다고 button으로 구현함 -> select box
-            makeTableSelectBox: function () {
+            drawTableSelectBox: function () {
                 let tableHeadHtml = "";
 
                 tableHeadHtml += `<tr>`
@@ -231,10 +209,11 @@
                 return tableHeadHtml;
 
             },
-            makeTableBody() {
-                console.log(this.items);
-                console.log(this.items);
-                console.log(this.items);
+
+            /**
+             * table body 그리기
+             */
+            drawTableBody() {
                 let html = "";
                 this.items.forEach((item, idx) => {
                     html += `<tr class="text-center">`
@@ -247,27 +226,6 @@
                 return html;
             }
         };
-        {{--                                        <tbody class="text-center" id="tbody">--}}
-        {{--                                        @for ($i=0; $i<3; $i++)--}}
-        {{--                                            <tr class="text-center">--}}
-        {{--                                                <td class="text-nowrap">만렙커피</td>--}}
-        {{--                                                <td class="text-nowrap">신설동역점</td>--}}
-        {{--                                                <td class="text-nowrap" id="" >--}}
-
-        {{--                                                    <a class="text-nowrap"--}}
-        {{--                                                       data-bs-toggle="modal"--}}
-        {{--                                                       data-bs-target="#unitPriceModal"><mark>6000x</mark></a>--}}
-        {{--                                                </td>--}}
-        {{--                                                <td class="text-nowrap">CMS</td>--}}
-        {{--                                                <td class="text-nowrap">월납1212</td>--}}
-        {{--                                                <td class="text-nowrap">X</td>--}}
-        {{--                                                <td class="text-nowrap">X</td>--}}
-        {{--                                                <td class="text-nowrap">X</td>--}}
-        {{--                                                <td class="text-nowrap">21일</td>--}}
-        {{--                                                <td class="text-nowrap">21일</td>--}}
-        {{--                                            </tr>--}}
-        {{--                                        @endfor--}}
-        {{--                                        </tbody>--}}
 
     </script>
 
