@@ -34,7 +34,7 @@
                 </li>
             @endfor
             <li class="page-item next">
-                <a class="page-link" href="{{ route('depositList')."?".Request::getQueryString()."&page=".(min((intdiv($currentPage, $page_gap)+1)*$page_gap+1, $max_page))}}">
+                <a class="page-link" href="{{ route('depositList')."?".Request::getQueryString()."&page=".(min((intdiv($currentPage-1, $page_gap)+1)*$page_gap+1, $max_page))}}">
 {{--                <a class="page-link" href="#" onclick="pagination({{($currentPage+$page_gap)>$max_page ? $max_page : ($currentPage+$page_gap)}})">--}}
                     <i class="tf-icon bx bx-chevron-right"></i>
                 </a>

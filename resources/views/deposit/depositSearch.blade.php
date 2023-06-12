@@ -201,7 +201,7 @@
                             </div>
                             </form>
                             <table class="table">
-                                <thead class="table-primary">
+                                <thead class="table-primary " >
                                 <tr>
                                     <th>아이디</th>
                                     <th>기업명</th>

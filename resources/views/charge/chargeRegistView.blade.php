@@ -29,7 +29,7 @@
 
         set:function(){
             let method = "POST";
-            let url = "{{route("billList")}}";
+            let url = "{{route("billListNEY")}}";
             let data = this.data;
             let dataType = "json";
             let result = js.ajax_call(method, url, data, dataType, false, "", true);
@@ -71,6 +71,7 @@
             document.querySelector("#charge_tbody").innerHTML = html;
         },
     };
+
 </script>
     <div class="container-xxl flex-grow-1 container-p-y" >
         <h4 class="fw-bold py-3 mb-4">

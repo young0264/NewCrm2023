@@ -43,8 +43,7 @@
         set:function(){
             let method = "POST";
             let url = "{{route("billList")}}";
-            let datas = {
-            };
+            let datas = {};
             let dataType = "json";
             let ret = js.ajax_call(method, url, datas, dataType, false, "", true);
 
@@ -54,11 +53,12 @@
             // 전체 데이터를 받아서, 각각의 셀렉트 옵션에 데이터처리
             this.setDataset();
         },
+
         setDataset:function() {
             this.headers.forEach((item, idx)=> {
                 this.dataset[item.key] = [];
             });
-
+            console.log("dataset", this.dataset);
             this.items.forEach((item, idx)=>{
                 this.headers.forEach((header, header_idx)=>{
                     if (this.dataset[header.key][item[header.key]] === undefined)
@@ -82,7 +82,7 @@
              */
 
             /**
-             * 일괄 업데이트 창
+             * 일괄 업데이트 부분
              */
             let html = "<tr>";
             this.headers.forEach((item, idx)=> {
@@ -106,6 +106,8 @@
                 html += `</select></td>`;
             });
             html += "</tr>";
+            console.log("html", html);
+            // return;
 
 
             /**
@@ -113,30 +115,26 @@
              * @type {string}
              */
             html += "<tr>";
-            // console.log(111111111);
-            // console.log(html);
 
-            this.headers.forEach((item, idx)=> {
-                let headers = this.dataset[item.key];
-                let cls = this.onIndexOf(item.key);
+            this.headers.forEach((head, idx)=> {
+                // console.log(head);
+                let headers = this.dataset[head.key];
+                let cls = this.onIndexOf(head.key); //cls = table_tab table_tab2
 
                 html += `<td class="${cls}">
-                            <select class="form-select form-select-sm" id="field_${item.key}" onChange="tables.onSelect(this)" data-field="${item.key}">
-                                <option value="${item.key === item.key ? "" : item.key}">${item.name}</option>`;
+                            <select class="form-select form-select-sm" id="field_${head.key}" onChange="tables.onSelect(this)" data-field="${head.key}">
+                                <option value="${head.key === head.key ? "" : head.key}">${head.name}</option>`;
 
+                // console.log(Object.entries(headers));
+                console.log(headers);
                 Object.entries(headers).forEach(entry => {
                     const [key, value] = entry;
+                    console.log(`${key}`)
                     html += `<option value="${key}">${key}</option>`;
                 });
-
                 html += `</select></td>`;
             });
-
             html += "</tr>";
-
-
-            // console.log(22222222);
-            // console.log(html);
             document.querySelector("#thead").innerHTML = html;
         },
         onDrawBody:function() {
@@ -157,6 +155,7 @@
             document.querySelector("#tbody").innerHTML = html;
         },
         onIndexOf:function(key){
+            // alert(this.tab1.indexOf(key));
             if (this.tab1.indexOf(key) > -1)
                 return "table_tab table_tab1";
 
@@ -182,7 +181,7 @@
     <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">정산 /</span>
         <span class="text-muted fw-light">이용료 청구 /</span>
-        청구 대상 조회</h4>
+        청구 대상 조회12</h4>
     <!-- Basic Bootstrap Table -->
     <div class="row">
         <!-- Vertical Scrollbar -->
@@ -224,27 +223,12 @@
                     </div>
                     <table class="table table-bordered table-hover">
                         <thead id="thead">
-                        {{--                        <tr>--}}
-                        {{--                            @foreach ($headers as $header)--}}
-                        {{--                                <td>{{$header}}</td>--}}
-                        {{--                            @endforeach--}}
-                        {{--                        </tr>--}}
                         </thead>
+
                         <tbody class="table-border-bottom-0" id="tbody">
-                        {{--                            @foreach ($items as $key=>$item)--}}
-                        {{--                                <tr>--}}
-                        {{--                                    @php--}}
-                        {{--                                    $item = (array) $item;--}}
-                        {{--                                    @endphp--}}
-                        {{--                                    @foreach ($headers as $header)--}}
-                        {{--                                        <td>{{$item[$header]}}</td>--}}
-                        {{--                                    @endforeach--}}
-                        {{--                                </tr>--}}
-                        {{--                            @endforeach--}}
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>

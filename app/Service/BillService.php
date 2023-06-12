@@ -65,7 +65,6 @@ class BillService
      * bill. 이용료청구 수정
      * @throws Exception
      */
-//    TODO : array로 넘기면 transaction을 controller에서 처리해야함
     public function billUpdate(Request $request)
     {
         DB::beginTransaction();

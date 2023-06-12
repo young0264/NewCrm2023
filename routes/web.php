@@ -56,10 +56,14 @@ if (!Auth::check()) {
         Route::get("/bill/form/sub", [BillController::class, "printForm"])->name("printBillForm");
         Route::get("/bill/integrate", [BillController::class, "integrate"])->name("billIntegratedCollection");
         Route::get("/bill/cash", [BillController::class, "cashReceipt"])->name("billCashReceipt");
-        Route::post("/bill/list", [BillController::class, "listByNEY"])->name("billList");
+        Route::post("/bill/ListNEY", [BillController::class, "listByNEY"])->name("billListNEY");
+        Route::post("/bill/list", [BillController::class, "list"])->name("billList");
         Route::post("/bill/findById", [BillController::class, "findBillById"])->name("findBillById");
         Route::post("/bill/BillFormUpdate", [BillController::class, "BillFormUpdate"])->name("BillFormUpdate");
         Route::post("/bill/register", [BillController::class, "billRegisterProcess"])->name("billRegisterProcess");
+
+        Route::get("/bill/issue2", [BillController::class, "issuePage"])->name("billIssue2");
+
 
         /**
          * 입금내역

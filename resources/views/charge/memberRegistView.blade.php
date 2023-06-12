@@ -24,7 +24,7 @@
             },
             set:function(){
                 let method = "POST";
-                let url = "{{route("billList")}}";
+                let url = "{{route("billListNEY")}}";
                 let datas = {};
                 let dataType = "json";
                 let ret = js.ajax_call(method, url, datas, dataType, false, "", true);

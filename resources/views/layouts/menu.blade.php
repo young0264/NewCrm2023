@@ -70,7 +70,10 @@
             <ul class="menu-sub">
                 <li class="menu-item active">
                     <a href="{{route('billIssue')}}" class="menu-link ">
-                        <div data-i18n="Account">계산서 발행 조회</div>
+                        <div data-i18n="Account">계산서 발행 조회1</div>
+                    </a>
+                    <a href="{{route('billIssue2')}}" class="menu-link ">
+                        <div data-i18n="Account">계산서 발행 조회2</div>
                     </a>
                     <a href="{{route('billForm')}}" class="menu-link">
                         <div data-i18n="Account">계산서 양식 출력</div>

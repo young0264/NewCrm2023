@@ -16,8 +16,8 @@ function open_popup(url, parameter, f_top, f_left, f_width, f_height, f_toolbar,
 }
 
 var js = {
-    blank_check:function(blank_id, blank_field) {
-        var id = $("#"+blank_id);
+    blank_check: function (blank_id, blank_field) {
+        var id = $("#" + blank_id);
         if (id.val() === "") {
             alert(blank_field + "을(를) 선택하여 주세요.");
             id.focus();
@@ -27,14 +27,14 @@ var js = {
 
         return true;
     },
-    go_url:function(url) {
-        location.href=url;
+    go_url: function (url) {
+        location.href = url;
     },
-    regex:function (value, rules, replacer) {
-        if(!replacer) replacer = "";
-        return value && rules ? $.trim(value).replace(rules, replacer): "";
+    regex: function (value, rules, replacer) {
+        if (!replacer) replacer = "";
+        return value && rules ? $.trim(value).replace(rules, replacer) : "";
     },
-    special_chars:function(value) {
+    special_chars: function (value) {
         value = value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣A-Za-z?!@#$%^&*()=;{}\[\]\-`' ]/gi, "");
         return js.regex(value, /[^0-9][:][,]/gi);
     },
@@ -49,7 +49,7 @@ var js = {
      * @param ret          Select Query 를 호출 시킬 시 이 함수를 사용하세요. ( ret : true )
      * @returns {string}
      */
-    ajax_call:function(method, url, datas, dataType, refresh, location_url, ret) {
+    ajax_call: function (method, url, datas, dataType, refresh, location_url, ret) {
 
         refresh = typeof refresh !== 'undefined' ? refresh : false;
         ret = ret ? ret : false;
@@ -58,12 +58,12 @@ var js = {
         var retval = "";
         $.ajax({
             async: (!ret),
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: method,
-            url:  url,
+            url: url,
             data: datas,
             dataType: dataType,
-            success:function (args) {
+            success: function (args) {
                 if (dataType !== "json") {
                     if (ret) {
                         retval = args;
@@ -74,10 +74,10 @@ var js = {
                             retval = args['result'];
                         }
                         if (refresh) {
-                            if(args['stop']){
+                            if (args['stop']) {
                                 return;
                             }
-                            if (location_url!=="") {
+                            if (location_url !== "") {
                                 location.href = location_url;
                                 return;
                             }
@@ -89,17 +89,20 @@ var js = {
                             }
                         }
                     } else {
-                        if (args["msg"]!=="")
+                        if (args["msg"] !== "")
                             alert(args["msg"]);
                     }
                 }
             },
-            error:function (args) {
+            error: function (args) {
                 alert(args.responseText);
             }
         });
         if (ret) {
             return retval;
         }
-    }
+    },
+
+
 }
+

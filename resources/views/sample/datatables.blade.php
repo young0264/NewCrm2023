@@ -37,14 +37,17 @@
             this.onDraw();
         },
         onIndexOf:function(key){
-            if (this.tab1.indexOf(key) > -1)
+            if (this.tab1.indexOf(key) >= 0) {
                 return "table_tab table_tab1";
+            }
 
-            if (this.tab2.indexOf(key) > -1)
+            if (this.tab2.indexOf(key) >= 0) {
                 return "table_tab table_tab2";
+            }
 
-            if (this.tab3.indexOf(key) > -1)
+            if (this.tab3.indexOf(key) >= 0) {
                 return "table_tab table_tab3";
+            }
 
             return "";
         },
@@ -129,7 +132,6 @@
                     const [key, value] = entry;
                     html += `<option value="${key}">${key}</option>`;
                 });
-
                 html += `</select></td>`;
             });
             html += "</tr>";

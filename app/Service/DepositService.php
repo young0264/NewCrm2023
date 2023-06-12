@@ -75,6 +75,11 @@ class DepositService
         return $years;
     }
 
+    /**
+     * 검색조건 where절 생성
+     * @param Request $request
+     * @return array
+     */
     public function makeSearchConditions(Request &$request)
     {
         $where = "where f_depositid is not null";
@@ -125,6 +130,7 @@ class DepositService
     }
 
     /**
+     * deposit - history 데이터 가져오기
      * @param array $historyList
      * @param array $history_result
      * @return array
@@ -156,7 +162,11 @@ class DepositService
     }
 
 
-
+    /**
+     * deposit - 파일업로드
+     * @param Request $request
+     * @return bool
+     */
     public function fileUpload(Request &$request)
     {
         DB::beginTransaction();
@@ -202,6 +212,10 @@ class DepositService
         return $result;
     }
 
+    /**
+     * id값으로 deposit row 가져오기
+     * @param $f_depositid
+     */
     public function findByDepositId($f_depositid)
     {
         return Deposit_File::getOne($f_depositid);

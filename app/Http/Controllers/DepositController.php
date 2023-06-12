@@ -1,21 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Deposit;
-use App\Helpers\File;
-use App\Imports\SampleImport;
-use App\Models\Deposit_File;
 use App\Service\DepositService;
-use DateTime;
 use App\Exports\DepositExport;
 use Exception;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse as JsonResponseAlias;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
