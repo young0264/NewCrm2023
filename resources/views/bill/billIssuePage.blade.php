@@ -216,22 +216,6 @@
                 this.headers.forEach((head, idx) => {
                     let className = this.getClassNameByTabs(head['key']);
 
-                    // 시작
-                    // tableHeadHtml += `<th class="text-nowrap text-center ${className}"> \n
-                    //                     <div class="btn-group "> \n`
-                    // tableHeadHtml += `<button type="button" class="btn btn-outline-primary  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">${head['name']}</button> \n
-                    //                     <ul class="dropdown-menu"> \n`
-                    //
-                    // this.selectOptionData[head['key']].forEach((item, idx) => {
-                    //     tableHeadHtml += `<li><a class="dropdown-item" href="javascript:void(0);">${item}</a></li> \n`;
-                    // });
-                    //
-                    // tableHeadHtml += `   <li><hr class="dropdown-divider"/></li> \n
-                    //                      <li><a class="dropdown-item" href="javascript:void(0);">Separated link</a></li>\n
-                    //                     </ul>`
-                    // tableHeadHtml += `</ul> </div> </th>`;
-                    // 끝
-
                     tableHeadHtml += `<th class="text-nowrap text-center ${className}"> \n
                                         <div class="btn-group "> \n
                                             <select class="form-select" style="width:130px; max-width:95%">
