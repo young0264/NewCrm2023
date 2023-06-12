@@ -34,8 +34,10 @@ class DepositController extends Controller {
         }
 
         return view('deposit.depositHistory',
-            ['history_result'=>$result["history_result"],
-            "years"=>$result["years"]]
+            [
+                'history_result'=>$result["history_result"],
+                'years'=>$result["years"]
+            ]
         );
     }
 

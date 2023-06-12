@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Bill;
 use App\Models\Bill_NEY;
 use App\Models\Bill_PF_NEY;
@@ -37,6 +36,11 @@ class BillController extends BaseController
         $wheres = "and f_admin='BR'";
         $params = [];
 
+
+        $notContainedHeader = array_flip(["f_billid", "f_bizid", "f_shopid", "f_status", "f_standard1", "f_standard2", "f_standard3", "f_standard4",
+            "f_count1", "f_count2", "f_count3", "f_count4", "f_tax1", "f_tax2", "f_tax3", "f_tax4", "f_bigo1", "f_bigo2", "f_bigo3", "f_bigo4",
+            "f_day1", "f_day2", "f_day3", "f_day4", "f_unitprice1", "f_unitprice2", "f_unitprice3", "f_unitprice4", "f_issue_type"]);
+
         $items = Bill::list($wheres, $params);
 
         $headers = array();
@@ -45,39 +49,10 @@ class BillController extends BaseController
                 break;
 
             foreach ($item as $header => $i) {
-                if ($header == "f_billid"
-                    || $header == "f_bizid"
-                    || $header == "f_shopid"
-                    || $header == "f_status"
-                    || $header == "f_standard1"
-                    || $header == "f_standard2"
-                    || $header == "f_standard3"
-                    || $header == "f_standard4"
-                    || $header == "f_count1"
-                    || $header == "f_count2"
-                    || $header == "f_count3"
-                    || $header == "f_count4"
-                    || $header == "f_tax1"
-                    || $header == "f_tax2"
-                    || $header == "f_tax3"
-                    || $header == "f_tax4"
-                    || $header == "f_bigo1"
-                    || $header == "f_bigo2"
-                    || $header == "f_bigo3"
-                    || $header == "f_bigo4"
-                    || $header == "f_day1"
-                    || $header == "f_day2"
-                    || $header == "f_day3"
-                    || $header == "f_day4"
-                    || $header == "f_unitprice1"
-                    || $header == "f_unitprice2"
-                    || $header == "f_unitprice3"
-                    || $header == "f_unitprice4"
-                    || $header == "f_issue_type"
-                ) {
-                    continue;
+//                if (! in_array($header,$notContainedHeader)) {
+                if (! isset($notContainedHeader[$header])) {
+                    $headers[] = array("key" => $header, "name" => Bill::$column[strtoupper($header)]);
                 }
-                $headers[] = array("key" => $header, "name" => Bill::$column[strtoupper($header)]);
             }
         }
 
@@ -99,6 +74,7 @@ class BillController extends BaseController
             [
                 "status" => "ok",
                 "result" => array(
+//                    "header" => json_encode($headers),
                     "items" => json_encode($items)
                 )
             ]
