@@ -32,10 +32,8 @@ class BillController extends BaseController
     }
 
     public function list(Request $request){
-
         $wheres = "and f_admin='BR'";
         $params = [];
-
 
         $notContainedHeader = array_flip(["f_billid", "f_bizid", "f_shopid", "f_status", "f_standard1", "f_standard2", "f_standard3", "f_standard4",
             "f_count1", "f_count2", "f_count3", "f_count4", "f_tax1", "f_tax2", "f_tax3", "f_tax4", "f_bigo1", "f_bigo2", "f_bigo3", "f_bigo4",
@@ -72,7 +70,6 @@ class BillController extends BaseController
         $notContainedHeader = array_flip(["f_billid", "f_bizid", "f_shopid", "f_status", "f_standard1", "f_standard2", "f_standard3", "f_standard4",
             "f_count1", "f_count2", "f_count3", "f_count4", "f_tax1", "f_tax2", "f_tax3", "f_tax4", "f_bigo1", "f_bigo2", "f_bigo3", "f_bigo4",
             "f_day1", "f_day2", "f_day3", "f_day4", "f_unitprice1", "f_unitprice2", "f_unitprice3", "f_unitprice4", "f_issue_type", "f_tax", "f_loginid"]);
-//        {{--                세액, 로그인아이디--}}
 
         foreach ($items as $key => $item) {
             if ($key > 0)

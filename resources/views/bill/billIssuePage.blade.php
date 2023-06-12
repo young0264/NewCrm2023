@@ -178,11 +178,36 @@
                     this.selectOptionData[head['key']].forEach((item, idx) => {
                         updateSelectBoxHtml += `<option value="${item}">${item}</option>`;
                     });
-
                     //html tag close
                     updateSelectBoxHtml += `</select> </div> </div>`;
                 });
                 return updateSelectBoxHtml;
+            },
+
+            selectSearch : function (formid) {
+                let form = document.getElementById(formid);
+                let formData = new FormData(form);
+                let jsonObject = {};
+
+                for (let [key, value] of formData.entries()) {
+                    let sanitizedKey = key.replace(/'/g, ''); // 작은따옴표(') 제거
+                    jsonObject[sanitizedKey] = value;
+                }
+                console.log(jsonObject);
+
+                let method = "POST";
+                {{--let url = "{{route("billList")}}";--}}
+                let url = "{{route("billListNEY")}}";
+                let data = jsonObject;
+                let dataType = "json";
+                let result = js.ajax_call(method, url, data, dataType, false, "", true);
+                console.log("result : ", result);
+
+                this.headers = JSON.parse(result['header']);
+                this.items = JSON.parse(result['items']);
+
+                this.onDraw();
+
             },
 
             /**
@@ -191,24 +216,23 @@
             drawTableSelectBox: function () {
                 let tableHeadHtml = "";
 
-                tableHeadHtml += `<tr>`
+                tableHeadHtml += `<tr> `;
+
                 this.headers.forEach((head, idx) => {
                     let className = this.getClassNameByTabs(head['key']);
 
                     tableHeadHtml += `<th class="text-nowrap text-center ${className}"> \n
                                         <div class="btn-group "> \n
-                                            <select class="form-select" style="width:130px; max-width:95%">
+                                            <select class="form-select" style="width:130px; max-width:95%" id="'${head['key']}'" name="'${head['key']}'" onchange="tables.selectSearch('search_form')"> \n
                                                 <option value="">${head['name']}</option>`
 
                     this.selectOptionData[head['key']].forEach((item, idx) => {
-                        tableHeadHtml += `<option value="${item}"><a href="javascript:void(0);"></a>${item}</option>`;
+                        if (item === null) return;
+                        tableHeadHtml += `<option value="${item}" >${item}</option>`;
                     });
-
                 });
-                tableHeadHtml += `</tr>`;
-
+                tableHeadHtml += `</tr> \n`;
                 return tableHeadHtml;
-
             },
 
             /**
@@ -259,7 +283,6 @@
             background-color: #f0f0f0;
         }
     </style>
-
 
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">
@@ -445,36 +468,18 @@
                             {{-- table content --}}
                             <div class="tab-content">
                                 <div class="table-responsive" id="both-scrollbars-example">
-                                    <table class="table table-hover table-bordered border-bottom">
+                                    <form id="search_form">
+{{--                                        <form id="search_form" action="{{route("billListNEY")}}" method="post">--}}
 
+
+                                    <table class="table table-hover table-bordered border-bottom">
                                         <thead id="table_head_select">
                                         </thead>
                                         <tbody id="table_body">
                                         </tbody>
-
-{{--                                        <tbody class="text-center" id="tbody">--}}
-{{--                                        @for ($i=0; $i<3; $i++)--}}
-{{--                                            <tr class="text-center">--}}
-{{--                                                <td class="text-nowrap">만렙커피</td>--}}
-{{--                                                <td class="text-nowrap">신설동역점</td>--}}
-{{--                                                <td class="text-nowrap" id="" >--}}
-
-{{--                                                    <a class="text-nowrap"--}}
-{{--                                                       data-bs-toggle="modal"--}}
-{{--                                                       data-bs-target="#unitPriceModal"><mark>6000x</mark></a>--}}
-{{--                                                </td>--}}
-{{--                                                <td class="text-nowrap">CMS</td>--}}
-{{--                                                <td class="text-nowrap">월납1212</td>--}}
-{{--                                                <td class="text-nowrap">X</td>--}}
-{{--                                                <td class="text-nowrap">X</td>--}}
-{{--                                                <td class="text-nowrap">X</td>--}}
-{{--                                                <td class="text-nowrap">21일</td>--}}
-{{--                                                <td class="text-nowrap">21일</td>--}}
-{{--                                            </tr>--}}
-{{--                                        @endfor--}}
-{{--                                        </tbody>--}}
-
                                     </table>
+                                    </form>
+
                                     <div class="modal fade" id="unitPriceModal" tabindex="-1" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                                             <div class="modal-content">
