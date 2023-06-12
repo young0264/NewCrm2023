@@ -129,7 +129,8 @@
              */
             dataSet: function () {
                 let method = "POST";
-                let url = "{{route("billList")}}";
+                {{--let url = "{{route("billList")}}";--}}
+                let url = "{{route("billListNEY")}}";
                 let data = this.data;
                 let dataType = "json";
                 let result = js.ajax_call(method, url, data, dataType, false, "", true);
