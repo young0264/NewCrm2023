@@ -61,7 +61,7 @@ class Bill_NEY extends Model{
                                 {$wheres}
                                     order by f_billid desc
                         )
-                        where rownum <= 10";
+                        where rownum <= 50";
         return DB::select($query, $params);
     }
 
