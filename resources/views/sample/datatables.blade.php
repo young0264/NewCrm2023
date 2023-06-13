@@ -5,7 +5,6 @@
     document.addEventListener("DOMContentLoaded", ()=>{
         tables.initialize();
     });
-
     let tables = {
         headers : {!! $headers !!},
         items : {!! $items !!},
@@ -33,6 +32,7 @@
             "f_mobile2",
             "f_email2"],
         initialize:function() {
+            console.log((this.items).length);
             this.set();
             this.onDraw();
         },
@@ -185,7 +185,7 @@
     }
 </script>
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Tables /</span> Basic Tables</h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Tables /</span> Basic Tables 12</h4>
     <!-- Basic Bootstrap Table -->
     <div class="row">
         <!-- Vertical Scrollbar -->
