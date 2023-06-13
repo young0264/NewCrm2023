@@ -36,15 +36,29 @@ class BillService
             $binds += array("f_pay_type"=>$request->input("f_pay_type"));
         }
 
+        /**
+         * select box 검색부분 where절 설정
+         */
         foreach ($f_billForm_param as $item) {
-
             if ($request->has($item) and $request->filled($item)) {
                 $wheres .= "and ({$item} = :{$item})";
                 $binds += array($item => $request->input($item));
             }
         }
 
-        $this->makeTonghapConditions($request, $wheres, $binds);
+        /**
+         * input box 검색부분 where절 설정
+         */
+        if ($request->has("sch_key") and $request->filled("sch_key")) {
+            $wheres .= "and (";
+            foreach($f_billForm_param as $item) {
+                $wheres .= "{$item} like :sch_val or ";
+            }
+            $wheres = substr($wheres, 0, -3);
+            $wheres .= ")";
+            $binds += array("sch_val" => "%" . $request->input('sch_key') . "%");
+        }
+
 
         return [
             "wheres"=>$wheres,
@@ -103,7 +117,6 @@ class BillService
         DB::commit();
 
         return array("status"=>true, "수정에 성공하였습니다.");
-
     }
 
     public function findBillById(Request $request)
