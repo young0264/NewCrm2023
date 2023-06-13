@@ -84,6 +84,7 @@
 
             /**
              * selectOptionsInit : select option에 들어갈 데이터 초기화
+             * selectOptionData
              */
             selectOptionsInit: function () {
                 this.items.forEach((item, idx) => {
@@ -95,7 +96,13 @@
                         }
                     });
                 });
-                console.log("selectOptionData", this.selectOptionData);
+
+                /**
+                 * Set으로 선언된 values을 array로 변환 후 정렬(sort)
+                 */
+                this.headers.forEach((head, idx) => {
+                    this.selectOptionData[head['key']] = Array.from(this.selectOptionData[head['key']].values()).sort();
+                });
             },
 
             /**
@@ -140,19 +147,10 @@
             },
 
             onDraw: function () {
-                this.onDrawSelectOptions();
-                // this.onDrawTableBody();
-            },
-
-            // 컬럼일괄업데이트 부분 select option 그리기
-            onDrawSelectOptions: function () {
-
-                //컬럼 일괄 업데이트 버튼 추가
                 document.getElementById("select_group_update").innerHTML = this.drawUpdateSelectBox();
                 document.getElementById("table_head_select").innerHTML = this.drawTableSelectBox();
                 document.getElementById("table_body").innerHTML = this.drawTableBody();
             },
-
 
             /**
              * update group select box 그리기
@@ -162,23 +160,22 @@
 
                 updateSelectBoxHtml += `
                                     <div class="btn-group"> \n
-                                        <button class="btn btn-primary" style="width:180px;  max-width:95%">컬럼 일괄 업데이트</button> \n
+                                        <button class="btn btn-primary" style="width:480px;  max-width:95%">컬럼 일괄 업데이트</button> \n
                                     </div>`;
 
-                //select-option 그리기
                 this.headers.forEach((head, idx) => {
+                    if (head['key'] === 'f_bizname' || head['key'] === 'f_shopname') return;
                     let className = this.getClassNameByTabs(head['key']);
 
                     updateSelectBoxHtml +=
                         `<div class="btn-group ${className}"> \n
-                                <select class="form-select" style="width:130px; max-width:95%">\n
-                                    <option value="">${head['name']}</option>`;
+                            <select class="form-select" style="width:120px; max-width:90%">\n
+                                <option value="">${head['name']}</option>`;
 
                     //select-option data 가져오기
                     this.selectOptionData[head['key']].forEach((item, idx) => {
                         updateSelectBoxHtml += `<option value="${item}">${item}</option>`;
                     });
-                    //html tag close
                     updateSelectBoxHtml += `</select> </div> </div>`;
                 });
                 return updateSelectBoxHtml;
@@ -193,7 +190,6 @@
                     let sanitizedKey = key.replace(/'/g, ''); // 작은따옴표(') 제거
                     jsonObject[sanitizedKey] = value;
                 }
-                console.log(jsonObject);
 
                 let method = "POST";
                 {{--let url = "{{route("billList")}}";--}}
@@ -201,13 +197,26 @@
                 let data = jsonObject;
                 let dataType = "json";
                 let result = js.ajax_call(method, url, data, dataType, false, "", true);
-                console.log("result : ", result);
 
                 this.headers = JSON.parse(result['header']);
                 this.items = JSON.parse(result['items']);
 
                 this.onDraw();
+            },
 
+            onSearch: function () {
+                let sch_val =  document.getElementById('sch_key').value
+                alert(sch_val);
+                let data = {"sch_key": sch_val};
+                let method = "POST";
+                let url = "{{route("billListNEY")}}";
+                let dataType = "json";
+                let result = js.ajax_call(method, url, data, dataType, false, "", true);
+
+                this.headers = JSON.parse(result['header']);
+                this.items = JSON.parse(result['items']);
+
+                this.onDraw();
             },
 
             /**
@@ -228,7 +237,7 @@
 
                     this.selectOptionData[head['key']].forEach((item, idx) => {
                         if (item === null) return;
-                        tableHeadHtml += `<option value="${item}" >${item}</option>`;
+                        tableHeadHtml += `<option value="${item}">${item}</option>`;
                     });
                 });
                 tableHeadHtml += `</tr> \n`;
@@ -244,7 +253,7 @@
                     html += `<tr class="text-center">`
                     this.headers.forEach((head, idx) => {
                         let className = this.getClassNameByTabs(head['key']);
-                        html += `<td class="text-nowrap ${className}">${item[head['key']]}</td>`
+                        html += `<td class="text-nowrap ${className}">${item[head['key']] === null ? "" : item[head['key']]}</td>`;
                     });
                     html += `</tr>`;
                 });
@@ -439,8 +448,10 @@
                                     </div>
                                 </div>
                                 <div class="btn-group col-md-5">
-                                    <input type="text"
-                                           class="form-control" placeholder="검색어를 입력하세요.">
+                                    <input type="text" class="form-control" placeholder="검색어를 입력하세요." id="sch_key" name="sch_key">
+                                </div>
+                                <div class="btn-group col-md-1">
+                                    <button class="btn btn-success" onclick="tables.onSearch()">검색</button>
                                 </div>
                                 <div class="btn-group float-end">
                                     <button class="btn btn-success">목록 다운로드</button>
@@ -449,15 +460,8 @@
                                 {{--컬럼 업데이트 head group 시작--}}
                                 <nav class="navbar navbar-example navbar-expand-lg navbar-light bg-light">
                                     <div class="horizontal-scrollable" >
-                                        {{--                                    <div class="container-fluid ">--}}
-                                        {{--                                        class="card overflow-hidden mb-4"--}}
                                         {{-- 컬럼일괄 업데이트 시작--}}
-{{--                                        <div class="btn-group" id="select_group_update">--}}
-{{--                                            <button class="btn btn-primary">컬럼 일괄 업데이트</button>--}}
-{{--                                        </div>--}}
-
                                         <div class="btn-group" id="select_group_update" >
-{{--                                            <input class="form-control" value="" placeholder="input box">--}}
                                         </div>
                                         {{-- 컬럼일괄 업데이트 끝--}}
                                     </div>
