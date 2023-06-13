@@ -58,7 +58,6 @@
             this.headers.forEach((item, idx)=> {
                 this.dataset[item.key] = [];
             });
-            console.log("dataset", this.dataset);
             this.items.forEach((item, idx)=>{
                 this.headers.forEach((header, header_idx)=>{
                     if (this.dataset[header.key][item[header.key]] === undefined)
@@ -106,8 +105,6 @@
                 html += `</select></td>`;
             });
             html += "</tr>";
-            console.log("html", html);
-            // return;
 
 
             /**
@@ -117,7 +114,6 @@
             html += "<tr>";
 
             this.headers.forEach((head, idx)=> {
-                // console.log(head);
                 let headers = this.dataset[head.key];
                 let cls = this.onIndexOf(head.key); //cls = table_tab table_tab2
 
@@ -125,11 +121,8 @@
                             <select class="form-select form-select-sm" id="field_${head.key}" onChange="tables.onSelect(this)" data-field="${head.key}">
                                 <option value="${head.key === head.key ? "" : head.key}">${head.name}</option>`;
 
-                // console.log(Object.entries(headers));
-                console.log(headers);
                 Object.entries(headers).forEach(entry => {
                     const [key, value] = entry;
-                    console.log(`${key}`)
                     html += `<option value="${key}">${key}</option>`;
                 });
                 html += `</select></td>`;
@@ -151,7 +144,6 @@
                 });
                 html += `</tr>`;
             });
-
             document.querySelector("#tbody").innerHTML = html;
         },
         onIndexOf:function(key){
@@ -167,7 +159,6 @@
 
             if (this.tab4.indexOf(key) > -1)
                 return "table_tab table_tab4";
-
             return "";
         },
         onTabChange:function(obj){
