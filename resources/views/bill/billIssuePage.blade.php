@@ -147,7 +147,6 @@
                 $("." + $(obj).data("tab")).show();
             },
 
-
             /**
              * Select box, Table 그리기
              */
@@ -323,7 +322,7 @@
             drawTableBody() {
                 let html = "";
                 this.items.forEach((item, idx) => {
-                    html += `<tr class="text-center">`
+                    html += `<tr class="text-center" onclick="tables.onLeftClick(this)">`
                     this.headers.forEach((head, idx) => {
                         let className = this.getClassNameByTabs(head['key']);
                         html += `<td class="text-nowrap ${className}">${item[head['key']] === null ? "" : item[head['key']]}</td>`;
@@ -333,18 +332,35 @@
                 return html;
             },
 
+            /**
+             * hideKeyArr에 해당하는
+             * select-option box 숨기기
+             * select-input show 보여주기
+             */
             showDirectInputBox() {
                 this.hideKeyArr.forEach((key, idx) => {
 
                     // input 박스는 나타내기
-                    document.getElementById("selectInput_"+key).style.display = "block";
-                    document.getElementById("selectInput_"+key).style.height = "40px";
+                    document.getElementById("selectInput_" + key).style.display = "block";
+                    document.getElementById("selectInput_" + key).style.height = "40px";
 
                     // 기존 select박스는 숨기기
-                    document.getElementById("select_"+key).style.display = "none";
+                    document.getElementById("select_" + key).style.display = "none";
                 });
-            }
+            },
+
+            /**
+             * 마우스 왼쪽 클릭시 row 선택
+             */
+            onLeftClick:function(obj) {
+                if (obj.classList.contains('selected')) {
+                    obj.classList.remove("selected");
+                } else {
+                    obj.classList.add("selected");
+                }
+            },
         };
+
 
     </script>
 
@@ -820,7 +836,7 @@
                                     <div class="form-check form-switch mb-2 ">
                                         <input id="showChecked1"
                                                onclick="checkbox.showByChecked('showChecked1', 'showCheckedDiv1')"
-                                               class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
+                                               class="form-check-input" type="checkbox"
                                                checked/>
                                     </div>
                                 </div>
