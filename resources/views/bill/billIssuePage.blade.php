@@ -62,6 +62,8 @@
             items: null,
             data: {},
             selectOptionData: {},
+            searchParams: {},
+            hideKeyArr : [],
             // tab0: new Set(["f_bizname", "f_shopname", "f_price"]),
             tab1: new Set(["f_pay_type", "f_pay_interval", "f_history", "f_reply",
                 "f_statement", "f_tax_bill", "f_issuedate"]),
@@ -83,17 +85,31 @@
             },
 
             /**
+             * 기본 리스트정보 가져오기
+             */
+            dataSet: function () {
+                let method = "POST";
+                let url = "{{route("billListNEY")}}";
+                let data = this.data;
+                let dataType = "json";
+                let result = js.ajax_call(method, url, data, dataType, false, "", true);
+
+                this.headers = JSON.parse(result['header']);
+                this.items = JSON.parse(result['items']);
+            },
+
+            /**
              * selectOptionsInit : select option에 들어갈 데이터 초기화
              * selectOptionData
              */
             selectOptionsInit: function () {
+                this.selectOptionData = {};
                 this.items.forEach((item, idx) => {
                     this.headers.forEach((head, idx) => {
                         if (this.selectOptionData[head['key']] === undefined) {
                             this.selectOptionData[head['key']] = new Set();
-                        } else {
-                            this.selectOptionData[head['key']].add(item[head['key']]);
                         }
+                        this.selectOptionData[head['key']].add(item[head['key']]);
                     });
                 });
 
@@ -131,25 +147,112 @@
                 $("." + $(obj).data("tab")).show();
             },
 
+
             /**
-             * 기본 리스트정보 가져오기
+             * Select box, Table 그리기
              */
-            dataSet: function () {
+            onDraw: function () {
+                document.getElementById("select_group_update").innerHTML = this.drawUpdateSelectBox();
+                document.getElementById("table_head_select").innerHTML = this.drawTableSelectBox();
+                document.getElementById("table_body").innerHTML = this.drawTableBody();
+            },
+
+            /**
+             * select box로 table header, event로 검색
+             */
+            selectSearch : function (formid) {
+                let form = document.getElementById(formid);
+                let formData = new FormData(form);
+                let jsonObject = {};
+
+                for (let [key, value] of formData.entries()) {
+                    let sanitizedKey = key.replace(/'/g, ''); // 작은따옴표(') 제거
+                    if (value === "selectDirect") {
+                        this.hideKeyArr.push(key);
+                        continue;
+                    }
+                    jsonObject[sanitizedKey] = value;
+                }
+
+                /**
+                 * form으로 넘긴 값을 key-value로 가져와
+                 * searchParams애 검색조건 parameter로 key-value 설정
+                */
+                this.searchParams = jsonObject;
+
                 let method = "POST";
-                {{--let url = "{{route("billList")}}";--}}
                 let url = "{{route("billListNEY")}}";
-                let data = this.data;
+                let data = jsonObject;
+                let dataType = "json";
+
+                let result = js.ajax_call(method, url, data, dataType, false, "", true);
+
+                this.headers = JSON.parse(result['header']);
+                this.items = JSON.parse(result['items']);
+
+                this.selectOptionsInit()
+                this.onDraw();
+                this.showDirectInputBox();
+            },
+
+            /**
+             * input box, 전체 검색
+             */
+            onSearch: function () {
+                let sch_val =  document.getElementById('sch_key').value
+                let data = {"sch_key": sch_val};
+                let method = "POST";
+                let url = "{{route("billListNEY")}}";
                 let dataType = "json";
                 let result = js.ajax_call(method, url, data, dataType, false, "", true);
 
                 this.headers = JSON.parse(result['header']);
                 this.items = JSON.parse(result['items']);
+
+                this.selectOptionsInit()
+                this.onDraw();
             },
 
-            onDraw: function () {
-                document.getElementById("select_group_update").innerHTML = this.drawUpdateSelectBox();
-                document.getElementById("table_head_select").innerHTML = this.drawTableSelectBox();
-                document.getElementById("table_body").innerHTML = this.drawTableBody();
+            /**
+             * select box에서 직접입력 enter 검색
+             */
+            handleKeyPress: function (event, key) {
+                if (event.key === 'Enter') {
+                    this.searchParams[key] = document.getElementById("selectInput_" + key).value;
+                    this.submitInput();
+                }
+            },
+
+            /**
+             * 엔터를 눌렀을 때,table header에 대한 json데이터 생성, 검색
+             */
+            submitInput: function () {
+
+                /**
+                 * form으로 보낸 json 데이터 생성
+                 */
+                let form = document.getElementById("search_form");
+                let formData = new FormData(form);
+                let searchParams = {};
+
+                for (let [key, value] of formData.entries()) {
+                    let sanitizedKey = key.replace(/'/g, ''); // 작은따옴표(') 제거
+                    searchParams[sanitizedKey] = value;
+                }
+                this.searchParams = searchParams;
+
+                let method = "POST";
+                let url = "{{route("billListNEY")}}";
+                let data = searchParams;
+                let dataType = "json";
+
+                let result = js.ajax_call(method, url, data, dataType, false, "", true);
+
+                this.headers = JSON.parse(result['header']);
+                this.items = JSON.parse(result['items']);
+                this.selectOptionsInit()
+                this.onDraw();
+                this.showDirectInputBox();
             },
 
             /**
@@ -181,66 +284,36 @@
                 return updateSelectBoxHtml;
             },
 
-            selectSearch : function (formid) {
-                let form = document.getElementById(formid);
-                let formData = new FormData(form);
-                let jsonObject = {};
-
-                for (let [key, value] of formData.entries()) {
-                    let sanitizedKey = key.replace(/'/g, ''); // 작은따옴표(') 제거
-                    jsonObject[sanitizedKey] = value;
-                }
-
-                let method = "POST";
-                {{--let url = "{{route("billList")}}";--}}
-                let url = "{{route("billListNEY")}}";
-                let data = jsonObject;
-                let dataType = "json";
-                let result = js.ajax_call(method, url, data, dataType, false, "", true);
-
-                this.headers = JSON.parse(result['header']);
-                this.items = JSON.parse(result['items']);
-
-                this.onDraw();
-            },
-
-            onSearch: function () {
-                let sch_val =  document.getElementById('sch_key').value
-                alert(sch_val);
-                let data = {"sch_key": sch_val};
-                let method = "POST";
-                let url = "{{route("billListNEY")}}";
-                let dataType = "json";
-                let result = js.ajax_call(method, url, data, dataType, false, "", true);
-
-                this.headers = JSON.parse(result['header']);
-                this.items = JSON.parse(result['items']);
-
-                this.onDraw();
-            },
-
             /**
              * table head select box(검색) 그리기
              */
             drawTableSelectBox: function () {
                 let tableHeadHtml = "";
-
                 tableHeadHtml += `<tr> `;
-
                 this.headers.forEach((head, idx) => {
+
                     let className = this.getClassNameByTabs(head['key']);
 
                     tableHeadHtml += `<th class="text-nowrap text-center ${className}"> \n
                                         <div class="btn-group "> \n
-                                            <select class="form-select" style="width:130px; max-width:95%" id="'${head['key']}'" name="'${head['key']}'" onchange="tables.selectSearch('search_form')"> \n
-                                                <option value="">${head['name']}</option>`
+                                            <select class="form-select" style="width:130px; max-width:95%" id="select_${head['key']}" name="${head['key']}"
+                                                    onchange="tables.selectSearch('search_form')"> \n
+                                                <option value="" >${head['name']}</option>`;
 
                     this.selectOptionData[head['key']].forEach((item, idx) => {
                         if (item === null) return;
-                        tableHeadHtml += `<option value="${item}">${item}</option>`;
+                        tableHeadHtml += `<option value="${item}" ${(this.searchParams[head['key']] !== "" && this.searchParams[head['key']]=== item) ? "selected" : ""} >${item}</option>`;
                     });
+
+                    tableHeadHtml += `<option value="selectDirect">직접입력</option> \n </select> \n`;
+                    tableHeadHtml += `<input class="alert-primary" type="text" id="selectInput_${head['key']}" name="selectInput_${head['key']}"
+                                        onkeydown="tables.handleKeyPress(event,'${head['key']}')"
+                                        value="${this.searchParams['selectInput_'+head['key']] === undefined ? "" : this.searchParams['selectInput_'+head['key']] }"
+                                        style="display: none" > \n`;
                 });
-                tableHeadHtml += `</tr> \n`;
+
+                tableHeadHtml += `<button onclick="tables.submitInput()">Submit</button>`;
+                tableHeadHtml += ` </div> </tr> \n`;
                 return tableHeadHtml;
             },
 
@@ -258,6 +331,18 @@
                     html += `</tr>`;
                 });
                 return html;
+            },
+
+            showDirectInputBox() {
+                this.hideKeyArr.forEach((key, idx) => {
+
+                    // input 박스는 나타내기
+                    document.getElementById("selectInput_"+key).style.display = "block";
+                    document.getElementById("selectInput_"+key).style.height = "40px";
+
+                    // 기존 select박스는 숨기기
+                    document.getElementById("select_"+key).style.display = "none";
+                });
             }
         };
 
@@ -473,15 +558,12 @@
                             <div class="tab-content">
                                 <div class="table-responsive" id="both-scrollbars-example">
                                     <form id="search_form">
-{{--                                        <form id="search_form" action="{{route("billListNEY")}}" method="post">--}}
-
-
-                                    <table class="table table-hover table-bordered border-bottom">
-                                        <thead id="table_head_select">
-                                        </thead>
-                                        <tbody id="table_body">
-                                        </tbody>
-                                    </table>
+                                        <table class="table table-hover table-bordered border-bottom">
+                                            <thead id="table_head_select">
+                                            </thead>
+                                            <tbody id="table_body">
+                                            </tbody>
+                                        </table>
                                     </form>
 
                                     <div class="modal fade" id="unitPriceModal" tabindex="-1" aria-hidden="true">

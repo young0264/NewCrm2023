@@ -19,8 +19,13 @@ class BillService
 
     public function makeSearchConditions($request)
     {
+
         $wheres = "";
         $binds = [];
+
+        /**
+         * select option 검색의 name값
+         */
         $f_billForm_param = array(
              'f_bizname', 'f_shopname', 'f_price',
                         'f_pay_type', 'f_pay_interval', 'f_history', 'f_reply', 'f_statement', 'f_tax_bill', 'f_issuedate',
@@ -30,6 +35,16 @@ class BillService
                         'f_day3', 'f_product3', 'f_standard3', 'f_unitprice3', 'f_count3', 'f_price3', 'f_tax3', 'f_bigo3',
                         'f_day4', 'f_product4', 'f_standard4', 'f_unitprice4', 'f_count4', 'f_price4', 'f_tax4', 'f_bigo4',
                         'f_issue_type');
+
+        /**
+         * select input 검색의 name값
+         */
+        $select_input_arr = array('selectInput_f_addr', 'selectInput_f_bizname', 'selectInput_f_business', 'selectInput_f_cp_name', 'selectInput_f_email1',
+            'selectInput_f_email2', 'selectInput_f_event', 'selectInput_f_history', 'selectInput_f_issuedate', 'selectInput_f_minor_business', 'selectInput_f_mobile1',
+            'selectInput_f_mobile2', 'selectInput_f_name1', 'selectInput_f_name2', 'selectInput_f_pay_interval', 'selectInput_f_pay_type', 'selectInput_f_price',
+            'selectInput_f_price1', 'selectInput_f_price2', 'selectInput_f_price3', 'selectInput_f_price4', 'selectInput_f_product1', 'selectInput_f_product2',
+            'selectInput_f_product3', 'selectInput_f_product4', 'selectInput_f_public_addr1', 'selectInput_f_public_addr2', 'selectInput_f_registration_number',
+            'selectInput_f_rep_name', 'selectInput_f_reply', 'selectInput_f_shopname', 'selectInput_f_statement', 'selectInput_f_tax_bill');
 
         if ($request->has("f_pay_type") and $request->filled("f_pay_type")) {
             $wheres .= "and (f_pay_type = :f_pay_type)";
@@ -47,6 +62,18 @@ class BillService
         }
 
         /**
+         * select box내 직접입력 input으로 검색, where절 설정
+         */
+        foreach ($select_input_arr as $ex_item) {
+            $item = str_replace("selectInput_", "", $ex_item);
+            if ($request->has($ex_item) and $request->filled($ex_item) and $request->input($ex_item) !== 'undefined') {
+                $wheres .= "and ({$item} like :{$item})";
+                $binds += array($item =>  "%" . $request->input($ex_item) . "%");
+            }
+        }
+
+
+        /**
          * input box 검색부분 where절 설정
          */
         if ($request->has("sch_key") and $request->filled("sch_key")) {
@@ -58,7 +85,6 @@ class BillService
             $wheres .= ")";
             $binds += array("sch_val" => "%" . $request->input('sch_key') . "%");
         }
-
 
         return [
             "wheres"=>$wheres,
@@ -332,25 +358,5 @@ class BillService
         }
         return $results;
     }
-
-
 }
-
-
-
-//    public function insertBill($parameters) {
-//        return DB::table('T_BILL_PF_NEY')->insert($parameters);
-//    }
-//
-//    public function findBillById($loginId){
-//        $query = "SELECT * FROM T_BILL_PF_NEY WHERE f_loginid=:f_loginid";
-//        return DB::select($query, array("f_loginid"=>$loginId));
-//    }
-//
-//    public function updateBill(array $parameter, array $wheres)
-//    {
-//        return DB::table('T_BILL_PF_NEY')
-//            ->where($wheres)
-//            ->update($parameter);
-//    }
 ?>
