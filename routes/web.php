@@ -40,6 +40,7 @@ if (!Auth::check()) {
         Route::get("/excel/exportProcess", [SampleController::class, "exportProcess"])->name("excelExportProcess");
         Route::post("/excel/importProcess", [SampleController::class, "importProcess"])->name("excelImportProcess");
         Route::get("/sample/dataTablesOracle", [SampleController::class, "dataTablesOracle"])->name("dataTablesOracle");
+        Route::get("/sample/getStore", [SampleController::class, "getStore"])->name("getStore");
 
         /**
          * 이용료청구
