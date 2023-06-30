@@ -63,7 +63,8 @@
             data: {},
             selectOptionData: {},
             searchParams: {},
-            hideKeyArr : [],
+            hideKeyArr: [],
+            billIdArrForUpdate: [], //billIdArrForUpdate : 업데이트할 billid 배열
             // tab0: new Set(["f_bizname", "f_shopname", "f_price"]),
             tab1: new Set(["f_pay_type", "f_pay_interval", "f_history", "f_reply",
                 "f_statement", "f_tax_bill", "f_issuedate"]),
@@ -122,7 +123,7 @@
             },
 
             /**
-             * tab에 따른 class name 반환
+             * tab 종류에 따른 class name 반환
              */
             getClassNameByTabs: function (key) {
                 if (this.tab1.has(key)) {
@@ -140,7 +141,7 @@
             },
 
             /**
-             * tab선택시 data 변경
+             * tab선택시 노출되는 table data 변경
              */
             onTabChange: function (obj) {
                 $(".table_tab").hide();
@@ -156,6 +157,27 @@
                 document.getElementById("table_body").innerHTML = this.drawTableBody();
             },
 
+            billsUpdate: function () {
+
+                // form 데이터 json으로 변환
+                let form = document.getElementById('update_form');
+                let formData = new FormData(form);
+                let jsonObject = {};
+
+                for (let [key, value] of formData.entries()) {
+                    let sanitizedKey = key.replace(/'/g, ''); // 작은따옴표(') 제거
+                    if (value) {
+                        jsonObject[sanitizedKey] = value;
+                    }
+                }
+                //bill 다중 업데이트는 업데이트 대상에대한 billId 배열을 넘겨줘야함
+                jsonObject['billIdArr'] = this.billIdArrForUpdate;
+
+                let method = "POST";
+                let url = "{{route("BillFormUpdate")}}";
+                let dataType = "json";
+                let result = js.ajax_call(method, url, jsonObject, dataType, false, "", true);
+            },
             /**
              * select box로 table header, event로 검색
              */
@@ -262,7 +284,8 @@
 
                 updateSelectBoxHtml += `
                                     <div class="btn-group"> \n
-                                        <button class="btn btn-primary" style="width:480px;  max-width:95%">컬럼 일괄 업데이트</button> \n
+                                        <button class="btn btn-primary" style="width:480px; max-width:95%" onclick="tables.billsUpdate()">컬럼 일괄 업데이트
+                                        </button> \n
                                     </div>`;
 
                 this.headers.forEach((head, idx) => {
@@ -271,7 +294,7 @@
 
                     updateSelectBoxHtml +=
                         `<div class="btn-group ${className}"> \n
-                            <select class="form-select" style="width:120px; max-width:90%">\n
+                            <select class="form-select" name="${head['key']}" style="width:120px; max-width:90%">\n
                                 <option value="">${head['name']}</option>`;
 
                     //select-option data 가져오기
@@ -322,7 +345,8 @@
             drawTableBody() {
                 let html = "";
                 this.items.forEach((item, idx) => {
-                    html += `<tr class="text-center" onclick="tables.onLeftClick(this)">`
+                    let billid = item['f_billid']
+                    html += `<tr class="text-center" onclick="tables.onLeftClick(this, ${billid})">`
                     this.headers.forEach((head, idx) => {
                         let className = this.getClassNameByTabs(head['key']);
                         html += `<td class="text-nowrap ${className}">${item[head['key']] === null ? "" : item[head['key']]}</td>`;
@@ -351,13 +375,18 @@
 
             /**
              * 마우스 왼쪽 클릭시 row 선택
+             * row의 classList에 selected 표시
+             * billIdArrForUpdate : 업데이트할 billid 배열
              */
-            onLeftClick:function(obj) {
+            onLeftClick:function(obj,f_billid) {
                 if (obj.classList.contains('selected')) {
+                    tables.billIdArrForUpdate.pop(f_billid);
                     obj.classList.remove("selected");
                 } else {
+                    tables.billIdArrForUpdate.push(f_billid);
                     obj.classList.add("selected");
                 }
+                console.log(tables.billIdArrForUpdate);
             },
         };
 
@@ -561,10 +590,12 @@
                                 {{--컬럼 업데이트 head group 시작--}}
                                 <nav class="navbar navbar-example navbar-expand-lg navbar-light bg-light">
                                     <div class="horizontal-scrollable" >
-                                        {{-- 컬럼일괄 업데이트 시작--}}
-                                        <div class="btn-group" id="select_group_update" >
-                                        </div>
-                                        {{-- 컬럼일괄 업데이트 끝--}}
+                                        <form class="update_form" id="update_form">
+                                            {{-- 컬럼일괄 업데이트 시작--}}
+                                            <div class="btn-group" id="select_group_update" >
+                                            </div>
+                                            {{-- 컬럼일괄 업데이트 끝--}}
+                                        </form>
                                     </div>
                                 </nav>
                                 {{--컬럼 업데이트 head group 끝--}}
