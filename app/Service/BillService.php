@@ -121,15 +121,13 @@ class BillService
 
 
     /**
-     * bill. 이용료청구 수정
-     * @throws Exception
+     * bill. 이용료청구(단일) 수정
      */
-    public function billUpdate(Request $request)
+    public function billUpdate(array $request)
     {
         DB::beginTransaction();
-
-        $bill_wheres = array("f_billId"=>$request['f_billId']);
-        $BillInfoKeys = self::getBillInput();
+        $bill_wheres = array("f_billId"=>($request['f_billId']));
+        $BillInfoKeys = self::getBillsIdInput();
         $paramOfBill_basic = self::makeToAssocidateArray($BillInfoKeys, $request);
 
         if (empty($request || $bill_wheres)) {
@@ -145,17 +143,50 @@ class BillService
         return array("status"=>true, "수정에 성공하였습니다.");
     }
 
+    /**
+     * bill. 이용료청구(여러개) 수정
+     */
+    public function billsUpdate(array $request)
+    {
+        DB::beginTransaction();
+
+        foreach ($request['billIdArr'] as $billId) {
+            $new_request = $request;
+            $new_request['f_billId'] = $billId;
+            $result = self::billUpdate($new_request);
+
+            if (!$result['status']) {
+                return response()->json([
+                    "status" => "error",
+                    "msg" => $result['msg']
+                ]);
+            }
+        }
+
+        DB::commit();
+
+        return array("status"=>true, "수정에 성공하였습니다.");
+    }
+
+
     public function findBillById(Request $request)
     {
         $bill_items = Bill_NEY::findBillById($request->input('billId'));
         $bill_pf_items = Bill_PF_NEY::findBillById($request->input('loginId'));
+        //TODO : 이전코드, pf따라서 변경
+//        if (empty($bill_items) || empty($bill_pf_items)) {
+//            throw new Exception("검색 결과가 없습니다.");
+//        }
+//        return (array)$bill_pf_items[0] + (array)$bill_items[0];
 
-        if (empty($bill_items) || empty($bill_pf_items)) {
+        if (empty($bill_items) && empty($bill_pf_items)) {
             throw new Exception("검색 결과가 없습니다.");
         }
-
-        return (array)$bill_pf_items[0] + (array)$bill_items[0];
-
+        if($bill_pf_items == null){
+            return (array)$bill_items[0];
+        }elseif($bill_items == null){
+            return (array)$bill_pf_items[0];
+        }return (array)$bill_pf_items[0] + (array)$bill_items[0];
     }
 
     /**
@@ -214,18 +245,20 @@ class BillService
     /**
      * input의 id값과 db의 컬럼명이 같은 경우 사용
      * @param array $BillInfoKeys : db의 컬럼명과 일치하는 소문자로 된 id값 배열
-     * @param Request $request : request 값
+     * @param array $request : request 값
      * @return array key => value  연관배열
      */
-    private static function makeToAssocidateArray(array $BillInfoKeys, Request $request): array
+    private static function makeToAssocidateArray(array $BillInfoKeys, array $request): array
     {
         $arr = array();
         foreach ($BillInfoKeys as $key) {
-            $arr[strtoupper($key)] = $request->input($key);
+            if (array_key_exists($key, $request)) {
+                $arr[strtoupper($key)] = $request[$key];
+            }
         }
         return $arr;
     }
-    private static function getBillInput()
+    private static function getBillsIdInput()
     {
         return array_merge(self::getBillBasicInfo(), self::getBillDivisionInfo());
     }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use App\Models\Bill;
 use App\Models\Bill_NEY;
-use App\Models\Bill_PF_NEY;
 use App\Service\BillService;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -12,7 +11,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BillController extends BaseController
@@ -96,8 +94,13 @@ class BillController extends BaseController
      * @throws Exception
      */
     public function BillFormUpdate(Request $request){
-
-        $result = $this->billService->billUpdate($request);
+        $result = "";
+        //bill 다중 업데이트 일 경우
+        if ($request->input('billIdArr')) {
+            $result = $this->billService->billsUpdate($request->input());
+        }else{
+            $result = $this->billService->billUpdate($request->input());
+        }
 
         if (!$result['status']) {
             return response()->json([
@@ -105,6 +108,7 @@ class BillController extends BaseController
                 "msg" => $result['msg']
             ]);
         }
+
         return response()->json([
             "status" => "ok",
             "msg" => "정상적으로 수정되었습니다."
@@ -121,7 +125,6 @@ class BillController extends BaseController
     public function findBillById(Request $request){
         try {
             $items = $this->billService->findBillById($request);
-
             return response()->json([
                 "status" => "ok",
                 "result" => [
