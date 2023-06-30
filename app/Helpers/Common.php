@@ -4,8 +4,29 @@ namespace App\Helpers;
 
 class Common
 {
+    private static $nucatsSite = array("SC"=>"SHOPCAST", "BR"=>"NUCATS", "SM"=>"SHOPNMUSIC");
     public static function common() {
         return "common";
+    }
+
+    public static function getSite() {
+        return strtoupper(explode("-", explode(".", request()->server("HTTP_HOST"))[0])[1]);
+    }
+
+    /**
+     * @return string
+     * ORACLE DB의 각 사이트 별 파라미터 ( SC, BR, SM )
+     */
+    public static function getCompany() {
+        return strtoupper(explode("-", explode(".", request()->server("HTTP_HOST"))[0])[1]);
+    }
+
+    /**
+     * @return string
+     * Mysql DB의 각 사이트 별 파라미터 ( SHOPCAST, NUCATS, SHOPNMUSIC )
+     */
+    public static function getGroupSite() {
+        return self::$nucatsSite[strtoupper(explode("-", explode(".", request()->server("HTTP_HOST"))[0])[1])];
     }
 
     public static function assoArr() {

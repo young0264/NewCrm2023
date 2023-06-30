@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Exports\SampleExport;
 use App\Helpers\Common;
 use App\Helpers\File;
-use App\Helpers\Pagination;
 use App\Imports\SampleImport;
-use App\Models\Bill;
+use App\Models\BRClient;
+use App\Models\SCShop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -170,6 +170,96 @@ class SampleController extends Controller
         return view('sample.datatablesOra', [
 
         ]);
+    }
+
+    public static function getStore(Request $request) {
+
+
+        /**
+         * 검색어가 없을 경우
+         */
+//        if (!$request->has("sch_val") and !$request->filled("sch_val")) {
+//            return response()->json(
+//                array(
+//                    "status"=>"empty"
+//                )
+//            );
+//        }
+
+        $oracle_wheres = "";
+        $oracle_params = array();
+        $mysql_wheres = "";
+        $mysql_params = array();
+
+        /**
+         * Oracle DB 기본 검색조건 생성
+         * Common::getSite()
+         * 샵캐스트       => SC
+         * 브랜드라디오   => BR
+         * 샵앤뮤직      => SM
+         */
+        $oracle_wheres .= " and f_company=:f_company and f_status=:f_status";
+        $oracle_params['F_COMPANY'] = Common::getSite();
+        $oracle_params['F_STATUS'] = "OK";
+
+        /**
+         * Mysql DB 기본 검색조건 생성
+         */
+        $mysql_wheres .= " and group_site=:group_site and status in (578, 105)";
+        $mysql_params['group_site'] = Common::getGroupSite();
+
+        /**
+         * Oracle 데이터 출력
+         */
+        {
+            $oracle_items = SCShop::list($oracle_wheres, $oracle_params);
+        }
+
+        /**
+         * Mysql 데이터 출력
+         */
+        {
+            $mysql_items = BRClient::list($mysql_wheres, $mysql_params);
+        }
+
+        /**
+         * 검색 조건에 대해 나온 데이터 확인 후 두개를 합쳐서 데이터를 리턴 처리
+         */
+        $results = array();
+
+
+
+        foreach ($oracle_items as $key => $item) {
+            $results[$item->f_loginid] = array(
+                "f_company"=>Common::getSite(), // F_OSP
+                "f_site"=>"SC", // F_ADMIN
+                "f_bizid"=>$item->f_bizid,
+                "f_bizname"=>$item->f_bizname,
+                "f_loginid"=>$item->f_loginid,  //
+                "f_shopid"=>$item->f_shopid,
+                "f_shopname"=>$item->f_shopname
+
+            );
+        }
+
+        foreach ($mysql_items as $key => $item) {
+            $results[$item->client_id] = array(
+                "f_company"=>Common::getSite(),
+                "f_site"=>"BR",
+                "f_bizid"=>$item->companys,
+                "f_bizname"=>$item->company_name,
+                "f_loginid"=>$item->client_id,
+                "f_shopid"=>$item->clients,
+                "f_shopname"=>$item->client_name
+            );
+        }
+
+        return response()->json(
+            array(
+                "status"=>"ok",
+                "result"=>json_encode($results)
+            )
+        );
     }
 
     public static function sqlrelay() {
