@@ -257,7 +257,7 @@
 
                 for (let [key, value] of formData.entries()) {
                     let sanitizedKey = key.replace(/'/g, ''); // 작은따옴표(') 제거
-                    searchParams[sanitizedKey] = value.toUpperCase();
+                    searchParams[sanitizedKey] = value;
                 }
                 this.searchParams = searchParams;
 
@@ -286,7 +286,6 @@
                                         <button class="btn btn-primary" style="width:480px; max-width:95%" onclick="tables.billsUpdate()">컬럼 일괄 업데이트
                                         </button> \n
                                     </div>`;
-                console.log(this.headers);
 
                 this.headers.forEach((head, idx) => {
                     if (head['key'] === 'f_bizname' || head['key'] === 'f_shopname') return;
