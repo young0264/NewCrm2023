@@ -235,11 +235,10 @@
             },
 
             /**
-             * select box에서 직접입력 enter 검색
+             * select-box 검색 enter key press
              */
             handleKeyPress: function (event, key) {
                 if (event.key === 'Enter') {
-                    this.searchParams[key] = document.getElementById("selectInput_" + key).value;
                     this.submitInput();
                 }
             },
@@ -258,7 +257,7 @@
 
                 for (let [key, value] of formData.entries()) {
                     let sanitizedKey = key.replace(/'/g, ''); // 작은따옴표(') 제거
-                    searchParams[sanitizedKey] = value;
+                    searchParams[sanitizedKey] = value.toUpperCase();
                 }
                 this.searchParams = searchParams;
 
@@ -287,6 +286,7 @@
                                         <button class="btn btn-primary" style="width:480px; max-width:95%" onclick="tables.billsUpdate()">컬럼 일괄 업데이트
                                         </button> \n
                                     </div>`;
+                console.log(this.headers);
 
                 this.headers.forEach((head, idx) => {
                     if (head['key'] === 'f_bizname' || head['key'] === 'f_shopname') return;
@@ -301,6 +301,7 @@
                     this.selectOptionData[head['key']].forEach((item, idx) => {
                         updateSelectBoxHtml += `<option value="${item}">${item}</option>`;
                     });
+                    updateSelectBoxHtml += `<option value=""></option>`;
                     updateSelectBoxHtml += `</select> </div> </div>`;
                 });
                 return updateSelectBoxHtml;
@@ -359,16 +360,16 @@
             /**
              * hideKeyArr에 해당하는
              * select-option box 숨기기
-             * select-input show 보여주기
+             * input box 보여주기
              */
             showDirectInputBox() {
                 this.hideKeyArr.forEach((key, idx) => {
 
-                    // input 박스는 나타내기
+                    // input-box는 나타내기
                     document.getElementById("selectInput_" + key).style.display = "block";
                     document.getElementById("selectInput_" + key).style.height = "40px";
 
-                    // 기존 select박스는 숨기기
+                    // 기존 select-box는 숨기기
                     document.getElementById("select_" + key).style.display = "none";
                 });
             },

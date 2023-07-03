@@ -51,7 +51,6 @@ if (!Auth::check()) {
         /**
          * 계산서
          */
-        Route::get("/bill/test", [BillController::class, "ttt"])->name("billtest");
         Route::get("/bill/issue", [BillController::class, "issue"])->name("billIssue");
         Route::get("/bill/form", [BillController::class, "form"])->name("billForm");
         Route::get("/bill/form/sub", [BillController::class, "printForm"])->name("printBillForm");

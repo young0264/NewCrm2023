@@ -18,28 +18,21 @@ class BillController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     protected BillService $billService;
-    public function __construct(BillService $billService)
-    {
+
+    public function __construct(BillService $billService){
         $this->billService = $billService;
     }
 
-    public function ttt()
-    {
-        $testArr = $this->billService->returnTest();
-        return $testArr;
-    }
-
     public function list(Request $request){
-        $wheres = "and f_admin='BR'";
         $params = [];
-
+        $headers = array();
+        $wheres = "and f_admin='BR'";
         $notContainedHeader = array_flip(["f_billid", "f_bizid", "f_shopid", "f_status", "f_standard1", "f_standard2", "f_standard3", "f_standard4",
             "f_count1", "f_count2", "f_count3", "f_count4", "f_tax1", "f_tax2", "f_tax3", "f_tax4", "f_bigo1", "f_bigo2", "f_bigo3", "f_bigo4",
             "f_day1", "f_day2", "f_day3", "f_day4", "f_unitprice1", "f_unitprice2", "f_unitprice3", "f_unitprice4", "f_issue_type"]);
 
         $items = Bill::list($wheres, $params);
 
-        $headers = array();
         foreach ($items as $key => $item) {
             if ($key > 0)
                 break;
@@ -50,8 +43,7 @@ class BillController extends BaseController
                 }
             }
         }
-        return response()->json(
-            [
+        return response()->json([
                 "status" => "ok",
                 "result" => array(
                     "header" => json_encode($headers),
@@ -78,7 +70,6 @@ class BillController extends BaseController
                 }
             }
         }
-
         return response()->json(
             [
                 "status" => "ok",
@@ -113,7 +104,6 @@ class BillController extends BaseController
             "status" => "ok",
             "msg" => "정상적으로 수정되었습니다."
         ]);
-
     }
 
     /**
@@ -164,34 +154,27 @@ class BillController extends BaseController
         }
     }
 
-    public static function issue()
-    {
+    public static function issue(){
         return view("bill.billIssueView");
     }
-    public static function issuePage()
-    {
+    public static function issuePage(){
         return view("bill.billIssuePage");
     }
 
-    public static function form()
-    {
+    public static function form(){
         return view("bill.billFormView");
     }
 
-    public static function printForm()
-    {
+    public static function printForm(){
         return view("bill.printBillFormView");
     }
 
-    public static function integrate()
-    {
+    public static function integrate(){
         return view("bill.integratedCollection");
     }
 
-    public static function cashReceipt()
-    {
+    public static function cashReceipt(){
         return view("bill.cashReceiptSearch");
     }
-
 
 }
