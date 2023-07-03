@@ -7,54 +7,46 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class BillService
-{
+class BillService{
 
-    public function returnTest()
-    {
-        $a = "a";
-        $b = "b";
-        return [$a, $b];
-    }
+    /**
+     * select option 검색의 name값
+     */
 
-    public function makeSearchConditions($request)
-    {
+    private static $f_billForm_param = array(
+        'f_bizname', 'f_shopname', 'f_price',
+        'f_pay_type', 'f_pay_interval', 'f_history', 'f_reply', 'f_statement', 'f_tax_bill', 'f_issuedate',
+        'f_registration_number', 'f_minor_business', 'f_cp_name', 'f_rep_name', 'f_addr', 'f_business', 'f_event', 'f_public_addr1', 'f_public_addr2',
+        'f_name1','f_mobile1', 'f_email1', 'f_name2', 'f_mobile2', 'f_email2', 'f_day1' ,'f_product1', 'f_standard1', 'f_unitprice1', 'f_count1', 'f_price1', 'f_tax1', 'f_bigo1',
+        'f_day2', 'f_product2', 'f_standard2', 'f_unitprice2', 'f_count2', 'f_price2', 'f_tax2', 'f_bigo2',
+        'f_day3', 'f_product3', 'f_standard3', 'f_unitprice3', 'f_count3', 'f_price3', 'f_tax3', 'f_bigo3',
+        'f_day4', 'f_product4', 'f_standard4', 'f_unitprice4', 'f_count4', 'f_price4', 'f_tax4', 'f_bigo4',
+        'f_issue_type');
 
+    /**
+     * select input 검색의 name값
+     */
+    private static $select_input_arr = array(
+        'selectInput_f_addr', 'selectInput_f_bizname', 'selectInput_f_business', 'selectInput_f_cp_name', 'selectInput_f_email1',
+        'selectInput_f_email2', 'selectInput_f_event', 'selectInput_f_history', 'selectInput_f_issuedate', 'selectInput_f_minor_business', 'selectInput_f_mobile1',
+        'selectInput_f_mobile2', 'selectInput_f_name1', 'selectInput_f_name2', 'selectInput_f_pay_interval', 'selectInput_f_pay_type', 'selectInput_f_price',
+        'selectInput_f_price1', 'selectInput_f_price2', 'selectInput_f_price3', 'selectInput_f_price4', 'selectInput_f_product1', 'selectInput_f_product2',
+        'selectInput_f_product3', 'selectInput_f_product4', 'selectInput_f_public_addr1', 'selectInput_f_public_addr2', 'selectInput_f_registration_number',
+        'selectInput_f_rep_name', 'selectInput_f_reply', 'selectInput_f_shopname', 'selectInput_f_statement', 'selectInput_f_tax_bill');
+
+    public function makeSearchConditions($request){
         $wheres = "";
         $binds = [];
 
-        /**
-         * select option 검색의 name값
-         */
-        $f_billForm_param = array(
-             'f_bizname', 'f_shopname', 'f_price',
-                        'f_pay_type', 'f_pay_interval', 'f_history', 'f_reply', 'f_statement', 'f_tax_bill', 'f_issuedate',
-                        'f_registration_number', 'f_minor_business', 'f_cp_name', 'f_rep_name', 'f_addr', 'f_business', 'f_event', 'f_public_addr1', 'f_public_addr2',
-                        'f_name1','f_mobile1', 'f_email1', 'f_name2', 'f_mobile2', 'f_email2', 'f_day1' ,'f_product1', 'f_standard1', 'f_unitprice1', 'f_count1', 'f_price1', 'f_tax1', 'f_bigo1',
-                        'f_day2', 'f_product2', 'f_standard2', 'f_unitprice2', 'f_count2', 'f_price2', 'f_tax2', 'f_bigo2',
-                        'f_day3', 'f_product3', 'f_standard3', 'f_unitprice3', 'f_count3', 'f_price3', 'f_tax3', 'f_bigo3',
-                        'f_day4', 'f_product4', 'f_standard4', 'f_unitprice4', 'f_count4', 'f_price4', 'f_tax4', 'f_bigo4',
-                        'f_issue_type');
-
-        /**
-         * select input 검색의 name값
-         */
-        $select_input_arr = array('selectInput_f_addr', 'selectInput_f_bizname', 'selectInput_f_business', 'selectInput_f_cp_name', 'selectInput_f_email1',
-            'selectInput_f_email2', 'selectInput_f_event', 'selectInput_f_history', 'selectInput_f_issuedate', 'selectInput_f_minor_business', 'selectInput_f_mobile1',
-            'selectInput_f_mobile2', 'selectInput_f_name1', 'selectInput_f_name2', 'selectInput_f_pay_interval', 'selectInput_f_pay_type', 'selectInput_f_price',
-            'selectInput_f_price1', 'selectInput_f_price2', 'selectInput_f_price3', 'selectInput_f_price4', 'selectInput_f_product1', 'selectInput_f_product2',
-            'selectInput_f_product3', 'selectInput_f_product4', 'selectInput_f_public_addr1', 'selectInput_f_public_addr2', 'selectInput_f_registration_number',
-            'selectInput_f_rep_name', 'selectInput_f_reply', 'selectInput_f_shopname', 'selectInput_f_statement', 'selectInput_f_tax_bill');
-
         if ($request->has("f_pay_type") and $request->filled("f_pay_type")) {
-            $wheres .= "and (f_pay_type = :f_pay_type)";
+            $wheres .= "and (upper(f_pay_type) = :upper(f_pay_type))";
             $binds += array("f_pay_type"=>$request->input("f_pay_type"));
         }
 
         /**
          * select box 검색부분 where절 설정
          */
-        foreach ($f_billForm_param as $item) {
+        foreach (self::$f_billForm_param as $item) {
             if ($request->has($item) and $request->filled($item)) {
                 $wheres .= "and ({$item} = :{$item})";
                 $binds += array($item => $request->input($item));
@@ -64,7 +56,7 @@ class BillService
         /**
          * select box내 직접입력 input으로 검색, where절 설정
          */
-        foreach ($select_input_arr as $ex_item) {
+        foreach (self::$select_input_arr as $ex_item) {
             $item = str_replace("selectInput_", "", $ex_item);
             if ($request->has($ex_item) and $request->filled($ex_item) and $request->input($ex_item) !== 'undefined') {
                 $wheres .= "and ({$item} like :{$item})";
@@ -72,13 +64,12 @@ class BillService
             }
         }
 
-
         /**
          * input box 검색부분 where절 설정
          */
         if ($request->has("sch_key") and $request->filled("sch_key")) {
             $wheres .= "and (";
-            foreach($f_billForm_param as $item) {
+            foreach(self::$f_billForm_param as $item) {
                 $wheres .= "{$item} like :sch_val or ";
             }
             $wheres = substr($wheres, 0, -3);
