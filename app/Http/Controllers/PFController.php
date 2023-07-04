@@ -31,7 +31,6 @@ class PFController
             }
             DB::commit();
         }catch(Exception $e){
-            print_r($e->getMessage());
             DB::rollBack();
             return response()->json([
                 'status' => 'fail',

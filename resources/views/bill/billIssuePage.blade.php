@@ -63,10 +63,11 @@
             data: {},
             selectOptionData: {},
             searchParams: {},
-            hideKeyArr: [],
+            hideSearchKeyArr: [],
+            hideUpdateKeyArr: [],
             billIdArrForUpdate: [], //billIdArrForUpdate : 업데이트할 billid 배열
             // tab0: new Set(["f_bizname", "f_shopname", "f_price"]),
-            tab1: new Set(["f_pay_type", "f_pay_interval", "f_history", "f_reply",
+            tab1: new Set(["f_price", "f_pay_type", "f_pay_interval", "f_history", "f_reply",
                 "f_statement", "f_tax_bill", "f_issuedate"]),
             tab2: new Set(["f_registration_number",
                 "f_minor_business", "f_cp_name", "f_rep_name",
@@ -152,7 +153,7 @@
              * Select box, Table 그리기
              */
             onDraw: function () {
-                document.getElementById("select_group_update").innerHTML = this.drawUpdateSelectBox();
+                document.getElementById("update_group").innerHTML = this.drawUpdateSelectBox();
                 document.getElementById("table_head_select").innerHTML = this.drawTableSelectBox();
                 document.getElementById("table_body").innerHTML = this.drawTableBody();
             },
@@ -170,14 +171,15 @@
                         jsonObject[sanitizedKey] = value;
                     }
                 }
-                //bill 다중 업데이트는 업데이트 대상에대한 billId 배열을 넘겨줘야함
+                //bill 다중 업데이트는 업데이트 대상에 대한 billId 배열을 넘겨줘야함
                 jsonObject['billIdArr'] = this.billIdArrForUpdate;
 
                 let method = "POST";
                 let url = "{{route("BillFormUpdate")}}";
                 let dataType = "json";
-                let result = js.ajax_call(method, url, jsonObject, dataType, false, "", true);
+                js.ajax_call(method, url, jsonObject, dataType, false, "", true);
             },
+
             /**
              * select box로 table header, event로 검색
              */
@@ -189,7 +191,7 @@
                 for (let [key, value] of formData.entries()) {
                     let sanitizedKey = key.replace(/'/g, ''); // 작은따옴표(') 제거
                     if (value === "selectDirect") {
-                        this.hideKeyArr.push(key);
+                        this.hideSearchKeyArr.push(key);
                         continue;
                     }
                     jsonObject[sanitizedKey] = value;
@@ -213,7 +215,7 @@
 
                 this.selectOptionsInit()
                 this.onDraw();
-                this.showDirectInputBox();
+                this.showDirectInputBox('search', this.hideSearchKeyArr);
             },
 
             /**
@@ -244,13 +246,9 @@
             },
 
             /**
-             * 엔터를 눌렀을 때,table header에 대한 json데이터 생성, 검색
+             * 엔터를 눌렀을 때,table header에 대한(form 데이터) json데이터 생성, 검색
              */
             submitInput: function () {
-
-                /**
-                 * form으로 보낸 json 데이터 생성
-                 */
                 let form = document.getElementById("search_form");
                 let formData = new FormData(form);
                 let searchParams = {};
@@ -260,6 +258,7 @@
                     searchParams[sanitizedKey] = value;
                 }
                 this.searchParams = searchParams;
+                console.log(searchParams);
 
                 let method = "POST";
                 let url = "{{route("billListNEY")}}";
@@ -293,15 +292,20 @@
 
                     updateSelectBoxHtml +=
                         `<div class="btn-group ${className}"> \n
-                            <select class="form-select" name="${head['key']}" style="width:120px; max-width:90%">\n
+                            <select class="form-select" id="update_${head['key']}" name="${head['key']}" style="width:120px; max-width:90%" onchange="tables.hideUpdateKeys()">\n
                                 <option value="">${head['name']}</option>`;
 
                     //select-option data 가져오기
                     this.selectOptionData[head['key']].forEach((item, idx) => {
                         updateSelectBoxHtml += `<option value="${item}">${item}</option>`;
                     });
-                    updateSelectBoxHtml += `<option value=""></option>`;
-                    updateSelectBoxHtml += `</select> </div> </div>`;
+                    // updateSelectBoxHtml += `<option value=""></option>`;
+                    updateSelectBoxHtml += `<option value="selectDirect">직접입력</option> \n </select> \n`;
+                    updateSelectBoxHtml += `<input class="alert-primary" type="text" placeholder="${head['name']}"
+                                        id="updateInput_${head['key']}" name="${head['key']}"
+                                        value="${this.searchParams['searchInput_'+head['key']] === undefined ? "" : this.searchParams['searchInput_'+head['key']] }"
+                                        style="display: none" > \n`;
+                    updateSelectBoxHtml += ` </div> </div>`;
                 });
                 return updateSelectBoxHtml;
             },
@@ -318,7 +322,8 @@
 
                     tableHeadHtml += `<th class="text-nowrap text-center ${className}"> \n
                                         <div class="btn-group "> \n
-                                            <select class="form-select" style="width:130px; max-width:95%" id="select_${head['key']}" name="${head['key']}"
+                                            <select class="form-select" style="width:130px; max-width:95%"
+                                                    id="search_${head['key']}" name="${head['key']}"
                                                     onchange="tables.selectSearch('search_form')"> \n
                                                 <option value="" >${head['name']}</option>`;
 
@@ -328,13 +333,14 @@
                     });
 
                     tableHeadHtml += `<option value="selectDirect">직접입력</option> \n </select> \n`;
-                    tableHeadHtml += `<input class="alert-primary" type="text" id="selectInput_${head['key']}" name="selectInput_${head['key']}"
+                    tableHeadHtml += `<input class="alert-primary" type="text" placeholder="${head['name']}"
+                                        id="searchInput_${head['key']}" name="searchInput_${head['key']}"
                                         onkeydown="tables.handleKeyPress(event,'${head['key']}')"
-                                        value="${this.searchParams['selectInput_'+head['key']] === undefined ? "" : this.searchParams['selectInput_'+head['key']] }"
+                                        value="${this.searchParams['searchInput_'+head['key']] === undefined ? "" : this.searchParams['searchInput_'+head['key']] }"
                                         style="display: none" > \n`;
                 });
 
-                tableHeadHtml += `<button onclick="tables.submitInput()">Submit</button>`;
+                tableHeadHtml += `<button onclick="tables.submitInput()" hidden="hidden">Submit</button>`;
                 tableHeadHtml += ` </div> </tr> \n`;
                 return tableHeadHtml;
             },
@@ -357,19 +363,43 @@
             },
 
             /**
-             * hideKeyArr에 해당하는
+             * update select box 숨기기, input-box 보여주기
+             */
+            hideUpdateKeys() {
+                let form = document.getElementById('update_form');
+                let formData = new FormData(form);
+                let jsonObject = {};
+                this.hideUpdateKeyArr = [];
+                for (let [key, value] of formData.entries()) {
+                    if(value === "selectDirect"){
+                        this.hideUpdateKeyArr.push(key);
+                        continue;
+                    }
+                    else if (value) {
+                        jsonObject[key] = value;
+                    }
+                }
+                console.log(this.hideUpdateKeyArr);
+                this.showDirectInputBox('update',this.hideUpdateKeyArr);
+            },
+
+            /**
+             * hideSearchKeyArr 해당하는
              * select-option box 숨기기
              * input box 보여주기
              */
-            showDirectInputBox() {
-                this.hideKeyArr.forEach((key, idx) => {
+            showDirectInputBox(key,arr) {
+                console.log(key);
+                arr.forEach((selectKey, idx) => {
 
                     // input-box는 나타내기
-                    document.getElementById("selectInput_" + key).style.display = "block";
-                    document.getElementById("selectInput_" + key).style.height = "40px";
+                    document.getElementById(key + "Input_" + selectKey).style.display = "block";
+                    // document.getElementById(key + "Input_" + selectKey).disabled = false;
+                    document.getElementById(key + "Input_" + selectKey).style.height = "40px";
 
                     // 기존 select-box는 숨기기
-                    document.getElementById("select_" + key).style.display = "none";
+                    // document.getElementById(key + "_" + selectKey).disabled = true;
+                    document.getElementById(key + "_" + selectKey).style.display = "none";
                 });
             },
 
@@ -378,7 +408,7 @@
              * row의 classList에 selected 표시
              * billIdArrForUpdate : 업데이트할 billid 배열
              */
-            onLeftClick:function(obj,f_billid) {
+            onLeftClick:function(obj, f_billid) {
                 if (obj.classList.contains('selected')) {
                     tables.billIdArrForUpdate.pop(f_billid);
                     obj.classList.remove("selected");
@@ -386,7 +416,6 @@
                     tables.billIdArrForUpdate.push(f_billid);
                     obj.classList.add("selected");
                 }
-                console.log(tables.billIdArrForUpdate);
             },
         };
 
@@ -592,7 +621,7 @@
                                     <div class="horizontal-scrollable" >
                                         <form class="update_form" id="update_form">
                                             {{-- 컬럼일괄 업데이트 시작--}}
-                                            <div class="btn-group" id="select_group_update" >
+                                            <div class="btn-group" id="update_group" >
                                             </div>
                                             {{-- 컬럼일괄 업데이트 끝--}}
                                         </form>

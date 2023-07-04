@@ -27,12 +27,18 @@ class BillService{
      * select input 검색의 name값
      */
     private static $select_input_arr = array(
-        'selectInput_f_addr', 'selectInput_f_bizname', 'selectInput_f_business', 'selectInput_f_cp_name', 'selectInput_f_email1',
-        'selectInput_f_email2', 'selectInput_f_event', 'selectInput_f_history', 'selectInput_f_issuedate', 'selectInput_f_minor_business', 'selectInput_f_mobile1',
-        'selectInput_f_mobile2', 'selectInput_f_name1', 'selectInput_f_name2', 'selectInput_f_pay_interval', 'selectInput_f_pay_type', 'selectInput_f_price',
-        'selectInput_f_price1', 'selectInput_f_price2', 'selectInput_f_price3', 'selectInput_f_price4', 'selectInput_f_product1', 'selectInput_f_product2',
-        'selectInput_f_product3', 'selectInput_f_product4', 'selectInput_f_public_addr1', 'selectInput_f_public_addr2', 'selectInput_f_registration_number',
-        'selectInput_f_rep_name', 'selectInput_f_reply', 'selectInput_f_shopname', 'selectInput_f_statement', 'selectInput_f_tax_bill');
+        'searchInput_f_addr', 'searchInput_f_bizname', 'searchInput_f_business', 'searchInput_f_cp_name', 'searchInput_f_email1',
+        'searchInput_f_email2', 'searchInput_f_event', 'searchInput_f_history', 'searchInput_f_issuedate', 'searchInput_f_minor_business', 'searchInput_f_mobile1',
+        'searchInput_f_mobile2', 'searchInput_f_name1', 'searchInput_f_name2', 'searchInput_f_pay_interval', 'searchInput_f_pay_type', 'searchInput_f_price',
+        'searchInput_f_price1', 'searchInput_f_price2', 'searchInput_f_price3', 'searchInput_f_price4', 'searchInput_f_product1', 'searchInput_f_product2',
+        'searchInput_f_product3', 'searchInput_f_product4', 'searchInput_f_public_addr1', 'searchInput_f_public_addr2', 'searchInput_f_registration_number',
+        'searchInput_f_rep_name', 'searchInput_f_reply', 'searchInput_f_shopname', 'searchInput_f_statement', 'searchInput_f_tax_bill');
+
+    private static $columns_number_type = array(
+        'f_price', 'f_tax', 'f_day1', 'F_MINOR_BUSINESS', 'F_UNITPRICE1', 'F_COUNT1', 'F_PRICE1', 'F_TAX1',
+        'F_UNITPRICE2', 'F_COUNT2', 'F_PRICE2', 'F_TAX2', 'F_DAY3', 'F_DAY4', 'F_UNITPRICE3', 'F_COUNT3',
+        'F_PRICE3', 'F_BILL_GROUPID', 'F_TAX3', 'F_UNITPRICE4', 'F_COUNT4', 'F_PRICE4', 'F_TAX4', 'f_regid'
+    );
 
     public function makeSearchConditions($request){
         $wheres = "";
@@ -44,7 +50,7 @@ class BillService{
         }
 
         /**
-         * select box 검색부분 where절 설정
+         * select-box 검색부분 where절 설정
          */
         foreach (self::$f_billForm_param as $item) {
             if ($request->has($item) and $request->filled($item)) {
@@ -54,10 +60,10 @@ class BillService{
         }
 
         /**
-         * select box내 직접입력 input으로 검색, where절 설정
+         * select-box내 직접입력 input으로 검색, where절 설정
          */
         foreach (self::$select_input_arr as $ex_item) {
-            $item = str_replace("selectInput_", "", $ex_item);
+            $item = str_replace("searchInput_", "", $ex_item);
             if ($request->has($ex_item) and $request->filled($ex_item) and $request->input($ex_item) !== 'undefined') {
                 $wheres .= "and ({$item} like :{$item})";
                 $binds += array($item =>  "%" . $request->input($ex_item) . "%");
@@ -90,8 +96,7 @@ class BillService{
      * @return void
      */
 
-    private function makeTonghapConditions($request, string &$wheres, array &$binds): void
-    {
+    private function makeTonghapConditions($request, string &$wheres, array &$binds): void{
         if ($request->has("sch_key") and $request->filled("sch_key")
             and $request->has("sch_val") and $request->filled("sch_val")) {
 
@@ -114,12 +119,10 @@ class BillService{
     /**
      * bill. 이용료청구(단일) 수정
      */
-    public function billUpdate(array $request)
-    {
+    public function billUpdate(array $request){
         DB::beginTransaction();
         $bill_wheres = array("f_billId"=>($request['f_billId']));
-        $BillInfoKeys = self::getBillsIdInput();
-        $paramOfBill_basic = self::makeToAssocidateArray($BillInfoKeys, $request);
+        $paramOfBill_basic = self::makeToAssocidateArray($request);
 
         if (empty($request || $bill_wheres)) {
             DB::rollBack();
@@ -130,15 +133,13 @@ class BillService{
             return array("status"=>false, "수정시 에러가 발생했습니다. 입력값들을 확인해주세요.");
         }
         DB::commit();
-
         return array("status"=>true, "수정에 성공하였습니다.");
     }
 
     /**
      * bill. 이용료청구(여러개) 수정
      */
-    public function billsUpdate(array $request)
-    {
+    public function billsUpdate(array $request){
         DB::beginTransaction();
 
         foreach ($request['billIdArr'] as $billId) {
@@ -153,15 +154,11 @@ class BillService{
                 ]);
             }
         }
-
         DB::commit();
-
         return array("status"=>true, "수정에 성공하였습니다.");
     }
 
-
-    public function findBillById(Request $request)
-    {
+    public function findBillById(Request $request){
         $bill_items = Bill_NEY::findBillById($request->input('billId'));
         $bill_pf_items = Bill_PF_NEY::findBillById($request->input('loginId'));
         //TODO : 이전코드, pf따라서 변경
@@ -184,8 +181,7 @@ class BillService{
      * bill (이용료청구) 등록
      * @throws Exception
      */
-    public function billCreate(Request $request)
-    {
+    public function billCreate(Request $request){
         $tax_type0306 = $request->input('tax_type0306') === 'on' ? 'on' : 'off';
         $tax_type01 = $request->input('tax_type01') === 'on' ? 'on' : 'off';
 
@@ -215,8 +211,7 @@ class BillService{
      * @return array|null
      * @throws Exception
      */
-    private static function makeBillDataByChecked(string $tax_type01, Request $request, string $tax_type0306): ?array
-    {
+    private static function makeBillDataByChecked(string $tax_type01, Request $request, string $tax_type0306): ?array{
         /**
          * $basic_info_param : 등록 모달창 기본 데이터 파라미터 셋팅 (공연권료, 이용료 분할은 제외)
          */
@@ -239,9 +234,9 @@ class BillService{
      * @param array $request : request 값
      * @return array key => value  연관배열
      */
-    private static function makeToAssocidateArray(array $BillInfoKeys, array $request): array
-    {
+    private static function makeToAssocidateArray(array $request): array{
         $arr = array();
+        $BillInfoKeys = self::getBillsIdInput();
         foreach ($BillInfoKeys as $key) {
             if (array_key_exists($key, $request)) {
                 $arr[strtoupper($key)] = $request[$key];
@@ -249,21 +244,23 @@ class BillService{
         }
         return $arr;
     }
-    private static function getBillsIdInput()
-    {
-        return array_merge(self::getBillBasicInfo(), self::getBillDivisionInfo());
+
+    private static function getBillsIdInput(){
+        return array_merge(self::getBillBasicInfo(), self::getBillDivisionInfo(), self::getExtraIdsOfBill());
     }
 
-    private static function getBillBasicInfo()
-    {
+    private static function getExtraIdsOfBill(){
+        return array('f_price', 'f_price1', 'f_price2', 'f_price3', 'f_price4', 'f_minor_business', 'f_cp_name', 'f_event', 'f_issuedate');
+    }
+
+    private static function getBillBasicInfo(){
         return array(
             'f_shopname', 'f_cb', 'f_business', 'f_cp_name', 'f_name1', 'f_pay_type', 'f_rep_name', 'f_mobile1',
             'f_pay_interval', 'f_interval_option', 'f_registration_number', 'f_email1', 'f_history', 'f_addr', 'f_name2', 'f_reply',
             'f_public_addr1', 'f_mobile2', 'f_statement', 'f_public_addr2', 'f_email2', 'f_tax_bill','f_issue_type');
     }
 
-    private static function getBillDivisionInfo()
-    {
+    private static function getBillDivisionInfo(){
         return array('f_bigo',
             'f_product1', 'f_product2', 'f_product3', 'f_product4',
             'f_unitprice1', 'f_unitprice2', 'f_unitprice3', 'f_unitprice4',
@@ -276,8 +273,7 @@ class BillService{
      */
 
 
-    private static function getBillPFInfo()
-    {
+    private static function getBillPFInfo(){
         return array("f_loginid", "f_tax_issue", "f_pf_price", "f_pyung", "f_village", "f_issuedate", "f_opendate", "f_closedate",);
     }
 
@@ -356,8 +352,7 @@ class BillService{
      * @param Request $request
      * @return array
      */
-    private static function getInfo_0306(string $tax_type0306, array $basic_info_param, Request $request): array
-    {
+    private static function getInfo_0306(string $tax_type0306, array $basic_info_param, Request $request): array{
         $asso_arr = array(
             "KOMCA" => "06",
             "FKMP" => "06",

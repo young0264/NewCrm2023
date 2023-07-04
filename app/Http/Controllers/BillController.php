@@ -87,11 +87,7 @@ class BillController extends BaseController
     public function BillFormUpdate(Request $request){
         $result = "";
         //bill 다중 업데이트 일 경우
-        if ($request->input('billIdArr')) {
-            $result = $this->billService->billsUpdate($request->input());
-        }else{
-            $result = $this->billService->billUpdate($request->input());
-        }
+        $result = $this->billService->billsUpdate($request->input());
 
         if (!$result['status']) {
             return response()->json([
