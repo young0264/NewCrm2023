@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('content')
-
+<?php
+$sch_year = request('sch_year');
+$sch_month = request('sch_month');
+?>
     <script type="text/javascript">
 
         let checkbox = {
@@ -464,37 +467,37 @@
                         <div class="card">
                             <!-- Notifications -->
                             <h4 class="card-header text-primary">계산서 발행 리스트2</h4>
-
-                            <div class="card-body">
-                                {{--1~12번 년월 선택 start--}}
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination pagination-lg">
-                                        <li>
-                                            <div class="btn-group">
-                                                <select type="button" name="f_year"
-                                                        class="btn btn-outline-secondary dropdown-toggle"
-                                                        aria-expanded="false">
-                                                    <option value="all">전체</option>
-                                                    <option value="2024">2024년</option>
-                                                    <option value="2023">2023년</option>
-                                                    <option value="2022">2022년</option>
-                                                    <option value="2021">2021년</option>
-                                                    <option value="2020">2020년</option>
-                                                </select>
-                                            </div>
-                                        </li>
-                                        <?php
-                                        for($i=1; $i<=12; $i++){
-                                        ?>
-                                        <li class="page-item">
-                                            <button class="page-link"> <?= $i ?></button>
-{{--                                            <a class="page-link" onclick="tables.onSearch()"><?= $i ?></a>--}}
-                                        </li>
-                                        <?php } ?>
-                                    </ul>
-                                </nav>
-                                {{--1~12번 년월 선택 end--}}
-                            </div>
+                            <form id="year_month_id">
+                                <div class="card-body" >
+                                    {{--1~12번 년월 선택 start--}}
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination pagination-lg">
+                                            <li>
+                                                <div class="btn-group">
+                                                    <select type="button" name="sch_year"
+                                                            class="btn btn-outline-secondary dropdown-toggle"
+                                                            aria-expanded="false">
+                                                        <option value="all" <?= $sch_year=="all" ? "selected" : "" ?>>전체</option>
+                                                        <?php
+                                                            //TODO : 현재 년도부터 5년전까지만 조회 , 상수->수정
+                                                        for($i=date("Y"); $i>date("Y")-5; $i--){ ?>
+                                                        <option value="<?= $i ?>" <?= $i==$sch_year ? 'selected' : "" ?> > <?= $i ?>년</option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                            <?php for($i=1; $i<=12; $i++){ ?>
+                                            <li class="page-item">
+                                                <button class="page-link" name="sch_month" value="<?= $i ?>"
+                                                        <?= $sch_month== $i ? 'style="background-color: #007bff; color: white"' : "" ?>> <?= $i ?> </button>
+{{--                                                <a class="page-link" onclick="tables.onSearch()" ><?= $i ?></a>--}}
+                                            </li>
+                                            <?php } ?>
+                                        </ul>
+                                    </nav>
+                                    {{--1~12번 년월 선택 end--}}
+                                </div>
+                            </form>
                             <div class="card-body">
                                 <div class="btn-group col-md-4 form-floating">
                                     <div class="nav-align-top mb-4">

@@ -70,8 +70,7 @@ class BillController extends BaseController
                 }
             }
         }
-        return response()->json(
-            [
+        return response()->json([
                 "status" => "ok",
                 "result" => array(
                     "header" => json_encode($headers),
