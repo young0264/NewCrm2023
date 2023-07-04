@@ -44,11 +44,6 @@ class BillService{
         $wheres = "";
         $binds = [];
 
-        if ($request->has("f_pay_type") and $request->filled("f_pay_type")) {
-            $wheres .= "and (upper(f_pay_type) = :upper(f_pay_type))";
-            $binds += array("f_pay_type"=>$request->input("f_pay_type"));
-        }
-
         /**
          * select-box 검색부분 where절 설정
          */

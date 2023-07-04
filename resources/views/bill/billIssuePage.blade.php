@@ -187,7 +187,6 @@
                 let form = document.getElementById(formid);
                 let formData = new FormData(form);
                 let jsonObject = {};
-
                 for (let [key, value] of formData.entries()) {
                     let sanitizedKey = key.replace(/'/g, ''); // 작은따옴표(') 제거
                     if (value === "selectDirect") {
@@ -207,7 +206,6 @@
                 let url = "{{route("billListNEY")}}";
                 let data = jsonObject;
                 let dataType = "json";
-
                 let result = js.ajax_call(method, url, data, dataType, false, "", true);
 
                 this.headers = JSON.parse(result['header']);
@@ -473,65 +471,26 @@
                                     <ul class="pagination pagination-lg">
                                         <li>
                                             <div class="btn-group">
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-outline-secondary dropdown-toggle"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false"
-                                                >2023년
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="javascript:void(0);">2024년</a>
-                                                    </li>
-                                                    <li><a class="dropdown-item" href="javascript:void(0);">2023년</a>
-                                                    </li>
-                                                    <li><a class="dropdown-item" href="javascript:void(0);">2022년</a>
-                                                    </li>
-                                                    <li><a class="dropdown-item" href="javascript:void(0);">2021년</a>
-                                                    </li>
-                                                    <li><a class="dropdown-item" href="javascript:void(0);">2020년</a>
-                                                    </li>
-                                                    <li><a class="dropdown-item" href="javascript:void(0);">2019년</a>
-                                                    </li>
-                                                </ul>
+                                                <select type="button" name="f_year"
+                                                        class="btn btn-outline-secondary dropdown-toggle"
+                                                        aria-expanded="false">
+                                                    <option value="all">전체</option>
+                                                    <option value="2024">2024년</option>
+                                                    <option value="2023">2023년</option>
+                                                    <option value="2022">2022년</option>
+                                                    <option value="2021">2021년</option>
+                                                    <option value="2020">2020년</option>
+                                                </select>
                                             </div>
                                         </li>
+                                        <?php
+                                        for($i=1; $i<=12; $i++){
+                                        ?>
                                         <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0);">1</a>
+                                            <button class="page-link"> <?= $i ?></button>
+{{--                                            <a class="page-link" onclick="tables.onSearch()"><?= $i ?></a>--}}
                                         </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0);">2</a>
-                                        </li>
-                                        <li class="page-item active">
-                                            <a class="page-link" href="javascript:void(0);">3</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0);">4</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0);">5</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0);">6</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0);">7</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0);">8</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0);">9</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0);">10</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0);">11</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="javascript:void(0);">12</a>
-                                        </li>
+                                        <?php } ?>
                                     </ul>
                                 </nav>
                                 {{--1~12번 년월 선택 end--}}
