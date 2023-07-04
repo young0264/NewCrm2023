@@ -45,11 +45,19 @@ class BillService{
         $binds = [];
 
         /**
+         * 년도, 월 클릭시 검색 where절 설정
+         */
+        $wheres .= " and (EXTRACT(YEAR FROM F_REGDATE) = :sch_year)";
+        $wheres .= " and (EXTRACT(MONTH FROM F_REGDATE) = :sch_month)";
+        $binds += array('sch_year' => $request->input('sch_year'));
+        $binds += array('sch_month' => $request->input('sch_month'));
+
+        /**
          * select-box 검색부분 where절 설정
          */
         foreach (self::$f_billForm_param as $item) {
             if ($request->has($item) and $request->filled($item)) {
-                $wheres .= "and ({$item} = :{$item})";
+                $wheres .= " and ({$item} = :{$item})";
                 $binds += array($item => $request->input($item));
             }
         }

@@ -53,6 +53,7 @@ class BillController extends BaseController
     }
 
     public function listByNEY(Request $request){
+
         $result = $this->billService->makeSearchConditions($request);
         $items = Bill_NEY::list($result["wheres"], $result['binds']);
         $headers = array();

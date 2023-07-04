@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
 <?php
-$sch_year = request('sch_year');
-$sch_month = request('sch_month');
+$sch_year = request('sch_year') ?? date('Y');
+$sch_month = request('sch_month') ?? date('m');
 ?>
     <script type="text/javascript">
 
@@ -63,7 +63,7 @@ $sch_month = request('sch_month');
         let tables = {
             headers: null,
             items: null,
-            data: {},
+            data: {"sch_year": "{{$sch_year}}", "sch_month": "{{$sch_month}}"},
             selectOptionData: {},
             searchParams: {},
             hideSearchKeyArr: [],
@@ -161,6 +161,9 @@ $sch_month = request('sch_month');
                 document.getElementById("table_body").innerHTML = this.drawTableBody();
             },
 
+            /**
+             * 컬럼 일괄 업데이터 버튼 클릭시
+             */
             billsUpdate: function () {
 
                 // form 데이터 json으로 변환
@@ -189,7 +192,7 @@ $sch_month = request('sch_month');
             selectSearch : function (formid) {
                 let form = document.getElementById(formid);
                 let formData = new FormData(form);
-                let jsonObject = {};
+                let jsonObject = this.data;
                 for (let [key, value] of formData.entries()) {
                     let sanitizedKey = key.replace(/'/g, ''); // 작은따옴표(') 제거
                     if (value === "selectDirect") {
@@ -469,7 +472,7 @@ $sch_month = request('sch_month');
                             <h4 class="card-header text-primary">계산서 발행 리스트2</h4>
                             <form id="year_month_id">
                                 <div class="card-body" >
-                                    {{--1~12번 년월 선택 start--}}
+                                    {{-- 년도, 월 선택--}}
                                     <nav aria-label="Page navigation">
                                         <ul class="pagination pagination-lg">
                                             <li>
@@ -490,7 +493,6 @@ $sch_month = request('sch_month');
                                             <li class="page-item">
                                                 <button class="page-link" name="sch_month" value="<?= $i ?>"
                                                         <?= $sch_month== $i ? 'style="background-color: #007bff; color: white"' : "" ?>> <?= $i ?> </button>
-{{--                                                <a class="page-link" onclick="tables.onSearch()" ><?= $i ?></a>--}}
                                             </li>
                                             <?php } ?>
                                         </ul>
