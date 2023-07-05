@@ -229,7 +229,8 @@ $sch_month = request('sch_month') ?? date('m');
                 let url = "{{route("billListNEY")}}";
                 let dataType = "json";
                 let result = js.ajax_call(method, url, data, dataType, false, "", true);
-                data['sch_key'] = sch_val;
+                data['sch_key'] = "tonghap";
+                data['sch_val'] = sch_val;
                 this.headers = JSON.parse(result['header']);
                 this.items = JSON.parse(result['items']);
 

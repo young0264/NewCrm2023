@@ -82,16 +82,26 @@ class BillService{
         }
 
         /**
-         * input box 검색부분 where절 설정
+         * input 컬럼 검색
          */
-        if ($request->filled("sch_key")) {
+        if ($request->filled("sch_key") and $request->input("sch_key") != "tonghap") {
+            $wheres .= " and (";
+            $wheres .= $request->input('sch_key') . " like :sch_val";
+            $wheres .= ")";
+            $binds += array("sch_val" => "%" . $request->input('sch_val') . "%");
+        }
+
+        /**
+         * input tonghap 검색
+         */
+        if ($request->input("sch_key") == "tonghap") {
             $wheres .= " and (";
             foreach(self::$f_billForm_param as $item) {
                 $wheres .= "{$item} like :sch_val or ";
             }
             $wheres = substr($wheres, 0, -3);
             $wheres .= ")";
-            $binds += array("sch_val" => "%" . $request->input('sch_key') . "%");
+            $binds += array("sch_val" => "%" . $request->input('sch_val') . "%");
         }
         return [
             "wheres"=>$wheres,

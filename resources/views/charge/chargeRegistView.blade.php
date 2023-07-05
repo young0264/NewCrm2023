@@ -24,10 +24,10 @@
          * onDraw : html에 데이터 입력
          */
         initialize:function(){
-            this.set();
+            this.billChargeTableDataSet();
         },
 
-        set:function(){
+        billChargeTableDataSet:function(){
             let method = "POST";
             let url = "{{route("billListNEY")}}";
             let data = this.data;
@@ -38,14 +38,12 @@
         },
 
         onSearch: function (formid) {
-            var formData = new FormData(document.getElementById(formid));
-            // formData.append('page','1');
             this.data = {
                 'f_pay_type':document.getElementById('f_pay_type').value,
                 'sch_key': document.getElementById('sch_key').value,
                 'sch_val' : document.getElementById('sch_val').value
             };
-            this.set();
+            this.billChargeTableDataSet();
         },
 
         onDraw:function() {
