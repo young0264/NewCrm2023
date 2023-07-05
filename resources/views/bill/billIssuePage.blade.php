@@ -522,8 +522,7 @@ $sch_month = request('sch_month') ?? date('m');
                                                     aria-selected="false"
                                                     data-tab="table_tab2"
                                                     onclick="tables.onTabChange(this)"
-                                                >
-                                                    매장정보
+                                                >매장정보
                                                 </button>
                                             </li>
                                             <li class="nav-item">
@@ -585,7 +584,7 @@ $sch_month = request('sch_month') ?? date('m');
                             </div>
 
                             {{-- table content --}}
-                            <div class="tab-content">
+                            <div class="tab-content" >
                                 <div class="table-responsive" id="both-scrollbars-example">
                                     <form id="search_form">
                                         <table class="table table-hover table-bordered border-bottom">

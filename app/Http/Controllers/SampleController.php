@@ -232,7 +232,7 @@ class SampleController extends Controller
         foreach ($oracle_items as $key => $item) {
             $results[$item->f_loginid] = array(
                 "f_company"=>Common::getSite(), // F_OSP
-                "f_site"=>"SC", // F_ADMIN
+                "f_site"=>"SC",                 // F_ADMIN
                 "f_bizid"=>$item->f_bizid,
                 "f_bizname"=>$item->f_bizname,
                 "f_loginid"=>$item->f_loginid,  //
