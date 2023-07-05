@@ -43,14 +43,22 @@ class BillService{
     public function makeSearchConditions($request){
         $wheres = "";
         $binds = [];
+        $sch_year = $request->input('sch_year');
+        $sch_month = $request->input('sch_month');
 
         /**
          * 년도, 월 클릭시 검색 where절 설정
          */
-        $wheres .= " and (EXTRACT(YEAR FROM F_REGDATE) = :sch_year)";
-        $wheres .= " and (EXTRACT(MONTH FROM F_REGDATE) = :sch_month)";
-        $binds += array('sch_year' => $request->input('sch_year'));
-        $binds += array('sch_month' => $request->input('sch_month'));
+
+        if ($sch_year != "" and $sch_year != 'all') {
+            $binds += array('sch_year' => $sch_year);
+            $wheres .= " and (EXTRACT(YEAR FROM F_REGDATE) = :sch_year)";
+        }
+        if ($sch_month != "" and $sch_month != 'all') {
+            $binds += array('sch_month' => $sch_month);
+            $wheres .= " and (EXTRACT(MONTH FROM F_REGDATE) = :sch_month)";
+        }
+
 
         /**
          * select-box 검색부분 where절 설정
@@ -76,8 +84,8 @@ class BillService{
         /**
          * input box 검색부분 where절 설정
          */
-        if ($request->has("sch_key") and $request->filled("sch_key")) {
-            $wheres .= "and (";
+        if ($request->filled("sch_key")) {
+            $wheres .= " and (";
             foreach(self::$f_billForm_param as $item) {
                 $wheres .= "{$item} like :sch_val or ";
             }
@@ -85,7 +93,6 @@ class BillService{
             $wheres .= ")";
             $binds += array("sch_val" => "%" . $request->input('sch_key') . "%");
         }
-
         return [
             "wheres"=>$wheres,
             "binds"=>$binds
@@ -175,7 +182,7 @@ class BillService{
         }
         if($bill_pf_items == null){
             return (array)$bill_items[0];
-        }elseif($bill_items == null){
+        }else if($bill_items == null){
             return (array)$bill_pf_items[0];
         }return (array)$bill_pf_items[0] + (array)$bill_items[0];
     }

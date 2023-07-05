@@ -5,7 +5,6 @@ $sch_year = request('sch_year') ?? date('Y');
 $sch_month = request('sch_month') ?? date('m');
 ?>
     <script type="text/javascript">
-
         let checkbox = {
             // (input.checkbox : id값 , 숨길 div : id값)
             showByChecked: function (checkboxId, isShowDivId) {
@@ -55,7 +54,7 @@ $sch_month = request('sch_month') ?? date('m');
             tables.addEventListener("mouseup", mouse_end);
         });
 
-        // ===============table 그리기===============//
+        // =============== (페이지)table 그리기 이벤트 ===============//
         document.addEventListener("DOMContentLoaded", ()=>{
             tables.initialize();
         });
@@ -69,9 +68,8 @@ $sch_month = request('sch_month') ?? date('m');
             hideSearchKeyArr: [],
             hideUpdateKeyArr: [],
             billIdArrForUpdate: [], //billIdArrForUpdate : 업데이트할 billid 배열
-            // tab0: new Set(["f_bizname", "f_shopname", "f_price"]),
-            tab1: new Set(["f_price", "f_pay_type", "f_pay_interval", "f_history", "f_reply",
-                "f_statement", "f_tax_bill", "f_issuedate"]),
+            tab1: new Set(["f_price", "f_pay_type", "f_pay_interval", "f_history",
+                "f_reply", "f_statement", "f_tax_bill", "f_issuedate"]),
             tab2: new Set(["f_registration_number",
                 "f_minor_business", "f_cp_name", "f_rep_name",
                 "f_addr", "f_business", "f_event",
@@ -165,7 +163,6 @@ $sch_month = request('sch_month') ?? date('m');
              * 컬럼 일괄 업데이터 버튼 클릭시
              */
             billsUpdate: function () {
-
                 // form 데이터 json으로 변환
                 let form = document.getElementById('update_form');
                 let formData = new FormData(form);
@@ -205,7 +202,7 @@ $sch_month = request('sch_month') ?? date('m');
                 /**
                  * form으로 넘긴 값을 key-value로 가져와
                  * searchParams애 검색조건 parameter로 key-value 설정
-                */
+                 */
                 this.searchParams = jsonObject;
 
                 let method = "POST";
@@ -219,7 +216,7 @@ $sch_month = request('sch_month') ?? date('m');
 
                 this.selectOptionsInit()
                 this.onDraw();
-                this.showDirectInputBox('search', this.hideSearchKeyArr);
+                this.showInputHideSelectBox('search', this.hideSearchKeyArr);
             },
 
             /**
@@ -227,12 +224,12 @@ $sch_month = request('sch_month') ?? date('m');
              */
             onSearch: function () {
                 let sch_val =  document.getElementById('sch_key').value
-                let data = {"sch_key": sch_val};
+                let data = this.data;
                 let method = "POST";
                 let url = "{{route("billListNEY")}}";
                 let dataType = "json";
                 let result = js.ajax_call(method, url, data, dataType, false, "", true);
-
+                data['sch_key'] = sch_val;
                 this.headers = JSON.parse(result['header']);
                 this.items = JSON.parse(result['items']);
 
@@ -262,7 +259,6 @@ $sch_month = request('sch_month') ?? date('m');
                     searchParams[sanitizedKey] = value;
                 }
                 this.searchParams = searchParams;
-                console.log(searchParams);
 
                 let method = "POST";
                 let url = "{{route("billListNEY")}}";
@@ -275,7 +271,7 @@ $sch_month = request('sch_month') ?? date('m');
                 this.items = JSON.parse(result['items']);
                 this.selectOptionsInit()
                 this.onDraw();
-                this.showDirectInputBox();
+                this.showInputHideSelectBox();
             },
 
             /**
@@ -283,7 +279,6 @@ $sch_month = request('sch_month') ?? date('m');
              */
             drawUpdateSelectBox: function () {
                 let updateSelectBoxHtml = "";
-
                 updateSelectBoxHtml += `
                                     <div class="btn-group"> \n
                                         <button class="btn btn-primary" style="width:480px; max-width:95%" onclick="tables.billsUpdate()">컬럼 일괄 업데이트
@@ -303,7 +298,6 @@ $sch_month = request('sch_month') ?? date('m');
                     this.selectOptionData[head['key']].forEach((item, idx) => {
                         updateSelectBoxHtml += `<option value="${item}">${item}</option>`;
                     });
-                    // updateSelectBoxHtml += `<option value=""></option>`;
                     updateSelectBoxHtml += `<option value="selectDirect">직접입력</option> \n </select> \n`;
                     updateSelectBoxHtml += `<input class="alert-primary" type="text" placeholder="${head['name']}"
                                         id="updateInput_${head['key']}" name="${head['key']}"
@@ -355,8 +349,8 @@ $sch_month = request('sch_month') ?? date('m');
             drawTableBody() {
                 let html = "";
                 this.items.forEach((item, idx) => {
-                    let billid = item['f_billid']
-                    html += `<tr class="text-center" onclick="tables.onLeftClick(this, ${billid})">`
+                    let billId = item['f_billid']
+                    html += `<tr class="text-center" onclick="tables.onLeftClick(this, ${billId})">`
                     this.headers.forEach((head, idx) => {
                         let className = this.getClassNameByTabs(head['key']);
                         html += `<td class="text-nowrap ${className}">${item[head['key']] === null ? "" : item[head['key']]}</td>`;
@@ -383,26 +377,23 @@ $sch_month = request('sch_month') ?? date('m');
                         jsonObject[key] = value;
                     }
                 }
-                console.log(this.hideUpdateKeyArr);
-                this.showDirectInputBox('update',this.hideUpdateKeyArr);
+                this.showInputHideSelectBox('update',this.hideUpdateKeyArr);
             },
 
             /**
              * hideSearchKeyArr 해당하는
-             * select-option box 숨기기
+             * select-option box 숨기기,
              * input box 보여주기
              */
-            showDirectInputBox(key,arr) {
-                console.log(key);
+            showInputHideSelectBox(key, arr) {
                 arr.forEach((selectKey, idx) => {
-
                     // input-box는 나타내기
                     document.getElementById(key + "Input_" + selectKey).style.display = "block";
-                    // document.getElementById(key + "Input_" + selectKey).disabled = false;
+                    document.getElementById(key + "Input_" + selectKey).disabled = false;
                     document.getElementById(key + "Input_" + selectKey).style.height = "40px";
 
                     // 기존 select-box는 숨기기
-                    // document.getElementById(key + "_" + selectKey).disabled = true;
+                    document.getElementById(key + "_" + selectKey).disabled = true;
                     document.getElementById(key + "_" + selectKey).style.display = "none";
                 });
             },
@@ -412,17 +403,16 @@ $sch_month = request('sch_month') ?? date('m');
              * row의 classList에 selected 표시
              * billIdArrForUpdate : 업데이트할 billid 배열
              */
-            onLeftClick:function(obj, f_billid) {
+            onLeftClick:function(obj, f_billId) {
                 if (obj.classList.contains('selected')) {
-                    tables.billIdArrForUpdate.pop(f_billid);
+                    tables.billIdArrForUpdate.pop(f_billId);
                     obj.classList.remove("selected");
                 } else {
-                    tables.billIdArrForUpdate.push(f_billid);
+                    tables.billIdArrForUpdate.push(f_billId);
                     obj.classList.add("selected");
                 }
             },
         };
-
 
     </script>
 
@@ -482,7 +472,7 @@ $sch_month = request('sch_month') ?? date('m');
                                                             aria-expanded="false">
                                                         <option value="all" <?= $sch_year=="all" ? "selected" : "" ?>>전체</option>
                                                         <?php
-                                                            //TODO : 현재 년도부터 5년전까지만 조회 , 상수->수정
+                                                        //TODO : 현재 년도부터 5년전까지만 조회 , 상수->수정
                                                         for($i=date("Y"); $i>date("Y")-5; $i--){ ?>
                                                         <option value="<?= $i ?>" <?= $i==$sch_year ? 'selected' : "" ?> > <?= $i ?>년</option>
                                                         <?php } ?>
