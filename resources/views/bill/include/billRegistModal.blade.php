@@ -41,7 +41,7 @@
         BillFormRegister: function () {
             let method = "POST";
             let url = "{{route("billRegisterProcess")}}";
-            let data = $('#billForm').serialize();
+            let data = $('#billModalForm').serialize();
             let dataType = "json";
 
             js.ajax_call(method, url, data, dataType, true);
@@ -76,7 +76,7 @@
             </div>
             <div class="modal-body">
                 <h5 class="row mx-3">서비스 이용료나 공연권료 등 생성할 품목과 계산서 종류를 설정합니다. </h5>
-                <form id="billForm" name="billForm">
+                <form id="billModalForm" name="billModalForm">
                     {{-- 상단 공연정보 시작 --}}
                     <div class="card-body">
                         <div class="btn-group my-2">

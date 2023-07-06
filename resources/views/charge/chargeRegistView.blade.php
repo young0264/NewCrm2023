@@ -19,6 +19,26 @@
         clientItems: null,
         billChargeData: {},
         clientData: {},
+        clientExtraInfo: [],
+        selectedClientLoginId: null,
+        selectedClientShopname: null,
+
+        /**
+         * 마우스 왼쪽버튼 클릭시
+         * f_loginid
+         */
+        onLeftClick:function(obj) {
+            if (obj.classList.contains('selected')) {
+                obj.classList.remove("selected");
+                this.selectedClientLoginId = null
+                this.selectedClientShopname = null
+            } else if(this.selectedClientLoginId === null && this.selectedClientShopname === null) {
+                obj.classList.add("selected");
+                this.selectedClientLoginId = obj.querySelector("#f_loginid").innerText;
+                this.selectedClientShopname = obj.querySelector("#f_shopname").innerText;
+            }
+        },
+
         /**
          * initialize : set()을 통해 화면 셋팅
          * set : db 조회 후 화면 셋팅
@@ -33,11 +53,12 @@
 
         onClientTableDraw() {
             let html = "";
+            console.log("this.clientItems", this.clientItems);
             this.clientItems.forEach((item, idx) => {
-                html += `<tr class="text-center" >`;
-                html += `    <td class="text-nowrap" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_loginid']}</td>`;
-                html += `    <td class="text-nowrap" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_bizname'] === null ? "" : item['f_bizname']}</td>`;
-                html += `    <td class="text-nowrap" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_shopname'] === null ? "" : item['f_shopname']}</td>`;
+                html += `<tr class="text-center" onclick="tables.onLeftClick(this)">`;
+                html += `    <td class="text-nowrap" id="f_loginid" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_loginid']}</td>`;
+                html += `    <td class="text-nowrap" id="f_bizname" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_bizname'] === null ? "" : item['f_bizname']}</td>`;
+                html += `    <td class="text-nowrap" id="f_shopname" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_shopname'] === null ? "" : item['f_shopname']}</td>`;
                 html += `</tr>`;
             });
             document.querySelector("#customer_tbody").innerHTML = html;
@@ -108,6 +129,12 @@
             });
             document.querySelector("#charge_tbody").innerHTML = html;
         },
+
+        billRegistModelInit() {
+            // 비회원 신규 등록 modal 등록창 form 내부의 특정 input ID에 해당하는 value 값을 변경합니다.
+            let shopnameInput = document.getElementById('billModalForm').querySelector('#f_shopname');
+            shopnameInput.value = this.selectedClientShopname;
+        }
     };
 
 </script>
@@ -280,7 +307,9 @@
                                     <button type="button"
                                             class="btn btn-primary me-4 float-end"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#modal_setting_register"> 비회원 신규 등록
+                                            data-bs-target="#modal_setting_register"
+                                            onclick="tables.billRegistModelInit()"
+                                            > 비회원 신규 등록
                                     </button>
 
                                 </div>
@@ -318,6 +347,6 @@
             </div>
         </div>
     </div>
-    @yield('billRegistForm', View::make('bill.include.billRegistForm'))
-    @yield('billUpdateForm', View::make('bill.include.billUpdateForm'))
+    @yield('billRegistModal', View::make('bill.include.billRegistModal'))
+    @yield('billUpdateModal', View::make('bill.include.billUpdateModal'))
 @endsection
