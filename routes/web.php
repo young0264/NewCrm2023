@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\BillController;
-use App\Http\Controllers\ChargeController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\IndexContorller;
@@ -45,8 +45,9 @@ if (!Auth::check()) {
         /**
          * 이용료청구
          */
-        Route::get("/charge/NonMember", [ChargeController::class, "chargeNonMemberRegist"])->name("chargeNonMemberRegist");
-        Route::get("/charge/member", [ChargeController::class, "chargeMember"])->name("chargeMember");
+        Route::get("/charge/NonMember", [ClientController::class, "chargeNonMemberRegist"])->name("chargeNonMemberRegist");
+        Route::get("/charge/member", [ClientController::class, "chargeMember"])->name("chargeMember");
+        Route::post("/charge/storeInfo", [ClientController::class, "getStoreInfo"])->name("getStoreInfo");
 
         /**
          * 계산서
