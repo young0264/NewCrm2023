@@ -15,44 +15,84 @@
     }
 
     let tables = {
-        items: null,
-        data:{},
+        billChargeItems: null,
+        clientItems: null,
+        billChargeData: {},
+        clientData: {},
         /**
          * initialize : set()을 통해 화면 셋팅
          * set : db 조회 후 화면 셋팅
-         * onSearch : 검색시 검색 할 data 초기화 후 set() 호출
+         * onChargeTableSearch : 검색시 검색 할 data 초기화 후 set() 호출
+         * onChargeTableSearch : 검색시 검색 할 data 초기화 후 set() 호출
          * onDraw : html에 데이터 입력
          */
         initialize:function(){
             this.billChargeTableDataSet();
+            this.clientStoreTableDataSet();
         },
 
+        onClientTableDraw() {
+            let html = "";
+            this.clientItems.forEach((item, idx) => {
+                html += `<tr class="text-center" >`;
+                html += `    <td class="text-nowrap" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_loginid']}</td>`;
+                html += `    <td class="text-nowrap" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_bizname'] === null ? "" : item['f_bizname']}</td>`;
+                html += `    <td class="text-nowrap" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_shopname'] === null ? "" : item['f_shopname']}</td>`;
+                html += `</tr>`;
+            });
+            document.querySelector("#customer_tbody").innerHTML = html;
+        },
+
+        /**
+         * clientStoreTableDataSet : 고객사 검색 데이터 조회
+         */
+        clientStoreTableDataSet: function () {
+            let method = "POST";
+            let url = "{{route("getStoreInfo")}}";
+            let data = this.clientData;
+            let dataType = "json";
+            let result = js.ajax_call(method, url, data, dataType, false, "", true);
+            this.clientItems = JSON.parse(result);
+            this.onClientTableDraw();
+        },
+
+        /**
+         * billChargeTableDataSet : 청구 대상 데이터 조회
+         */
         billChargeTableDataSet:function(){
             let method = "POST";
             let url = "{{route("billListNEY")}}";
-            let data = this.data;
+            let data = this.billChargeData;
             let dataType = "json";
             let result = js.ajax_call(method, url, data, dataType, false, "", true);
-            this.items = JSON.parse(result['items']);
-            this.onDraw();
+            this.billChargeItems = JSON.parse(result['items']);
+            this.onChargeTableDraw();
         },
 
-        onSearch: function (formid) {
-            this.data = {
+        onClientTableSearch: function () {
+            this.clientData = {
+                'sch_key': document.getElementById('client_sch_form').elements.sch_key.value,
+                'sch_val': document.getElementById('client_sch_form').elements.sch_val.value,
+            };
+            this.clientStoreTableDataSet();
+        },
+
+        onChargeTableSearch: function () {
+            this.billChargeData = {
                 'f_pay_type':document.getElementById('f_pay_type').value,
-                'sch_key': document.getElementById('sch_key').value,
-                'sch_val' : document.getElementById('sch_val').value
+                'sch_key': document.getElementById('charge_sch_form').elements.sch_key.value,
+                'sch_val': document.getElementById('charge_sch_form').elements.sch_val.value,
             };
             this.billChargeTableDataSet();
         },
 
-        onDraw:function() {
-            this.onDrawBody();
+        onChargeTableDraw:function() {
+            this.onChargeTableBodyDraw();
         },
 
-        onDrawBody:function() {
+        onChargeTableBodyDraw:function() {
             let html = "";
-            this.items.forEach((item, idx) => {
+            this.billChargeItems.forEach((item, idx) => {
                 html += `<tr class="text-center">`;
                 html += `    <td class="text-nowrap">${item['f_billid']}</td>`;
                 html += `    <td class="text-nowrap">${item['f_bizname'] === null ? "" : item['f_bizname']}</td>`;
@@ -84,77 +124,83 @@
                         <div class="card">
                             <!-- Notifications -->
                             <h4 class="card-header text-center text-primary">고객 검색</h4>
-                            <div class="card-body">
-                                <div class="form-floating">
-                                    <div class="mb-3">
-                                        <div class="demo-inline-spacing">
-                                            <div class="btn-group">
-                                                <div class="btn-group mx-1">
-                                                    <select class="form-select">
-                                                        <option value="">결제수단</option>
-                                                        <option value="card">카드</option>
-                                                        <option value="cash">현금</option>
-                                                        <option value="post_payment">후불</option>
-                                                    </select>
-                                                </div>
-                                                <div class="btn-group mx-1">
-                                                    <select class="form-select">
-                                                        <option>신탁여부</option>
-                                                        <option>신탁</option>
-                                                        <option>비신탁</option>
-                                                    </select>
-                                                </div>
-                                                <div class="btn-group mx-1">
-                                                    <select class="form-select">
-                                                        <option >통합</option>
-                                                        <option>통합1</option>
-                                                        <option>통합2</option>
-                                                    </select>
+                            <form id="client_sch_form">
+                                <div class="card-body">
+                                    <div class="form-floating">
+                                        <div class="mb-3">
+                                            <div class="demo-inline-spacing">
+                                                <div class="btn-group">
+                                                    <div class="btn-group mx-1">
+                                                        <select class="form-select">
+                                                            <option value="">결제수단</option>
+                                                            <option value="card">카드</option>
+                                                            <option value="cash">현금</option>
+                                                            <option value="post_payment">후불</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="btn-group mx-1">
+                                                        <select class="form-select">
+                                                            <option>신탁여부</option>
+                                                            <option>신탁</option>
+                                                            <option>비신탁</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="btn-group mx-1">
+                                                        <select class="form-select" name="sch_key">
+                                                            <option value="tonghap">통합</option>
+                                                            <option value="f_loginid">로그인ID</option>
+                                                            <option value="f_bizname">브랜드</option>
+                                                            <option value="f_shopname">매장명</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="form-floating mx-1">
-                                    <div class="mb-3">
-                                        <input
-                                            class="form-control"
-                                            type="text"
-                                            id="exampleFormControlReadOnlyInput1"
-                                            placeholder="검색어를 입력하세요."
-                                            readonly
-                                        />
+                                    <div class="form-floating">
+                                        <div class="btn-group my-2">
+                                            <input
+                                                class="form-control mx-1"
+                                                type="text"
+                                                id="sch_val"
+                                                name="sch_val"
+                                                placeholder="검색어를 입력하세요."
+                                            />
+                                        </div>
+                                        <div class="btn-group my-2">
+                                            <button type="button" class="btn btn-info" onclick="tables.onClientTableSearch()">검색</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-floating">
+                                        <div class="mb-3">
+                                            <button type="button" class="btn btn-secondary mx-1">전체로드</button>
+                                            <button type="button" class="btn btn-secondary mx-1">미등록만</button>
+                                            <button type="button" class="btn btn-primary mx-1">청구&gt;</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-floating row my-2 mx-1">
+                                        <button type="button" class="btn btn-primary">비회원 청구 대상 불러오기&gt;</button>
                                     </div>
                                 </div>
-                                <div class="form-floating">
-                                    <div class="mb-3">
-                                        <button type="button" class="btn btn-secondary mx-1">전체로드</button>
-                                        <button type="button" class="btn btn-secondary mx-1">미등록만</button>
-                                        <button type="button" class="btn btn-primary mx-1">청구&gt;</button>
-                                    </div>
-                                </div>
-                                <div class="form-floating row my-2 mx-1">
-                                    <button type="button" class="btn btn-primary">비회원 청구 대상 불러오기&gt;</button>
-                                </div>
-                            </div>
+                            </form>
                             <div class="table-responsive">
-                                <table class="table table-hover border-bottom">
-                                    <thead id="customer_thead">
+                                <table class="table table-hover border-bottom" style="table-layout: fixed">
+                                    <thead id="customer_thead" style="text-overflow: ellipsis; max-width: 120px;">
                                     <tr>
-                                        <th class="text-nowrap text-center">점포코드</th>
-                                        <th class="text-nowrap text-center"> 브랜드</th>
+                                        <th class="text-nowrap text-center">로그인ID(점포코드)</th>
+                                        <th class="text-nowrap text-center" > 브랜드</th>
                                         <th class="text-nowrap text-center">매장명</th>
                                     </tr>
                                     </thead>
-                                    <tbody class="text-center" id="customer_tbody">
-                                    @for($i=0; $i<6; $i++)
-                                        <tr class="text-center">
-                                            <td class="text-nowrap">7323231A</td>
-                                            <td>더벤티</td>
-                                            <td>가산테라타</td>
-                                        </tr>
-                                    @endfor
+                                    <tbody class="text-center" id="customer_tbody" >
+{{--                                    @for($i=0; $i<6; $i++)--}}
+{{--                                        <tr class="text-center">--}}
+{{--                                            <td class="text-nowrap">7323231A</td>--}}
+{{--                                            <td>더벤티</td>--}}
+{{--                                            <td>가산테라타</td>--}}
+{{--                                        </tr>--}}
+{{--                                    @endfor--}}
                                     </tbody>
                                 </table>
 
@@ -179,7 +225,7 @@
                             <!-- Notifications -->
                             <h4 class="card-header text-center text-primary">청구 대상</h4>
                             <div class="card-body">
-                                <form id="sch_form">
+                                <form id="charge_sch_form">
                                     <div class="form-floating">
                                         <div class="mb-3">
                                             <div class="demo-inline-spacing">
@@ -224,7 +270,7 @@
 
                                         </div>
                                         <div class="btn-group my-2">
-                                            <button type="button" class="btn btn-info" onclick="tables.onSearch('sch_form')">검색</button>
+                                            <button type="button" class="btn btn-info" onclick="tables.onChargeTableSearch()">검색</button>
                                         </div>
                                     </div>
                                 </form>
