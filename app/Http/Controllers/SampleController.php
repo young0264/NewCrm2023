@@ -211,25 +211,18 @@ class SampleController extends Controller
         /**
          * Oracle 데이터 출력
          */
-        {
-            $oracle_items = SCShop::list($oracle_wheres, $oracle_params);
-        }
+        $oracle_items = SCShop::list($oracle_wheres, $oracle_params);
 
         /**
          * Mysql 데이터 출력
          */
-        {
-            $mysql_items = BRClient::list($mysql_wheres, $mysql_params);
-        }
+        $mysql_items = BRClient::list($mysql_wheres, $mysql_params);
 
         /**
          * 검색 조건에 대해 나온 데이터 확인 후 두개를 합쳐서 데이터를 리턴 처리
          */
         $results = array();
-
-
-
-        foreach ($oracle_items as $key => $item) {
+        foreach ($oracle_items as $idx => $item) {
             $results[$item->f_loginid] = array(
                 "f_company"=>Common::getSite(), // F_OSP
                 "f_site"=>"SC",                 // F_ADMIN
@@ -242,7 +235,10 @@ class SampleController extends Controller
             );
         }
 
-        foreach ($mysql_items as $key => $item) {
+        foreach ($mysql_items as $idx => $item) {
+//            echo "<pre>";
+//            print_r($item);
+//            exit;
             $results[$item->client_id] = array(
                 "f_company"=>Common::getSite(),
                 "f_site"=>"BR",

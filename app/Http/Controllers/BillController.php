@@ -13,8 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
 
-class BillController extends BaseController
-{
+class BillController extends BaseController {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     protected BillService $billService;

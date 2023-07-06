@@ -80,8 +80,7 @@ class DepositService
      * @param Request $request
      * @return array
      */
-    public function makeSearchConditions(Request &$request)
-    {
+    public function makeSearchConditions(Request &$request) {
         $where = "where f_depositid is not null";
 
         $sch_year = $request->input("sch_year");
