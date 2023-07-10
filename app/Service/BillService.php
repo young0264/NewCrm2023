@@ -1,18 +1,23 @@
 <?php
 namespace App\Service;
-use App\Models\Bill;
 use App\Models\Bill_NEY;
 use App\Models\Bill_PF_NEY;
+use App\Models\BRClient;
+use App\Models\SCShop;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\Common;
 
 class BillService{
+
+    private static $client_extra_key_info = array(
+        'f_osp', 'f_admin', 'f_bizid', 'f_bizname', 'f_shopid'
+    );
 
     /**
      * select option 검색의 name값
      */
-
     private static $f_billForm_param = array(
         'f_bizname', 'f_shopname', 'f_price',
         'f_pay_type', 'f_pay_interval', 'f_history', 'f_reply', 'f_statement', 'f_tax_bill', 'f_issuedate',
@@ -39,6 +44,22 @@ class BillService{
         'F_UNITPRICE2', 'F_COUNT2', 'F_PRICE2', 'F_TAX2', 'F_DAY3', 'F_DAY4', 'F_UNITPRICE3', 'F_COUNT3',
         'F_PRICE3', 'F_BILL_GROUPID', 'F_TAX3', 'F_UNITPRICE4', 'F_COUNT4', 'F_PRICE4', 'F_TAX4', 'f_regid'
     );
+
+    public function findMysqlClientById($client_id, $f_company) {
+        $mysql_f_company = Common::$convert_oracle_osp_to_mysql[$f_company];
+        $client_info= BRClient::findByClientId($client_id, $mysql_f_company);
+
+        if (!$client_info) {
+            return array();
+        } return $client_info;
+    }
+
+    public function findOracleClientById($f_loginid, $f_company) {
+        $client_info = SCShop::findByLoginId($f_loginid, $f_company);
+        if (!$client_info) {
+            return array();
+        } return $client_info;
+    }
 
     public function makeSearchConditions($request){
         $wheres = "";
@@ -115,7 +136,6 @@ class BillService{
      * @param array $binds
      * @return void
      */
-
     private function makeTonghapConditions($request, string &$wheres, array &$binds): void{
         if ($request->has("sch_key") and $request->filled("sch_key")
             and $request->has("sch_val") and $request->filled("sch_val")) {
@@ -142,7 +162,7 @@ class BillService{
     public function billUpdate(array $request){
         DB::beginTransaction();
         $bill_wheres = array("f_billId"=>($request['f_billId']));
-        $paramOfBill_basic = self::makeToAssocidateArray($request);
+        $paramOfBill_basic = self::makeToAssocidateArray($request, self::getAllBillIds());
 
         if (empty($request || $bill_wheres)) {
             DB::rollBack();
@@ -199,18 +219,15 @@ class BillService{
 
     /**
      * bill (이용료청구) 등록
-     * @throws Exception
      */
     public function billCreate(Request $request){
+        DB::beginTransaction();
         $tax_type0306 = $request->input('tax_type0306') === 'on' ? 'on' : 'off';
         $tax_type01 = $request->input('tax_type01') === 'on' ? 'on' : 'off';
+        $billPFParams = self::makeToAssocidateArray($request->input(), self::getBillPFInfo());
+        $client_result = self::makeToAssocidateArray($request->input(), self::$client_extra_key_info);
 
-        $billPF_arr = self::getBillPFInfo();
-        $billPFParams = self::makeToAssocidateArray($billPF_arr, $request);
-
-        DB::beginTransaction();
-
-        $billData = self::makeBillDataByChecked($tax_type01, $request, $tax_type0306);
+        $billData = self::getBillTotalData($tax_type01, $request, $tax_type0306, $client_result);
 
         if (empty($billData)) {
             throw new Exception("등록할 계산서가 없습니다. 계산서를 등록해주세요.");
@@ -219,60 +236,58 @@ class BillService{
         } else if (!Bill_NEY::insertBills($billData)) {
             throw new Exception("등록할 계산서가 없습니다. 계산서를 등록해주세요.");
         }
-
         DB::commit();
     }
 
     /**
      * 01(일반), 0306(공연,위수탁) 계산서 등록
-     * @param string $tax_type01
-     * @param Request $request
-     * @param string $tax_type0306
-     * @return array|null
-     * @throws Exception
      */
-    private static function makeBillDataByChecked(string $tax_type01, Request $request, string $tax_type0306): ?array{
-        /**
-         * $basic_info_param : 등록 모달창 기본 데이터 파라미터 셋팅 (공연권료, 이용료 분할은 제외)
-         */
-        $basic_info_arr = self::getBillBasicInfo();
-        $basic_info_param = self::makeToAssocidateArray($basic_info_arr, $request);
+    private static function getBillTotalData(string $tax_type01, Request $request, string $tax_type0306, array $client_result): ?array{
 
         /**
+         * $basic_info_param : 등록 모달창 기본 데이터 파라미터 셋팅 (공연권료, 이용료 분할은 제외)
          * $billData_01   : [ 이용료 분할 / (세금)계산서 (일반) ] 01 ] --> on일때(각 row insert), off일때(1개 row) 등록할  array 리턴
          * $billData_0306 : [공연권료 / (세금)계산서 (위수탁)] 03 06 ] --> on일떄(각 row insert), off(동작 x) 등록할  array 리턴
          */
-        $billData_01 = self::getInfo_01($tax_type01, $basic_info_param, $request);
-        $billData_0306 = self::getInfo_0306($tax_type0306, $basic_info_param, $request);
 
-        return array_merge($billData_01, $billData_0306);
+        $basic_info_param = self::makeToAssocidateArray($request->input(), self::getBillBasicInfo());
+        $billData_01 = self::getInfo_01($tax_type01, $request);
+        $billData_0306 = self::getInfo_0306($tax_type0306, $request);
+
+        return array_merge($billData_01, $billData_0306, $basic_info_param,$client_result);
     }
 
     /**
-     * input의 id값과 db의 컬럼명이 같은 경우 사용
-     * @param array $BillInfoKeys : db의 컬럼명과 일치하는 소문자로 된 id값 배열
-     * @param array $request : request 값
-     * @return array key => value  연관배열
+     * getBillsIdInput의 key를 기준으로
+     * request로 들어온 값을 key:value의 연관배열 형태로 만들어 리턴
      */
-    private static function makeToAssocidateArray(array $request): array{
-        $arr = array();
-        $BillInfoKeys = self::getBillsIdInput();
-        foreach ($BillInfoKeys as $key) {
+    private static function makeToAssocidateArray(array $request, array $keyArray): array{
+        $associate_arr = array();
+        foreach ($keyArray as $key) {
             if (array_key_exists($key, $request)) {
-                $arr[strtoupper($key)] = $request[$key];
+                $associate_arr[strtoupper($key)] = $request[$key];
             }
         }
-        return $arr;
+        return $associate_arr;
     }
 
-    private static function getBillsIdInput(){
+    /**
+     * bill 전체 id 정보
+     */
+    private static function getAllBillIds(){
         return array_merge(self::getBillBasicInfo(), self::getBillDivisionInfo(), self::getExtraIdsOfBill());
     }
 
+    /**
+     * bill_table 기타 정보들(column)
+     */
     private static function getExtraIdsOfBill(){
         return array('f_price', 'f_price1', 'f_price2', 'f_price3', 'f_price4', 'f_minor_business', 'f_cp_name', 'f_event', 'f_issuedate');
     }
 
+    /**
+     * bill 등록 기본 정보
+     */
     private static function getBillBasicInfo(){
         return array(
             'f_shopname', 'f_cb', 'f_business', 'f_cp_name', 'f_name1', 'f_pay_type', 'f_rep_name', 'f_mobile1',
@@ -280,6 +295,9 @@ class BillService{
             'f_public_addr1', 'f_mobile2', 'f_statement', 'f_public_addr2', 'f_email2', 'f_tax_bill','f_issue_type');
     }
 
+    /**
+     * bill 이용료분할 (일반) 정보
+     */
     private static function getBillDivisionInfo(){
         return array('f_bigo',
             'f_product1', 'f_product2', 'f_product3', 'f_product4',
@@ -289,10 +307,8 @@ class BillService{
     }
 
     /**
-     * @throws Exception
+     * t_bill_pf 테이블 column 정보
      */
-
-
     private static function getBillPFInfo(){
         return array("f_loginid", "f_tax_issue", "f_pf_price", "f_pyung", "f_village", "f_issuedate", "f_opendate", "f_closedate",);
     }
@@ -300,18 +316,12 @@ class BillService{
     /**
      * [ 이용료 분할 / (세금)계산서 (일반) ] 01
      *      on -> 각 품목마다 각각의 row로 insert
-     *      off -> 품목1~4를 한개의 row에 insert
-     * @param string $tax_type01
-     * @param array $basic_info_param
-     * @param Request $request
-     * @return array
-     * @throws Exception
+     *      off -> 품목 1~4를 한개의 row에 insert
      */
-    private static function getInfo_01(string $tax_type01, array $basic_info_param, Request $request): array{
-        $results = array();
+    private static function getInfo_01(string $tax_type01, Request $request): array{
+        $params = array();
         if ($tax_type01 === "on") {
             for ($i = 1; $i <= 4; $i++) {
-                $params = $basic_info_param;
                 $params["F_LOGINID"] = $request->input('f_loginid');
                 $params["F_BIGO"] =  $request->input('f_bigo');
                 if (!empty($request->input('f_product' . $i))) {
@@ -323,66 +333,51 @@ class BillService{
                     $params["F_PRICE"] = $request->input('f_unitprice' . $i);
                     $params["F_TAX_TYPE"] = "01"; //이용료 분할 계산서 (일반 -> 01)
                     $params["F_ASSO"] = "NORMAL";
-                    $results[] = $params;
                 }
             }
         } else if ($tax_type01 === "off") {
-
             $total_price = 0;
-            $params = $basic_info_param;
-
             $total_price += $request->input('f_unitprice1');
             $total_price += $request->input('f_unitprice2');
             $total_price += $request->input('f_unitprice3');
             $total_price += $request->input('f_unitprice4');
-            $params["F_LOGINID"] = $request->input('f_loginid');
             $params["F_PRICE"] = $total_price;
+
+            $params["F_LOGINID"] = $request->input('f_loginid');
             $params["F_PRODUCT1"] = $request->input('f_product1');
             $params["F_UNITPRICE1"] = $request->input('f_unitprice1');
             $params["F_ISSUE_TYPE"] = $request->input('f_issue_type_prod1');
             $params["F_BIGO1"] = $request->input('f_bigo1');
-
             $params["F_PRODUCT2"] = $request->input('f_product2');
             $params["F_UNITPRICE2"] = $request->input('f_unitprice2');
             $params["F_BIGO2"] = $request->input('f_bigo2');
-
             $params["F_PRODUCT3"] = $request->input('f_product3');
             $params["F_UNITPRICE3"] = $request->input('f_unitprice3');
             $params["F_BIGO3"] = $request->input('f_bigo3');
-
             $params["F_PRODUCT4"] = $request->input('f_product4');
             $params["F_UNITPRICE4"] = $request->input('f_unitprice4');
             $params["F_BIGO4"] = $request->input('f_bigo4');
-
             $params["F_BIGO"] = $request->input('f_bigo');
             $params["F_ASSO"] = "NORMAL";
-
-            $results[] = $params;
         }
-        return $results;
+        return $params;
     }
-
 
     /**
      * [공연권료 / (세금)계산서 (위수탁)] 03 06
      *      on -> 음저협, 합저협, 음실련, 연제협을 각 row에 insert
      *      off -> 동작 X (checkbox가 off이면 해당 <div> -> style.display="none")
-     * @param string $tax_type0306
-     * @param array $basic_info_param
-     * @param Request $request
-     * @return array
      */
-    private static function getInfo_0306(string $tax_type0306, array $basic_info_param, Request $request): array{
+    private static function getInfo_0306(string $tax_type0306, Request $request): array{
+        $params = array();
         $asso_arr = array(
             "KOMCA" => "06",
             "FKMP" => "06",
             "KAPP" => "03",
             "KOSCAP" => "06"
         );
-        $results = array();
         if ($tax_type0306 == "on") {
             foreach ($asso_arr as $key => $val) {
-                $params = $basic_info_param;
                 $params["F_LOGINID"] = $request->input("f_loginid");
                 $params["F_PRODUCT1"] = $request->input("f_product1_" . strtolower($key));
                 $params["F_UNITPRICE1"] = $request->input("f_unitprice_" . strtolower($key));
@@ -391,11 +386,9 @@ class BillService{
                 $params["F_BIGO"] = $request->input("f_bigo_" . strtolower($key));
                 $params["F_TAX_TYPE"] = $val;
                 $params["F_ASSO"] = $key;
-
-                $results[] = $params;
             }
         }
-        return $results;
+        return $params;
     }
 }
 ?>
