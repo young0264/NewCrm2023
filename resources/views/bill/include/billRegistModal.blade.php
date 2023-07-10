@@ -77,7 +77,6 @@
                 <form id="billModalForm" name="billModalForm">
                     <input hidden="hidden" id="f_loginid" name="f_loginid">
                     <input hidden="hidden" id="f_company" name="f_osp">
-                    <input hidden="hidden" id="f_shopname" name="f_shopname">
                     <input hidden="hidden" id="f_site" name="f_admin">
                     <input hidden="hidden" id="f_shopid" name="f_shopid">
                     <input hidden="hidden" id="f_bizid" name="f_bizid">
