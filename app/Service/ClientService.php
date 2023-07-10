@@ -6,7 +6,7 @@ use App\Models\SCShop;
 
 class ClientService {
 
-    private static $change_oracle_names_to_mysql = array(
+    private static array $convert_oracle_names_to_mysql = array(
         'f_loginid' => 'client_id',
         'f_bizname' => 'company_name',
         'f_shopname' => 'client_name'
@@ -27,14 +27,20 @@ class ClientService {
     );
 
     /**
-     * 고객검색 리스트 가져오기(Mysql : br(브랜드라디오), Oracle : sc(샵캐스트) )
-     * 샵앤뮤직  => SM
+     * 고객검색 리스트 가져오기
+     * 샵캐스트      => SC
+     * 브랜드라디오   => BR
+     * 샵앤뮤직      => SM
+     * 샵캐스트    => SHOPCAST
+     * 브랜드라디오   => NUCATS
+     * 샵앤뮤직      => SHOPNMUSIC
+     * f_company = F_OSP
+     * f_site = F_ADMIN
      */
     public static function getClientStoreList(array $request) {
         $oracleResults = self::getStoreListByOracle($request);
         $mysqleResults = self::getStoreListByMysql($request);
         $result = array_merge($oracleResults, $mysqleResults);
-
         return $result;
     }
 
@@ -81,6 +87,9 @@ class ClientService {
         return $results;
     }
 
+    /**
+     * oracle 검색조건 만들기(where절, bind값 return)
+     */
     private static function makeOracleSearchConditions(array $request) {
         $wheres = "";
         $binds = array();
@@ -112,8 +121,8 @@ class ClientService {
     }
 
     /**
+     * mysql 검색조건 만들기(where절, bind값 return)
      * mysql에서 binding처리는 같은 name 값이 있으면 안됨
-     *
      */
     private static function makeMysqlSearchConditions(array $request) {
         $wheres = "";
@@ -123,7 +132,7 @@ class ClientService {
         $count = 0;
 
         if ($request['sch_key'] != "tonghap") {
-            $sch_key = self::$change_oracle_names_to_mysql[$request['sch_key']];
+            $sch_key = self::$convert_oracle_names_to_mysql[$request['sch_key']];
             $wheres .= " and (";
             $wheres .= $sch_key . " like :sch_val";
             $wheres .= ")";
