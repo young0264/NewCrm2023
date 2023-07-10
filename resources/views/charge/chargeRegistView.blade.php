@@ -190,7 +190,7 @@
         <div class="form-floating">
             <div class="row">
                 {{--            content left        --}}
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="col-md-12">
                         <div class="card">
                             <!-- Notifications -->
