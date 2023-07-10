@@ -95,6 +95,10 @@
             let data = this.clientData;
             let dataType = "json";
             let result = js.ajax_call(method, url, data, dataType, false, "", true);
+            if (result === 'empty') {
+                alert("고객 정보를 입력해주세요.");
+                return;
+            }
             this.clientItems = JSON.parse(result);
             this.onClientTableDraw();
         },

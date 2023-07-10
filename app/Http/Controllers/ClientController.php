@@ -21,10 +21,10 @@ class ClientController extends BaseController{
          * 검색어가 없을 경우 start
          */
         if (!$request->filled("sch_val")) {
-            print_r("empty");
             return response()->json(
                 array(
-                    "status"=>"empty"
+                    "status"=>"ok",
+                    "result"=>"empty"
                 )
             );
         }
