@@ -60,7 +60,7 @@ if (!Auth::check()) {
         Route::post("/bill/ListNEY", [BillController::class, "listByNEY"])->name("billListNEY");
         Route::post("/bill/list", [BillController::class, "list"])->name("billList");
         Route::post("/bill/findById", [BillController::class, "findBillById"])->name("findBillById");
-        Route::post("/bill/BillFormUpdate", [BillController::class, "BillFormUpdate"])->name("BillFormUpdate");
+        Route::post("/bill/billUpdate", [BillController::class, "billUpdate"])->name("billUpdate");
         Route::post("/bill/register", [BillController::class, "billRegisterProcess"])->name("billRegisterProcess");
 
         Route::get("/bill/issue2", [BillController::class, "issuePage"])->name("billIssue2");
