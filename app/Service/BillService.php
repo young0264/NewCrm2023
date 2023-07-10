@@ -130,12 +130,6 @@ class BillService{
         ];
     }
 
-    /**
-     * @param $request
-     * @param string $wheres
-     * @param array $binds
-     * @return void
-     */
     private function makeTonghapConditions($request, string &$wheres, array &$binds): void{
         if ($request->has("sch_key") and $request->filled("sch_key")
             and $request->has("sch_val") and $request->filled("sch_val")) {
