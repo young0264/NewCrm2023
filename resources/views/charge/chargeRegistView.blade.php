@@ -20,9 +20,14 @@
         billChargeData: {},
         clientData: {},
         clientExtraInfo: [],
+        selectedClient : [],
         selectedClientLoginId: "",
         selectedClientShopname: "",
         selectedClientCompany: "",
+        selectedClientSite: "",
+        selectedClientShopId: "",
+        selectedClientBizId: "",
+        selectedClientBizName: "",
 
         /**
          * 마우스 왼쪽버튼 클릭시
@@ -34,11 +39,21 @@
                 this.selectedClientLoginId = ""
                 this.selectedClientShopname = ""
                 this.selectedClientCompany = ""
-            } else if(this.selectedClientLoginId === "" && this.selectedClientShopname === "" && this.selectedClientCompany === "") {
+                this.selectedClientSite = ""
+                this.selectedClientShopId = ""
+                this.selectedClientBizId = ""
+                this.selectedClientBizName = ""
+            } else if(this.selectedClientLoginId === "" && this.selectedClientShopname === "" && this.selectedClientCompany === "" && this.selectedClientSite === "") {
                 obj.classList.add("selected");
+                //TODO
+                // this.selectedClient['f_loginid'] = obj.querySelector("#f_loginid").innerText;
                 this.selectedClientLoginId = obj.querySelector("#f_loginid").innerText;
                 this.selectedClientShopname = obj.querySelector("#f_shopname").innerText;
                 this.selectedClientCompany = obj.querySelector("#f_company").innerText;
+                this.selectedClientSite = obj.querySelector("#f_site").innerText;
+                this.selectedClientShopId = obj.querySelector("#f_shopid").innerText;
+                this.selectedClientBizId = obj.querySelector("#f_bizid").innerText;
+                this.selectedClientBizName = obj.querySelector("#f_bizname").innerText;
             }
         },
 
@@ -54,6 +69,7 @@
             this.clientStoreTableDataSet();
         },
 
+        //TODO
         onClientTableDraw() {
             let html = "";
             this.clientItems.forEach((item, idx) => {
@@ -62,6 +78,9 @@
                 html += `    <td class="text-nowrap" id="f_bizname" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_bizname'] === null ? "" : item['f_bizname']}</td>`;
                 html += `    <td class="text-nowrap" id="f_shopname" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_shopname'] === null ? "" : item['f_shopname']}</td>`;
                 html += `    <td class="text-nowrap" id="f_company" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" hidden="hidden">${item['f_company'] === null ? "" : item['f_company']}</td>`;
+                html += `    <td class="text-nowrap" id="f_site" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" hidden="hidden">${item['f_site'] === null ? "" : item['f_site']}</td>`;
+                html += `    <td class="text-nowrap" id="f_shopid" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" hidden="hidden">${item['f_shopid'] === null ? "" : item['f_shopid']}</td>`;
+                html += `    <td class="text-nowrap" id="f_bizid" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" hidden="hidden">${item['f_bizid'] === null ? "" : item['f_bizid']}</td>`;
                 html += `</tr>`;
             });
             document.querySelector("#customer_tbody").innerHTML = html;
@@ -123,7 +142,6 @@
                 html += `    <td class="text-nowrap">
                                 <a href="#" onclick="update.BillFormShow('${item['f_billid']}', '${item['f_loginid']}')">${item['f_shopname'] === null ? "값없음" : item['f_shopname']} </a>
                              </td>`;
-
                 html += `    <td class="text-nowrap">${item['f_registration_number'] === null ? "" : item['f_registration_number']}</td>`;
                 html += `    <td class="text-nowrap">${item['f_pay_type'] === null ? "" : item['f_pay_type']}</td>`;
                 html += `    <td class="text-nowrap">${item['f_pay_interval'] === null ? "" : item['f_pay_interval']}</td>`;
@@ -133,14 +151,25 @@
             document.querySelector("#charge_tbody").innerHTML = html;
         },
 
+        /**
+         * 비회원 신규 등록 버튼 클릭시
+         */
         billRegistModelInit() {
             // 비회원 신규 등록 modal 등록창 form 내부의 특정 input ID에 해당하는 value 값을 변경합니다.
-            let shopnameInput = document.getElementById('billModalForm').querySelector('#f_shopname');
-            let shopIdInput = document.getElementById('billModalForm').querySelector('#f_shopid');
+            let loginIdInput = document.getElementById('billModalForm').querySelector('#f_loginid');
             let companyInput = document.getElementById('billModalForm').querySelector('#f_company');
-            shopnameInput.value = this.selectedClientShopname;
-            shopIdInput.value = this.selectedClientLoginId;
+            let shopnameInput = document.getElementById('billModalForm').querySelector('#f_shopname');
+            let siteInput = document.getElementById('billModalForm').querySelector('#f_site');
+            let shopIdInput = document.getElementById('billModalForm').querySelector('#f_shopid');
+            let bizIdInput = document.getElementById('billModalForm').querySelector('#f_bizid');
+            let bizNameInput = document.getElementById('billModalForm').querySelector('#f_bizname');
+            loginIdInput.value = this.selectedClientLoginId;
             companyInput.value = this.selectedClientCompany;
+            shopnameInput.value = this.selectedClientShopname;
+            siteInput.value = this.selectedClientSite;
+            shopIdInput.value = this.selectedClientShopId;
+            bizIdInput.value = this.selectedClientBizId;
+            bizNameInput.value = this.selectedClientBizName;
         }
     };
 
