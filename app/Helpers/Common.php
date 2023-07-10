@@ -4,9 +4,8 @@ namespace App\Helpers;
 
 class Common
 {
-    private static $nucatsSite = array("SC"=>"SHOPCAST", "BR"=>"NUCATS", "SM"=>"SHOPNMUSIC");
-
-    public static array $convert_oracle_osp_to_mysql = array(
+    private static $nucats_site = array("SC"=>"SHOPCAST", "BR"=>"NUCATS", "SM"=>"SHOPNMUSIC");
+    public static array $osp_convert_oracle_to_mysql = array(
         'SC' => 'SHOPCAST',
         'BR' => 'NUCATS',
         'SM' => 'SHOPNMUSIC'
@@ -26,7 +25,7 @@ class Common
      * ORACLE DB의 각 사이트 별 파라미터 ( SC, BR, SM )
      */
     public static function getCompany() {
-        return strtoupper(explode("-", explode(".", request()->server("HTTP_HOST"))[0])[1]);
+        return self::getSite();
     }
 
     /**
@@ -34,7 +33,7 @@ class Common
      * Mysql DB의 각 사이트 별 파라미터 ( SHOPCAST, NUCATS, SHOPNMUSIC )
      */
     public static function getGroupSite() {
-        return self::$nucatsSite[strtoupper(explode("-", explode(".", request()->server("HTTP_HOST"))[0])[1])];
+        return self::$nucats_site[self::getSite()];
     }
 
     public static function assoArr() {
