@@ -81,31 +81,34 @@ class BillController extends BaseController {
     }
 
     /**
-     * @throws Exception
+     * bill 다중 업데이트
      */
-    public function BillFormUpdate(Request $request){
-        $result = "";
-        //bill 다중 업데이트 일 경우
-        $result = $this->billService->billsUpdate($request->input());
+       public function billUpdate(Request $request){
+            //bill 다중 업데이트 일 경우
+           $result = [];
+           if ($request->input('billIdArr')) {
+               $result = $this->billService->billMultiUpdate($request->input());
+           }else{
+               $result = $this->billService->billSingleUpdate($request->input());
+           }
 
-        if (!$result['status']) {
+            if (!$result['status']) {
+                return response()->json([
+                    "status" => "error",
+                    "msg" => $result['msg']
+                ]);
+            }
+
             return response()->json([
-                "status" => "error",
-                "msg" => $result['msg']
+                "status" => "ok",
+                "msg" => "정상적으로 수정되었습니다."
             ]);
-        }
-
-        return response()->json([
-            "status" => "ok",
-            "msg" => "정상적으로 수정되었습니다."
-        ]);
     }
 
+
     /**
-     * @param Request $request
      * $bill_items : bill table정보,
      * $bill_pf_items : bill_pf table 공연 정보
-     * @return JsonResponse
      */
     public function findBillById(Request $request){
         try {
@@ -127,8 +130,6 @@ class BillController extends BaseController {
 
     /**
      * Bill Create Porcess (계산서 등록)
-     * @param Request $request
-     * @return JsonResponse
      */
     public function billRegisterProcess(Request $request){
 
