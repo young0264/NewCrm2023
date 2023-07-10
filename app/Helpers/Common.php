@@ -5,10 +5,18 @@ namespace App\Helpers;
 class Common
 {
     private static $nucatsSite = array("SC"=>"SHOPCAST", "BR"=>"NUCATS", "SM"=>"SHOPNMUSIC");
+
+    public static array $convert_oracle_osp_to_mysql = array(
+        'SC' => 'SHOPCAST',
+        'BR' => 'NUCATS',
+        'SM' => 'SHOPNMUSIC'
+    );
+
     public static function common() {
         return "common";
     }
 
+    //TODO: getSite, getCompany, getGroupSite 정리
     public static function getSite() {
         return strtoupper(explode("-", explode(".", request()->server("HTTP_HOST"))[0])[1]);
     }

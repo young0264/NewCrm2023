@@ -194,7 +194,7 @@ class SampleController extends Controller
         /**
          * Oracle DB 기본 검색조건 생성
          * Common::getSite()
-         * 샵캐스트       => SC
+         * 샵캐스트      => SC
          * 브랜드라디오   => BR
          * 샵앤뮤직      => SM
          */
@@ -204,6 +204,9 @@ class SampleController extends Controller
 
         /**
          * Mysql DB 기본 검색조건 생성
+         * 샵캐스트      => SHOPCAST
+         * 브랜드라디오   => NUCATS
+         * 샵앤뮤직      => SHOPNMUSIC
          */
         $mysql_wheres .= " and group_site=:group_site and status in (578, 105)";
         $mysql_params['group_site'] = Common::getGroupSite();
@@ -225,7 +228,7 @@ class SampleController extends Controller
         foreach ($oracle_items as $idx => $item) {
             $results[$item->f_loginid] = array(
                 "f_company"=>Common::getSite(), // F_OSP
-                "f_site"=>"SC",                 // F_ADMIN
+                "f_site"=>"SC",                 // F_ADMIN / 각 관리자 페이지 SC => crm.shop-cat.com
                 "f_bizid"=>$item->f_bizid,
                 "f_bizname"=>$item->f_bizname,
                 "f_loginid"=>$item->f_loginid,  //
@@ -240,8 +243,8 @@ class SampleController extends Controller
 //            print_r($item);
 //            exit;
             $results[$item->client_id] = array(
-                "f_company"=>Common::getSite(),
-                "f_site"=>"BR",
+                "f_company"=>Common::getSite(), // F_OSP SHOPCAST / NUCATS / SHOPNMUSIC
+                "f_site"=>"BR",                 // F_ADMIN / 각 관리자 페이지 BR => admin.brandradio.co.kr/admin
                 "f_bizid"=>$item->companys,
                 "f_bizname"=>$item->company_name,
                 "f_loginid"=>$item->client_id,
