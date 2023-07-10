@@ -43,10 +43,8 @@
             let url = "{{route("billRegisterProcess")}}";
             let data = $('#billModalForm').serialize();
             let dataType = "json";
-
             js.ajax_call(method, url, data, dataType, true);
             $('#modal_setting_register').modal('hide');
-            window.location.reload();
         },
     };
 
@@ -77,6 +75,13 @@
             <div class="modal-body">
                 <h5 class="row mx-3">서비스 이용료나 공연권료 등 생성할 품목과 계산서 종류를 설정합니다. </h5>
                 <form id="billModalForm" name="billModalForm">
+                    <input hidden="hidden" id="f_loginid" name="f_loginid">
+                    <input hidden="hidden" id="f_company" name="f_osp">
+                    <input hidden="hidden" id="f_shopname" name="f_shopname">
+                    <input hidden="hidden" id="f_site" name="f_admin">
+                    <input hidden="hidden" id="f_shopid" name="f_shopid">
+                    <input hidden="hidden" id="f_bizid" name="f_bizid">
+                    <input hidden="hidden" id="f_bizname" name="f_bizname">
                     {{-- 상단 공연정보 시작 --}}
                     <div class="card-body">
                         <div class="btn-group my-2">
