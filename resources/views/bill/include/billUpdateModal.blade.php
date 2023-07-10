@@ -133,7 +133,7 @@
 
                                 <div class=" col-sm-2 mx-4">
                                     <select id="f_village" name="f_village" class="form-select text-black" disabled>
-                                        <option value="">농어촌</option>
+                                        <option value="">농어촌(선택)</option>
                                         <option value="farm">농촌</option>
                                         <option value="fishing">어촌</option>
                                     </select>

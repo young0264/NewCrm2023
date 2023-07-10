@@ -112,7 +112,7 @@
                             {{--                            --}}
                             <div class=" col-sm-2 mx-4">
                                 <select id="f_village" name="f_village" class="form-select text-black">
-                                    <option value="">농어촌</option>
+                                    <option value="">농어촌(선택)</option>
                                     <option value="farm">농촌</option>
                                     <option value="fishing">어촌</option>
                                 </select>
@@ -348,7 +348,7 @@
                                     <div class="col-md-2 ">
                                         <input class="form-control alert-warning text-black"
                                                id="f_unitprice_{{strtolower($key)}}"
-                                               name="f_unitprice_{{strtolower($key)}}" placeholder="1,960">
+                                               name="f_unitprice_{{strtolower($key)}}" placeholder="단가">
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-select alert-warning text-black fw-bold"
