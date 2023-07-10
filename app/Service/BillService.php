@@ -46,7 +46,7 @@ class BillService{
     );
 
     public function findMysqlClientById($client_id, $f_company) {
-        $mysql_f_company = Common::$convert_oracle_osp_to_mysql[$f_company];
+        $mysql_f_company = Common::$osp_convert_oracle_to_mysql[$f_company];
         $client_info= BRClient::findByClientId($client_id, $mysql_f_company);
 
         if (!$client_info) {
