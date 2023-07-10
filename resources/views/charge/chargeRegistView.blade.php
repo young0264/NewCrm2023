@@ -95,10 +95,10 @@
             let data = this.clientData;
             let dataType = "json";
             let result = js.ajax_call(method, url, data, dataType, false, "", true);
-            if (result === 'empty') {
-                alert("고객 정보를 입력해주세요.");
-                return;
-            }
+            // if (result === 'empty') {
+            //     alert("고객 정보를 입력해주세요.");
+            //     return;
+            // }
             this.clientItems = JSON.parse(result);
             this.onClientTableDraw();
         },
@@ -159,6 +159,10 @@
          * 비회원 신규 등록 버튼 클릭시
          */
         billRegistModelInit() {
+            if(this.selectedClientLoginId === "") {
+                alert("고객을 선택해주세요.");
+                location.reload();
+            }
             // 비회원 신규 등록 modal 등록창 form 내부의 특정 input ID에 해당하는 value 값을 변경합니다.
             let loginIdInput = document.getElementById('billModalForm').querySelector('#f_loginid');
             let companyInput = document.getElementById('billModalForm').querySelector('#f_company');
