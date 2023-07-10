@@ -178,7 +178,7 @@ $sch_month = request('sch_month') ?? date('m');
                 jsonObject['billIdArr'] = this.billIdArrForUpdate;
 
                 let method = "POST";
-                let url = "{{route("BillFormUpdate")}}";
+                let url = "{{route("billUpdate")}}";
                 let dataType = "json";
                 js.ajax_call(method, url, jsonObject, dataType, false, "", true);
             },

@@ -52,8 +52,8 @@
         },
 
         //bill form 수정 process
-        BillFormUpdate: function () {
-            var data = {};
+        BillSingleUpdate: function () {
+            let data = {};
             data['f_billId'] = this.billId;
             data['f_loginId'] = this.loginId;
 
@@ -75,7 +75,7 @@
 
             //DB에서 bill id값이 같은 row의 column들을 update해줍니다.
             try{
-                js.ajax_call("POST", "{{route("BillFormUpdate")}}", data, "json", false, "", true);
+                js.ajax_call("POST", "{{route("billUpdate")}}", data, "json", false, "", true);
                 alert("청구 대상 수정이 완료되었습니다.");
                 $('#modal_setting_update').modal('hide');
                 window.location.reload();
@@ -395,7 +395,7 @@
                                     </label>
                                 </div>
                                 <div class="col-md-6 text-center mx-1">
-                                    <button type="button" class="btn btn-primary" onclick="update.BillFormUpdate()"> 수정
+                                    <button type="button" class="btn btn-primary" onclick="update.BillSingleUpdate()"> 수정
                                     </button>
                                     <button type="button" class="btn btn-secondary"
                                             onclick="modalClose('modal_setting_update')"> 닫기
