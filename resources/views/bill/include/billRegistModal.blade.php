@@ -43,7 +43,7 @@
             let url = "{{route("billRegisterProcess")}}";
             let data = $('#billModalForm').serialize();
             let dataType = "json";
-            js.ajax_call(method, url, data, dataType, true);
+            let result = js.ajax_call(method, url, data, dataType, true);
             $('#modal_setting_register').modal('hide');
         },
     };

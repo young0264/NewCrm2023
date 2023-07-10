@@ -219,9 +219,7 @@ class BillService{
         $tax_type0306 = $request->input('tax_type0306') === 'on' ? 'on' : 'off';
         $tax_type01 = $request->input('tax_type01') === 'on' ? 'on' : 'off';
         $billPFParams = self::makeToAssocidateArray($request->input(), self::getBillPFInfo());
-        $client_result = self::makeToAssocidateArray($request->input(), self::$client_extra_key_info);
-
-        $billData = self::getBillTotalData($tax_type01, $request, $tax_type0306, $client_result);
+        $billData = self::getBillTotalData($tax_type01, $request, $tax_type0306);
 
         if (empty($billData)) {
             throw new Exception("등록할 계산서가 없습니다. 계산서를 등록해주세요.");
@@ -236,19 +234,17 @@ class BillService{
     /**
      * 01(일반), 0306(공연,위수탁) 계산서 등록
      */
-    private static function getBillTotalData(string $tax_type01, Request $request, string $tax_type0306, array $client_result): ?array{
+    private static function getBillTotalData(string $tax_type01, Request $request, string $tax_type0306): ?array{
 
         /**
          * $basic_info_param : 등록 모달창 기본 데이터 파라미터 셋팅 (공연권료, 이용료 분할은 제외)
-         * $billData_01   : [ 이용료 분할 / (세금)계산서 (일반) ] 01 ] --> on일때(각 row insert), off일때(1개 row) 등록할  array 리턴
          * $billData_0306 : [공연권료 / (세금)계산서 (위수탁)] 03 06 ] --> on일떄(각 row insert), off(동작 x) 등록할  array 리턴
+         * $billData_01   : [ 이용료 분할 / (세금)계산서 (일반) ] 01 ] --> on일때(각 row insert), off일때(1개 row) 등록할  array 리턴
          */
-
-        $basic_info_param = self::makeToAssocidateArray($request->input(), self::getBillBasicInfo());
-        $billData_01 = self::getInfo_01($tax_type01, $request);
         $billData_0306 = self::getInfo_0306($tax_type0306, $request);
+        $billData_01 = self::getInfo_01($tax_type01, $request);
 
-        return array_merge($billData_01, $billData_0306, $basic_info_param,$client_result);
+        return array_merge($billData_01, $billData_0306);
     }
 
     /**
@@ -313,9 +309,13 @@ class BillService{
      *      off -> 품목 1~4를 한개의 row에 insert
      */
     private static function getInfo_01(string $tax_type01, Request $request): array{
-        $params = array();
+        $basic_info_param = self::makeToAssocidateArray($request->input(), self::getBillBasicInfo());
+        $client_result = self::makeToAssocidateArray($request->input(), self::$client_extra_key_info);
+
+        $result = array();
         if ($tax_type01 === "on") {
             for ($i = 1; $i <= 4; $i++) {
+                $params = array_merge($basic_info_param,$client_result);
                 $params["F_LOGINID"] = $request->input('f_loginid');
                 $params["F_BIGO"] =  $request->input('f_bigo');
                 if (!empty($request->input('f_product' . $i))) {
@@ -328,6 +328,7 @@ class BillService{
                     $params["F_TAX_TYPE"] = "01"; //이용료 분할 계산서 (일반 -> 01)
                     $params["F_ASSO"] = "NORMAL";
                 }
+                $result[] = $params;
             }
         } else if ($tax_type01 === "off") {
             $total_price = 0;
@@ -335,8 +336,9 @@ class BillService{
             $total_price += $request->input('f_unitprice2');
             $total_price += $request->input('f_unitprice3');
             $total_price += $request->input('f_unitprice4');
-            $params["F_PRICE"] = $total_price;
 
+            $params = array_merge($basic_info_param,$client_result);
+            $params["F_PRICE"] = $total_price;
             $params["F_LOGINID"] = $request->input('f_loginid');
             $params["F_PRODUCT1"] = $request->input('f_product1');
             $params["F_UNITPRICE1"] = $request->input('f_unitprice1');
@@ -353,17 +355,21 @@ class BillService{
             $params["F_BIGO4"] = $request->input('f_bigo4');
             $params["F_BIGO"] = $request->input('f_bigo');
             $params["F_ASSO"] = "NORMAL";
+            $result[] = $params;
         }
-        return $params;
+        return $result;
     }
 
     /**
      * [공연권료 / (세금)계산서 (위수탁)] 03 06
-     *      on -> 음저협, 합저협, 음실련, 연제협을 각 row에 insert
+     *      on -> 음저협, 합저협, 음실련, 연제협을 각 row에 insert //TODO
      *      off -> 동작 X (checkbox가 off이면 해당 <div> -> style.display="none")
      */
     private static function getInfo_0306(string $tax_type0306, Request $request): array{
-        $params = array();
+        $basic_info_param = self::makeToAssocidateArray($request->input(), self::getBillBasicInfo());
+        $client_result = self::makeToAssocidateArray($request->input(), self::$client_extra_key_info);
+
+        $result = array();
         $asso_arr = array(
             "KOMCA" => "06",
             "FKMP" => "06",
@@ -372,6 +378,7 @@ class BillService{
         );
         if ($tax_type0306 == "on") {
             foreach ($asso_arr as $key => $val) {
+                $params = array_merge($basic_info_param,$client_result);
                 $params["F_LOGINID"] = $request->input("f_loginid");
                 $params["F_PRODUCT1"] = $request->input("f_product1_" . strtolower($key));
                 $params["F_UNITPRICE1"] = $request->input("f_unitprice_" . strtolower($key));
@@ -380,9 +387,10 @@ class BillService{
                 $params["F_BIGO"] = $request->input("f_bigo_" . strtolower($key));
                 $params["F_TAX_TYPE"] = $val;
                 $params["F_ASSO"] = $key;
+                $result[] = $params;
             }
         }
-        return $params;
+        return $result;
     }
 }
 ?>
