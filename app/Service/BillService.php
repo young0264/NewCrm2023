@@ -153,7 +153,7 @@ class BillService{
     /**
      * bill. 이용료청구(단일) 수정
      */
-    public function billUpdate(array $request){
+    public function billSingleUpdate(array $request){
         DB::beginTransaction();
         $bill_wheres = array("f_billId"=>($request['f_billId']));
         $paramOfBill_basic = self::makeToAssocidateArray($request, self::getAllBillIds());
@@ -173,13 +173,13 @@ class BillService{
     /**
      * bill. 이용료청구(여러개) 수정
      */
-    public function billsUpdate(array $request){
+    public function billMultiUpdate(array $request){
         DB::beginTransaction();
 
         foreach ($request['billIdArr'] as $billId) {
             $new_request = $request;
             $new_request['f_billId'] = $billId;
-            $result = self::billUpdate($new_request);
+            $result = self::billSingleUpdate($new_request);
 
             if (!$result['status']) {
                 return response()->json([
