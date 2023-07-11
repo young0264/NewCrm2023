@@ -378,6 +378,9 @@ class BillService{
         );
         if ($tax_type0306 == "on") {
             foreach ($asso_arr as $key => $val) {
+                if (empty($request->input("f_product1_" . strtolower($key)))) {
+                    break;
+                }
                 $params = array_merge($basic_info_param,$client_result);
                 $params["F_LOGINID"] = $request->input("f_loginid");
                 $params["F_PRODUCT1"] = $request->input("f_product1_" . strtolower($key));
