@@ -77,6 +77,7 @@
                 html += `    <td class="text-nowrap" id="f_loginid" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" >${item['f_loginid']}</td>`;
                 html += `    <td class="text-nowrap" id="f_bizname" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_bizname'] === null ? "" : item['f_bizname']}</td>`;
                 html += `    <td class="text-nowrap" id="f_shopname" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_shopname'] === null ? "" : item['f_shopname']}</td>`;
+                html += `    <td class="text-nowrap" id="f_regid" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" hidden="hidden">${item['f_regid'] === null ? "" : item['f_company']}</td>`;
                 html += `    <td class="text-nowrap" id="f_company" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" hidden="hidden">${item['f_company'] === null ? "" : item['f_company']}</td>`;
                 html += `    <td class="text-nowrap" id="f_site" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" hidden="hidden">${item['f_site'] === null ? "" : item['f_site']}</td>`;
                 html += `    <td class="text-nowrap" id="f_shopid" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" hidden="hidden">${item['f_shopid'] === null ? "" : item['f_shopid']}</td>`;

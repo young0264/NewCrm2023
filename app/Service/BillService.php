@@ -280,7 +280,7 @@ class BillService{
      */
     private static function getBillBasicInfo(){
         return array(
-            'f_shopname', 'f_cb', 'f_business', 'f_cp_name', 'f_name1', 'f_pay_type', 'f_rep_name', 'f_mobile1',
+            'f_shopname', 'f_cb', 'f_business', 'f_cp_name', 'f_name1', 'f_pay_type', 'f_rep_name', 'f_mobile1', 'f_regid', 'f_loginid',
             'f_pay_interval', 'f_interval_option', 'f_registration_number', 'f_email1', 'f_history', 'f_addr', 'f_name2', 'f_reply',
             'f_public_addr1', 'f_mobile2', 'f_statement', 'f_public_addr2', 'f_email2', 'f_tax_bill','f_issue_type');
     }
@@ -319,7 +319,6 @@ class BillService{
                     break;
                 }
                 $params = array_merge($basic_info_param,$client_result);
-                $params["F_LOGINID"] = $request->input('f_loginid');
                 $params["F_PRODUCT1"] = $request->input('f_product' . $i);
                 $params["F_UNITPRICE1"] = $request->input('f_unitprice' . $i);
                 $params["F_BIGO1"] = $request->input('f_bigo' . $i);
@@ -339,7 +338,6 @@ class BillService{
 
             $params = array_merge($basic_info_param,$client_result);
             $params["F_PRICE"] = $total_price;
-            $params["F_LOGINID"] = $request->input('f_loginid');
             $params["F_PRODUCT1"] = $request->input('f_product1');
             $params["F_UNITPRICE1"] = $request->input('f_unitprice1');
             $params["F_ISSUE_TYPE"] = $request->input('f_issue_type_prod1');
@@ -362,7 +360,7 @@ class BillService{
 
     /**
      * [공연권료 / (세금)계산서 (위수탁)] 03 06
-     *      on -> 음저협, 합저협, 음실련, 연제협을 각 row에 insert //TODO
+     *      on -> 음저협, 합저협, 음실련, 연제협을 각 row에 insert
      *      off -> 동작 X (checkbox가 off이면 해당 <div> -> style.display="none")
      */
     private static function getInfo_0306(string $tax_type0306, Request $request): array{
@@ -382,7 +380,6 @@ class BillService{
                     break;
                 }
                 $params = array_merge($basic_info_param,$client_result);
-                $params["F_LOGINID"] = $request->input("f_loginid");
                 $params["F_PRODUCT1"] = $request->input("f_product1_" . strtolower($key));
                 $params["F_UNITPRICE1"] = $request->input("f_unitprice_" . strtolower($key));
                 $params["F_ISSUE_TYPE"] = $request->input("f_issue_type_" . strtolower($key));
