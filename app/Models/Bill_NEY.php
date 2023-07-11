@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -65,7 +66,6 @@ class Bill_NEY extends Model{
         return DB::select($query, $params);
     }
 
-
     public static function findBillById($billId){
         $query = "SELECT * FROM T_BILL_NEY WHERE f_billid=:f_billid";
         return DB::select($query, array("f_billid"=>$billId));
@@ -77,14 +77,16 @@ class Bill_NEY extends Model{
             ->update($parameters);
     }
 
-    /**
-     * @param $params : array
-     * @return bool
-     */
     public static function insertBills($params) {
-        foreach ($params as $key=>$param) {
-            DB::table('T_BILL_NEY')->insert($param);
+        try {
+            foreach ($params as $key=>$param) {
+                DB::table('T_BILL_NEY')->insert($param);
+            }
+        }catch (Exception $e) {
+            DB::rollback();
+            throw new Exception($e->getMessage());
+//            throw new Exception("계산서 등록에 실패하였습니다.");
         }
-        return true;
+
     }
 }

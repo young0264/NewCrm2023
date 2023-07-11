@@ -61,6 +61,9 @@ class BillService{
         } return $client_info;
     }
 
+    /**
+     * 검색조건 wheres, bindings 생성
+     */
     public function makeSearchConditions($request){
         $wheres = "";
         $binds = [];
@@ -70,7 +73,6 @@ class BillService{
         /**
          * 년도, 월 클릭시 검색 where절 설정
          */
-
         if ($sch_year != "" and $sch_year != 'all') {
             $binds += array('sch_year' => $sch_year);
             $wheres .= " and (EXTRACT(YEAR FROM F_REGDATE) = :sch_year)";
@@ -79,7 +81,6 @@ class BillService{
             $binds += array('sch_month' => $sch_month);
             $wheres .= " and (EXTRACT(MONTH FROM F_REGDATE) = :sch_month)";
         }
-
 
         /**
          * select-box 검색부분 where절 설정
@@ -221,12 +222,14 @@ class BillService{
         $billPFParams = self::makeToAssocidateArray($request->input(), self::getBillPFInfo());
         $billData = self::getBillTotalData($tax_type01, $request, $tax_type0306);
 
-        if (empty($billData)) {
-            throw new Exception("등록할 계산서가 없습니다. 계산서를 등록해주세요.");
-        } else if (!Bill_PF_NEY::insertBill($billPFParams)) {
-            throw new Exception("공연쪽 입력 정보를 확인해주세요.");
-        } else if (!Bill_NEY::insertBills($billData)) {
-            throw new Exception("등록할 계산서가 없습니다. 계산서를 등록해주세요.");
+        Bill_PF_NEY::insertBill($billPFParams);
+        Bill_NEY::insertBills($billData);
+
+        try {
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception("계산서 등록에 실패하였습니다.");
         }
         DB::commit();
     }
