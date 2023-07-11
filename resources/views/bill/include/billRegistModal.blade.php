@@ -292,7 +292,7 @@
                                 이메일2
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control alert-secondary" id="f_email2" name="f_email2"
+                                <input class="form-control alert-secondary email" id="f_email2" name="f_email2"
                                        placeholder="이메일2">
                             </div>
 
