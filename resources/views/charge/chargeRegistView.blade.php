@@ -73,8 +73,8 @@
         onClientTableDraw() {
             let html = "";
             this.clientItems.forEach((item, idx) => {
-                html += `<tr class="text-center" onclick="tables.onLeftClick(this)">`;
-                html += `    <td class="text-nowrap" id="f_loginid" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_loginid']}</td>`;
+                html += `<tr class="text-center" onclick="tables.onLeftClick(this)" style="cursor:pointer">`;
+                html += `    <td class="text-nowrap" id="f_loginid" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" >${item['f_loginid']}</td>`;
                 html += `    <td class="text-nowrap" id="f_bizname" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_bizname'] === null ? "" : item['f_bizname']}</td>`;
                 html += `    <td class="text-nowrap" id="f_shopname" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_shopname'] === null ? "" : item['f_shopname']}</td>`;
                 html += `    <td class="text-nowrap" id="f_company" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" hidden="hidden">${item['f_company'] === null ? "" : item['f_company']}</td>`;
@@ -83,7 +83,7 @@
                 html += `    <td class="text-nowrap" id="f_bizid" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" hidden="hidden">${item['f_bizid'] === null ? "" : item['f_bizid']}</td>`;
                 html += `</tr>`;
             });
-            document.querySelector("#customer_tbody").innerHTML = html;
+            document.querySelector("#client_tbody").innerHTML = html;
         },
 
         /**
@@ -201,22 +201,22 @@
                                         <div class="mb-3">
                                             <div class="demo-inline-spacing">
                                                 <div class="btn-group">
-                                                    <div class="btn-group mx-1">
-                                                        <select class="form-select">
+                                                    <div class="btn-group mx-1" style="width: 60%;">
+                                                        <select class="form-select" >
                                                             <option value="">결제수단</option>
                                                             <option value="card">카드</option>
                                                             <option value="cash">현금</option>
                                                             <option value="post_payment">후불</option>
                                                         </select>
                                                     </div>
-                                                    <div class="btn-group mx-1">
+                                                    <div class="btn-group mx-1" style="width: 60%;">
                                                         <select class="form-select">
                                                             <option>신탁여부</option>
                                                             <option>신탁</option>
                                                             <option>비신탁</option>
                                                         </select>
                                                     </div>
-                                                    <div class="btn-group mx-1">
+                                                    <div class="btn-group mx-1" style="width: 60%;">
                                                         <select class="form-select" name="sch_key">
                                                             <option value="tonghap">통합</option>
                                                             <option value="f_loginid">로그인ID</option>
@@ -230,13 +230,13 @@
                                     </div>
 
                                     <div class="form-floating">
-                                        <div class="btn-group my-2">
+                                        <div class="btn-group my-2" style="width: 70%;">
                                             <input
                                                 class="form-control mx-1"
                                                 type="text"
                                                 id="sch_val"
                                                 name="sch_val"
-                                                placeholder="검색어를 입력하세요."
+                                                placeholder="검색어를 입력하세요1."
                                             />
                                         </div>
                                         <div class="btn-group my-2">
@@ -244,10 +244,10 @@
                                         </div>
                                     </div>
                                     <div class="form-floating">
-                                        <div class="mb-3">
-                                            <button type="button" class="btn btn-secondary mx-1">전체로드</button>
-                                            <button type="button" class="btn btn-secondary mx-1">미등록만</button>
-                                            <button type="button" class="btn btn-primary mx-1">청구&gt;</button>
+                                        <div class="mb-3" >
+                                            <button type="button" class="btn btn-secondary mx-1" style="width: 30%;">전체로드</button>
+                                            <button type="button" class="btn btn-secondary mx-1" style="width: 30%;">미등록만</button>
+                                            <button type="button" class="btn btn-primary mx-1" style="width: 30%;">청구&gt;</button>
                                         </div>
                                     </div>
                                     <div class="form-floating row my-2 mx-1">
@@ -264,7 +264,7 @@
                                         <th class="text-nowrap text-center">매장명</th>
                                     </tr>
                                     </thead>
-                                    <tbody class="text-center" id="customer_tbody" >
+                                    <tbody class="text-center" id="client_tbody">
 {{--                                    @for($i=0; $i<6; $i++)--}}
 {{--                                        <tr class="text-center">--}}
 {{--                                            <td class="text-nowrap">7323231A</td>--}}
@@ -308,8 +308,8 @@
                                                         <option value="post_payment" {{request('f_pay_type')=="post_payment" ? "selected" : ""}}>후불</option>
                                                     </select>
                                                 </div>
-                                                <div class="btn-group">
-                                                    <select class="form-select">
+                                                <div class="btn-group" >
+                                                    <select class="form-select" >
                                                         <option>신탁여부</option>
                                                         <option>신탁</option>
                                                         <option>비신탁</option>
@@ -338,7 +338,6 @@
                                                 placeholder="검색어를 입력하세요."
                                             />
 {{--                                            <input class="form-control" id="sch_val" name="sch_val" value="{{request('sch_val')}}" placeholder="검색어를 입력하세요.">--}}
-
                                         </div>
                                         <div class="btn-group my-2">
                                             <button type="button" class="btn btn-info" onclick="tables.onChargeTableSearch()">검색</button>
