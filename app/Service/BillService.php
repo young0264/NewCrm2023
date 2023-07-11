@@ -315,19 +315,19 @@ class BillService{
         $result = array();
         if ($tax_type01 === "on") {
             for ($i = 1; $i <= 4; $i++) {
+                if (empty($request->input('f_product' . $i))) {
+                    break;
+                }
                 $params = array_merge($basic_info_param,$client_result);
                 $params["F_LOGINID"] = $request->input('f_loginid');
-                $params["F_BIGO"] =  $request->input('f_bigo');
-                if (!empty($request->input('f_product' . $i))) {
-                    $params["F_PRODUCT1"] = $request->input('f_product' . $i);
-                    $params["F_UNITPRICE1"] = $request->input('f_unitprice' . $i);
-                    $params["F_BIGO1"] = $request->input('f_bigo' . $i);
-                    $params["F_ISSUE_TYPE"] = $request->input('f_issue_type_prod' . $i);
-                    $params["F_BIGO"] = $request->input('f_bigo');
-                    $params["F_PRICE"] = $request->input('f_unitprice' . $i);
-                    $params["F_TAX_TYPE"] = "01"; //이용료 분할 계산서 (일반 -> 01)
-                    $params["F_ASSO"] = "NORMAL";
-                }
+                $params["F_PRODUCT1"] = $request->input('f_product' . $i);
+                $params["F_UNITPRICE1"] = $request->input('f_unitprice' . $i);
+                $params["F_BIGO1"] = $request->input('f_bigo' . $i);
+                $params["F_ISSUE_TYPE"] = $request->input('f_issue_type_prod' . $i);
+                $params["F_BIGO"] = $request->input('f_bigo');
+                $params["F_PRICE"] = $request->input('f_unitprice' . $i);
+                $params["F_TAX_TYPE"] = "01"; //이용료 분할 계산서 (일반 -> 01)
+                $params["F_ASSO"] = "NORMAL";
                 $result[] = $params;
             }
         } else if ($tax_type01 === "off") {
