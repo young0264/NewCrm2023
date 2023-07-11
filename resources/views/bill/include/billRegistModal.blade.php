@@ -1,31 +1,14 @@
-{{--@php--}}
-{{--    $arr = array(--}}
-{{--        "Q"=>array(--}}
-{{--            0,1,2--}}
-{{--        ),--}}
-{{--        "H"=>array(--}}
-{{--            0,1,2,3,4,5--}}
-{{--        ),--}}
-{{--        "Y"=>array(--}}
-{{--            0,1,2,3,4,5,6,7,8,9,10,11--}}
-{{--        ),--}}
-{{--    );--}}
-{{--@endphp--}}
 <?php
-    $pay_interval_arr = array(
-        "M"=>0,
-        "Q"=>2,
-        "H"=>5,
-        "Y"=>11,
-        "T"=>3,
-    );
+    $pay_interval_arr = array("M"=>0, "Q"=>2, "H"=>5, "Y"=>11, "T"=>3,);
     ?>
+
+
 <script>
     const loginId = null;
 
     function interval_option() {
         let f_pay_interval = document.getElementById("f_pay_interval").value;
-       let f_interval_option = document.getElementById("f_interval_option");
+        let f_interval_option = document.getElementById("f_interval_option");
         // let f_interval_option = document.querySelector("#f_interval_option");
         let pay_interval_arr = {"M":0, "Q":2, "H":5, "Y":11, "T":3 };
         let html = "";
@@ -33,7 +16,6 @@
         for (let i = 0; i <= pay_interval_arr[f_pay_interval]; i++) {
             html += `<option value=${i.toString().padStart(2, '0')}>${i.toString().padStart(2, '0')}</option>`;
         }
-
         f_interval_option.innerHTML = html;
     }
 
@@ -128,10 +110,6 @@
                             <span class="text-muted">(㎡)</span>
                         </div>
                     </div>
-                    {{--                    @if(Auth::check())--}}
-                    {{--                        {{Auth::user()->email}}--}}
-                    {{--                    @endif--}}
-                    {{--                    <input type="hidden" id="f_loginid" name="f_loginid" value="{{Auth::user()->email}}">--}}
 
                     @if(Auth::check() && !empty(Auth::user()->id))
                         <input type="hidden" id="f_regid" name="f_regid" value="{{ Auth::user()->id}}">
@@ -207,7 +185,7 @@
                                 연락처1
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control alert-secondary " id="f_mobile1" name="f_mobile1"
+                                <input class="form-control alert-secondary phoneNumber" id="f_mobile1" name="f_mobile1"
                                        placeholder="연락처1">
                             </div>
 
@@ -240,7 +218,7 @@
                                 이메일1
                             </div>
                             <div class="col-md-3 alert-secondary">
-                                <input class="form-control alert-secondary" id="f_email1" name="f_email1"
+                                <input class="form-control alert-secondary email" id="f_email1" name="f_email1"
                                        placeholder="이메일1">
                             </div>
 
@@ -289,7 +267,7 @@
                                 연락처2
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control alert-secondary" id="f_mobile2" name="f_mobile2"
+                                <input class="form-control alert-secondary phoneNumber" id="f_mobile2" name="f_mobile2"
                                        placeholder="연락처2">
                             </div>
 
@@ -374,11 +352,6 @@
                         {{-- 이용료 분할 / (세금)계산서 (일반) 시작  --}}
                         <div class="form-check btn-group form-switch mb-2 ">
                             <div class="col-md-12">
-                                {{--                                <input id="showChecked2" class="form-check-input" type="checkbox" checked/>--}}
-                                {{--                                <input id="showChecked2" class="form-check-input" type="checkbox"--}}
-                                {{--                                       onclick="checkbox.showByChecked('showChecked2', 'showCheckedDiv2')" checked/>--}}
-                                {{--                                <label class="form-check-label fw-bold text-black">이용료 분할 / (세금)계산서 (일반)</label>--}}
-
                                 <input class="form-check-input" type="checkbox"
                                        id="tax_type01" name="tax_type01"
                                        onclick="checkbox.showByChecked('tax_type1', null)" checked/>

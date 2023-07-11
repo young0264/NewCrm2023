@@ -28,12 +28,4 @@ class Bill_PF_NEY extends Model{
         return DB::select($query, array("f_loginid"=>$loginId));
     }
 
-    public static function updateBill(array $parameter, array $wheres)
-    {
-        return DB::table(self::$t_table)
-            ->where($wheres)
-            ->update($parameter);
-    }
-
-
 }

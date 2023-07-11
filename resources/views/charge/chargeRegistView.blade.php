@@ -7,12 +7,51 @@
      * tables.initialize() : 화면 셋팅
      */
     document.addEventListener("DOMContentLoaded", ()=>{
+        validateBillForm();
         tables.initialize();
     });
 
     function modalClose(modalId) {
         $('#'+modalId).modal('hide');
     }
+
+    /**
+     * bill form 등록, input validate
+     */
+    function validateBillForm() {
+        validation.email();
+        validation.phoneNumber();
+    }
+
+    /**
+     *  validate 함수들
+     * */
+    let validation = {
+        phoneNumber: function () {
+            $(document).on("keyup", ".phoneNumber", function () {
+                $(this).val($(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/, "$1-$2-$3").replace("--", "-"));
+                var pattern = /^(?:\d{3}-\d{3,4}-\d{4}|\d{2,3}-\d{3,4}-\d{4})$/;
+
+                if (document.getElementById("f_mobile1").value.match(pattern)) {
+                    document.getElementById("f_mobile1").style.borderColor = "blue";
+                } else {
+                    document.getElementById("f_mobile1").style.borderColor = "red";
+                }
+            });
+        },
+
+        email: function () {
+            $(document).on("keyup", ".email", function () {
+                var pattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+                if (document.getElementById("f_email1").value.match(pattern)) {
+                    document.getElementById("f_email1").style.borderColor = "blue";
+                } else {
+                    document.getElementById("f_email1").style.borderColor = "red";
+                }
+            })
+        },
+    };
 
     let tables = {
         billChargeItems: null,
