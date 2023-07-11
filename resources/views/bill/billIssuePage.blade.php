@@ -354,7 +354,7 @@ $sch_month = request('sch_month') ?? date('m');
                     html += `<tr class="text-center" onclick="tables.onLeftClick(this, ${billId})">`
                     this.headers.forEach((head, idx) => {
                         let className = this.getClassNameByTabs(head['key']);
-                        html += `<td class="text-nowrap ${className}">${item[head['key']] === null ? "" : item[head['key']]}</td>`;
+                        html += `<td class="text-nowrap ${className}" style="cursor:pointer" >${item[head['key']] === null ? "" : item[head['key']]}</td>`;
                     });
                     html += `</tr>`;
                 });
