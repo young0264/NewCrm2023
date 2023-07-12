@@ -69,6 +69,7 @@ if (!Auth::check()) {
          * 계산서 발행
          */
         Route::post("/publish/list",[BillPublishController::class, "list"])->name("publishList");
+        Route::post("/publish/update",[BillPublishController::class, "update"])->name("publishUpdate");
 
 
         /**
