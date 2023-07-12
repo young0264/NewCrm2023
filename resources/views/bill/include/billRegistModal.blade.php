@@ -54,7 +54,7 @@
             <div class="modal-header">
                 <h3 class="fw-bold ">청구 대상 등록 설정</h3>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="regist-modal-body">
                 <h5 class="row mx-3">서비스 이용료나 공연권료 등 생성할 품목과 계산서 종류를 설정합니다. </h5>
                 <form id="billModalForm" name="billModalForm">
                     <input hidden="hidden" id="f_loginid" name="f_loginid">
@@ -64,7 +64,7 @@
                     <input hidden="hidden" id="f_bizid" name="f_bizid">
                     <input hidden="hidden" id="f_bizname" name="f_bizname">
                     {{-- 상단 공연정보 시작 --}}
-                    <div class="card-body">
+                    <div class="card-body" >
                         <div class="btn-group my-2">
                             <label class="btn-group fw-bold ">발행일</label>
                             <div class=" col-md-4 mx-2">

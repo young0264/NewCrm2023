@@ -40,14 +40,11 @@
 
             //f_interval_option에 해당하는 select-box의 option을 채워줍니다.
             interval_option_update(this.jsonOfBillInfo['f_pay_interval']);
+            console.log(this.jsonOfBillInfo);
 
             //input-box의 id와 value에 매칭되는 값을 넣어줍니다.
             billForm_keys.forEach(function (key) {
-                if (key === 'f_interval_option' || key === 'f_pay_interval') {
-                    document.querySelector("#" + key + "_update").value = update.jsonOfBillInfo[key];
-                }else{
-                    document.querySelector('#update-modal-body').querySelector("#" + key).value = update.jsonOfBillInfo[key];
-                }
+                document.querySelector("#" + key+"_update").value = update.jsonOfBillInfo[key];
             });
         },
 
@@ -61,7 +58,7 @@
             $("#update-modal-body input, #update-modal-body select").each(function () {
                 //f_issue_type의 id는 1개로 고정이므로 null값이 덮어씌워지기 전에 따로 처리해줍니다.
                 let subStr_id = "";
-                if (this.id === 'f_issue_type') {
+                if (this.id === 'f_issue_type_update') {
                     if ($(this).val()) {
                         data[this.id] = $(this).val();
                     }
@@ -69,7 +66,7 @@
                     subStr_id = this.id.substr(0, this.id.length-7);
                     data[subStr_id] = $(this).val();
                 }else{
-                    data[this.id] = $(this).val();
+                    data[this.name] = $(this).val();
                 }
             });
 
@@ -113,26 +110,26 @@
                             <div class="btn-group my-2">
                                 <label class="btn-group fw-bold">발행일</label>
                                 <div class="col-md-4 mx-1">
-                                    <input class="form-control alert-warning" id="f_issuedate" name="f_issuedate"
+                                    <input class="form-control alert-warning" id="f_issuedate_update" name="f_issuedate"
                                            placeholder="작성일자" disabled>
                                 </div>
                                 <div class="col-sm-2 mx-1">
-                                    <select id="f_tax_issue" name="f_tax_issue" class="btn btn-dark " disabled>
+                                    <select id="f_tax_issue_update" name="f_tax_issue" class="btn btn-dark " disabled>
                                         <option value="normal">계산서</option>
                                         <option value="cash">현금영수증</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-2 mx-1">
-                                    <input class="form-control" id="f_opendate" name="f_opendate" placeholder="매장오픈일" disabled>
+                                    <input class="form-control" id="f_opendate_update" name="f_opendate" placeholder="매장오픈일" disabled>
                                 </div>
                                 <div class="col-sm-2 mx-1">
-                                    <input class="form-control" id="f_closedate" name="f_closedate" placeholder="매장폐점일" disabled>
+                                    <input class="form-control" id="f_closedate_update" name="f_closedate" placeholder="매장폐점일" disabled>
                                 </div>
                             </div>
                             <div class="btn-group my-2">
 
                                 <div class=" col-sm-2 mx-4">
-                                    <select id="f_village" name="f_village" class="form-select text-black" disabled>
+                                    <select id="f_village_update" name="f_village" class="form-select text-black" disabled>
                                         <option value="">농어촌(선택)</option>
                                         <option value="farm">농촌</option>
                                         <option value="fishing">어촌</option>
@@ -140,12 +137,12 @@
                                 </div>
                                 <label >공연권료</label>
                                 <div class=" col-sm-2 mx-4 text-black">
-                                    <input class="form-control" id="f_pf_price" name="f_pf_price" placeholder="공연권료" disabled>
+                                    <input class="form-control" id="f_pf_price_update" name="f_pf_price" placeholder="공연권료" disabled>
 {{--                                                                    <input class="form-control " id="f_tax_type" value="03?" placeholder="4,000">--}}
                                 </div>
                                 <label class="mx-2">면적</label>
                                 <div class=" col-sm-1 text-black">
-                                    <input class="form-control" id="f_pyung" name="f_pyung" placeholder="60" disabled>
+                                    <input class="form-control" id="f_pyung_update" name="f_pyung" placeholder="60" disabled>
                                 </div>
                                 <span class="text-muted">(㎡)</span>
                             </div>
@@ -164,7 +161,7 @@
                                     매장명
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-control alert-secondary" id="f_shopname" name="f_shopname"
+                                    <input class="form-control alert-secondary" id="f_shopname_update" name="f_shopname"
                                            placeholder="매장명">
                                 </div>
                                 <div class="col-md-1 mx-2">
@@ -172,7 +169,7 @@
                                 </div>
                                 {{--                            업종? --}}
                                 <div class="col-md-3">
-                                    <select class="form-select alert-info text-black fw-bold" id="f_cb" name="f_cb">
+                                    <select class="form-select alert-info text-black fw-bold" id="f_cb_update" name="f_cb">
                                         <option value="">업종</option>
                                         <option value="COFFEE">커피</option>
                                         <option value="HEALTH">헬스장</option>
@@ -180,7 +177,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3 mx-2 ">
-                                    <select class="form-select alert-info text-black fw-bold" id="f_business" name="f_business">
+                                    <select class="form-select alert-info text-black fw-bold" id="f_business_update" name="f_business">
                                         <option value="">업태</option>
                                         <option value="업태option">업태option</option>
                                     </select>
@@ -192,18 +189,18 @@
                                     상호명
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-control alert-warning" id="f_cp_name" name="f_cp_name"
+                                    <input class="form-control alert-warning" id="f_cp_name_update" name="f_cp_name"
                                            placeholder="상호명">
                                 </div>
                                 <div class="col-md-1 mx-2 nav-align-right">
                                     담당자1
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-control alert-secondary" id="f_name1" name="f_name1"
+                                    <input class="form-control alert-secondary" id="f_name1_update" name="f_name1"
                                            placeholder="담당자1">
                                 </div>
                                 <div class="col-md-3 mx-2">
-                                    <select class="form-select text-black fw-bold" id="f_pay_type" name="f_pay_type">
+                                    <select class="form-select text-black fw-bold" id="f_pay_type_update" name="f_pay_type">
                                         <option value="">결제수단</option>
                                         <option value="BANKBOOK">무통장</option>
                                         <option value="CMS">카드</option>
@@ -216,7 +213,7 @@
                                     대표자명
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-control alert-warning" id="f_rep_name" name="f_rep_name"
+                                    <input class="form-control alert-warning" id="f_rep_name_update" name="f_rep_name"
                                            placeholder="대표자명">
                                 </div>
 
@@ -224,7 +221,7 @@
                                     연락처1
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-control alert-secondary " id="f_mobile1" name="f_mobile1"
+                                    <input class="form-control alert-secondary phoneNumber " id="f_mobile1_update" name="f_mobile1"
                                            placeholder="연락처1">
                                 </div>
 
@@ -251,7 +248,7 @@
                                     사업자번호
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-control alert-warning" id="f_registration_number"
+                                    <input class="form-control alert-warning" id="f_registration_number_update"
                                            name="f_registration_number" placeholder="사업자번호">
                                 </div>
 
@@ -259,12 +256,12 @@
                                     이메일1
                                 </div>
                                 <div class="col-md-3 alert-secondary">
-                                    <input class="form-control alert-secondary" id="f_email1" name="f_email1"
+                                    <input class="form-control alert-secondary email" id="f_email1_update" name="f_email1"
                                            placeholder="이메일1">
                                 </div>
 
                                 <div class="col-md-3 mx-2">
-                                    <select class="form-select text-black fw-bold" id="f_history" name="f_history">
+                                    <select class="form-select text-black fw-bold" id="f_history_update" name="f_history">
                                         <option value="">내역</option>
                                         <option value="내역2">내역2</option>
                                     </select>
@@ -276,19 +273,19 @@
                                     주소
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-control alert-secondary" id="f_addr" name="f_addr" placeholder="주소">
+                                    <input class="form-control alert-secondary" id="f_addr_update" name="f_addr" placeholder="주소">
                                 </div>
 
                                 <div class="col-md-1 mx-2 nav-align-right">
                                     담당자2
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-control alert-secondary" id="f_name2" name="f_name2"
+                                    <input class="form-control alert-secondary" id="f_name2_update" name="f_name2"
                                            placeholder="담당자2">
                                 </div>
 
                                 <div class="col-md-3 mx-2">
-                                    <select class="form-select text-black fw-bold" id="f_reply" name="f_reply">
+                                    <select class="form-select text-black fw-bold" id="f_reply_update" name="f_reply">
                                         <option value="">회신</option>
                                         <option value="회신2">회신2</option>
                                     </select>
@@ -300,7 +297,7 @@
                                     발행주소1
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-control  alert-secondary" id="f_public_addr1" name="f_public_addr1"
+                                    <input class="form-control  alert-secondary" id="f_public_addr1_update" name="f_public_addr1"
                                            placeholder="발행주소1">
                                 </div>
 
@@ -308,12 +305,12 @@
                                     연락처2
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-control alert-secondary" id="f_mobile2" name="f_mobile2"
+                                    <input class="form-control alert-secondary phoneNumber" id="f_mobile2_update" name="f_mobile2"
                                            placeholder="연락처2">
                                 </div>
 
                                 <div class="col-md-3 mx-2">
-                                    <select class="form-select text-black fw-bold" id="f_statement" name="f_statement">
+                                    <select class="form-select text-black fw-bold" id="f_statement_update" name="f_statement">
                                         <option value="">거래명세서</option>
                                         <option value="거래명세서2">거래명세서2</option>
                                     </select>
@@ -325,7 +322,7 @@
                                     발행주소2
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-control alert-secondary" id="f_public_addr2" name="f_public_addr2"
+                                    <input class="form-control alert-secondary" id="f_public_addr2_update" name="f_public_addr2"
                                            placeholder="발행주소2">
                                 </div>
 
@@ -333,12 +330,12 @@
                                     이메일2
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-control alert-secondary" id="f_email2" name="f_email2"
+                                    <input class="form-control alert-secondary email" id="f_email2_update" name="f_email2"
                                            placeholder="이메일2">
                                 </div>
 
                                 <div class="col-md-3 mx-2">
-                                    <select class="form-select text-black fw-bold" id="f_tax_bill" name="f_tax_bill">
+                                    <select class="form-select text-black fw-bold" id="f_tax_bill_update" name="f_tax_bill">
                                         <option value="">세금계산서</option>
                                         <option value="세금계산서2">세금계산서2</option>
                                     </select>
@@ -355,7 +352,7 @@
                                 </div>
                                 <div class="col-md-4"></div>
                                 <div class="col-md-10 float-end">
-                                    <input id="f_bigo" name="f_bigo" class="form-control alert-info" placeholder="비고">
+                                    <input id="f_bigo_update" name="f_bigo" class="form-control alert-info" placeholder="비고">
                                 </div>
                             </div>
 
@@ -364,15 +361,15 @@
                                     <div class="row my-1">
                                         <div class="col-md-1 text-black fw-bold">품목{{$i}}</div>
                                         <div class="col-md-2">
-                                            <input class="form-control" id="f_product{{$i}}" name="f_product{{$i}}"
+                                            <input class="form-control" id="f_product{{$i}}_update" name="f_product{{$i}}"
                                                    placeholder="이용료">
                                         </div>
                                         <div class="col-md-2">
-                                            <input class="form-control alert-warning" id="f_unitprice{{$i}}"
+                                            <input class="form-control alert-warning" id="f_unitprice{{$i}}_update"
                                                    name="f_unitprice{{$i}}" placeholder="단가{{$i}}">
                                         </div>
                                         <div class="col-md-2">
-                                            <select class="form-select alert-warning text-black fw-bold" id="f_issue_type"
+                                            <select class="form-select alert-warning text-black fw-bold" id="f_issue_type_update"
                                                     name="f_issue_type_prod{{$i}}">
                                                 <option value="">F_ISSUE_TYPE</option>
                                                 <option value="01">영수(01)</option>
@@ -380,7 +377,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-5">
-                                            <input class="form-control alert-info" id="f_bigo{{$i}}" name="f_bigo{{$i}}"
+                                            <input class="form-control alert-info" id="f_bigo{{$i}}_update" name="f_bigo{{$i}}"
                                                    placeholder="품목비고1">
                                         </div>
                                     </div>
