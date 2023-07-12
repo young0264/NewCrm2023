@@ -118,6 +118,13 @@
         //TODO
         onClientTableDraw() {
             let html = "";
+            if (!this.clientItems) {
+                html += `<tr class="text-center">`;
+                html += `    <td colspan="5">조회된 데이터가 없습니다.</td>`;
+                html += `</tr>`;
+                document.querySelector("#client_tbody").innerHTML = html;
+                return;
+            }
             this.clientItems.forEach((item, idx) => {
                 html += `<tr class="text-center" onclick="tables.onLeftClick(this)" style="cursor:pointer">`;
                 html += `    <td class="text-nowrap" id="f_loginid" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" >${item['f_loginid']}</td>`;
@@ -146,6 +153,7 @@
             //     alert("고객 정보를 입력해주세요.");
             //     return;
             // }
+            console.log(result);
             this.clientItems = JSON.parse(result);
             this.onClientTableDraw();
         },
@@ -161,6 +169,7 @@
             let result = js.ajax_call(method, url, data, dataType, false, "", true);
             this.billChargeItems = JSON.parse(result['items']);
             this.onChargeTableDraw();
+            this.onClientTableDraw();
         },
 
         onClientTableSearch: function () {
