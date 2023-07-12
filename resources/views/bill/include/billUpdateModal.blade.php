@@ -40,7 +40,6 @@
 
             //f_interval_option에 해당하는 select-box의 option을 채워줍니다.
             interval_option_update(this.jsonOfBillInfo['f_pay_interval']);
-            console.log(this.jsonOfBillInfo);
 
             //input-box의 id와 value에 매칭되는 값을 넣어줍니다.
             billForm_keys.forEach(function (key) {

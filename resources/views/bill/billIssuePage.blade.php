@@ -92,7 +92,7 @@ $sch_month = request('sch_month') ?? date('m');
              */
             dataSet: function () {
                 let method = "POST";
-                let url = "{{route("billListNEY")}}";
+                let url = "{{route("publishList")}}";
                 let data = this.data;
                 let dataType = "json";
                 let result = js.ajax_call(method, url, data, dataType, false, "", true);
@@ -482,8 +482,8 @@ $sch_month = request('sch_month') ?? date('m');
                                             </li>
                                             <?php for($i=1; $i<=12; $i++){ ?>
                                             <li class="page-item">
-                                                <button class="page-link" name="sch_month" value="<?= $i ?>"
-                                                        <?= $sch_month== $i ? 'style="background-color: #007bff; color: white"' : "" ?>> <?= $i ?> </button>
+                                                <button class="page-link" name="sch_month" value="<?= sprintf('%02d', $i) ?> "
+                                                        <?= $sch_month== sprintf('%02d', $i)  ? 'style="background-color: #007bff; color: white"' : "" ?>> <?= sprintf('%02d', $i) ?>  </button>
                                             </li>
                                             <?php } ?>
                                         </ul>

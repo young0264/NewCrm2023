@@ -64,7 +64,7 @@ class BillService{
     /**
      * 검색조건 wheres, bindings 생성
      */
-    public function makeSearchConditions($request){
+    public function makeSearchConditions($request): array {
         $wheres = "";
         $binds = [];
         $sch_year = $request->input('sch_year');
@@ -214,6 +214,7 @@ class BillService{
 
     /**
      * bill (이용료청구) 등록
+     * @throws Exception
      */
     public function billCreate(Request $request){
         DB::beginTransaction();
@@ -225,12 +226,11 @@ class BillService{
         Bill_PF_NEY::insertBill($billPFParams);
         Bill_NEY::insertBills($billData);
 
-        try {
-
-        } catch (Exception $e) {
-            DB::rollBack();
-            throw new Exception("계산서 등록에 실패하였습니다.");
-        }
+//        try {
+//        } catch (Exception $e) {
+//            DB::rollBack();
+//            throw new Exception("계산서 등록에 실패하였습니다.");
+//        }
         DB::commit();
     }
 

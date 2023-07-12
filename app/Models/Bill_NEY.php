@@ -16,8 +16,6 @@ class Bill_NEY extends Model{
 
     use HasFactory;
 
-    private static $use_table = "T_BILL_NEY";
-
     // 해당 테이블의 키 컬럼 처리
     public static $column = [
         "F_BILLID"=>"정산키", "F_OSP"=>"사이트구분", "F_ADMIN"=>"관리자페이지",
@@ -84,8 +82,8 @@ class Bill_NEY extends Model{
             }
         }catch (Exception $e) {
             DB::rollback();
-            throw new Exception($e->getMessage());
-//            throw new Exception("계산서 등록에 실패하였습니다.");
+//            throw new Exception($e->getMessage());
+            throw new Exception("계산서 등록에 실패하였습니다.");
         }
 
     }

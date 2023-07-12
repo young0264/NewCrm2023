@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BillController;
+use App\Http\Controllers\BillPublishController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\ExcelController;
@@ -62,8 +63,12 @@ if (!Auth::check()) {
         Route::post("/bill/findById", [BillController::class, "findBillById"])->name("findBillById");
         Route::post("/bill/billUpdate", [BillController::class, "billUpdate"])->name("billUpdate");
         Route::post("/bill/register", [BillController::class, "billRegisterProcess"])->name("billRegisterProcess");
-
         Route::get("/bill/issue2", [BillController::class, "issuePage"])->name("billIssue2");
+
+        /**
+         * 계산서 발행
+         */
+        Route::post("/publish/list",[BillPublishController::class, "list"])->name("publishList");
 
 
         /**
@@ -75,6 +80,8 @@ if (!Auth::check()) {
         Route::get("/deposit/match/2", [DepositController::class, "match2"])->name("depositMatch2");
         Route::post("/deposit/save", [DepositController::class, "fileUpload"])->name("depositUpload");
         Route::get("/deposit/download", [DepositController::class, "download"])->name("downloadExcel");
+
+
 
 
         /**
