@@ -160,7 +160,7 @@ $sch_month = request('sch_month') ?? date('m');
             },
 
             /**
-             * 컬럼 일괄 업데이터 버튼 클릭시
+             * 컬럼 일괄 업데이트 버튼 클릭시
              */
             billsUpdate: function () {
                 // form 데이터 json으로 변환
@@ -178,7 +178,7 @@ $sch_month = request('sch_month') ?? date('m');
                 jsonObject['billIdArr'] = this.billIdArrForUpdate;
 
                 let method = "POST";
-                let url = "{{route("billUpdate")}}";
+                let url = "{{route("publishUpdate")}}";
                 let dataType = "json";
                 js.ajax_call(method, url, jsonObject, dataType, false, "", true);
             },
@@ -471,21 +471,18 @@ $sch_month = request('sch_month') ?? date('m');
                                                     <select type="button" name="sch_year"
                                                             class="btn btn-outline-secondary dropdown-toggle"
                                                             aria-expanded="false">
-                                                        <option value="all" <?= $sch_year=="all" ? "selected" : "" ?>>전체</option>
-                                                        <?php
-                                                        //TODO : 현재 년도부터 5년전까지만 조회 , 상수->수정
-                                                        for($i=date("Y"); $i>date("Y")-5; $i--){ ?>
-                                                        <option value="<?= $i ?>" <?= $i==$sch_year ? 'selected' : "" ?> > <?= $i ?>년</option>
-                                                        <?php } ?>
+                                                        @for ($i=date("Y"); $i>date("Y")-5; $i--)
+                                                            <option value="<?= $i ?>" <?= $i==$sch_year ? 'selected' : "" ?> > <?= $i ?>년</option>
+                                                        @endfor
                                                     </select>
                                                 </div>
                                             </li>
-                                            <?php for($i=1; $i<=12; $i++){ ?>
-                                            <li class="page-item">
-                                                <button class="page-link" name="sch_month" value="<?= sprintf('%02d', $i) ?> "
-                                                        <?= $sch_month== sprintf('%02d', $i)  ? 'style="background-color: #007bff; color: white"' : "" ?>> <?= sprintf('%02d', $i) ?>  </button>
-                                            </li>
-                                            <?php } ?>
+                                            @for($i=1; $i<=12; $i++)
+                                                <li class="page-item">
+                                                    <button class="page-link" name="sch_month" value="<?= sprintf('%02d', $i) ?> "
+                                                            <?= $sch_month== sprintf('%02d', $i)  ? 'style="background-color: #007bff; color: white"' : "" ?>> <?= sprintf('%02d', $i) ?>  </button>
+                                                </li>
+                                            @endfor
                                         </ul>
                                     </nav>
                                     {{--1~12번 년월 선택 end--}}
