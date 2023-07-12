@@ -18,7 +18,7 @@ class ClientController extends BaseController{
 
     public function getStoreInfo(Request $request) {
         /**
-         * 검색어가 없을 경우 start
+         * 검색어가 없을 경우
          */
         if (!$request->filled("sch_val")) {
             return response()->json(
@@ -34,7 +34,7 @@ class ClientController extends BaseController{
         return response()->json(
             array(
                 "status"=>"ok",
-                "result"=>json_encode($items)
+                "result"=>($items == null ? "empty" : json_encode($items))
             )
         );
     }
