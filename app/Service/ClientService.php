@@ -41,7 +41,7 @@ class ClientService {
         $oracleResults = self::getStoreListByOracle($request);
         $mysqleResults = self::getStoreListByMysql($request);
         $result = array_merge($oracleResults, $mysqleResults);
-        return $result;
+        return $result ? $result : null;
     }
 
     /**

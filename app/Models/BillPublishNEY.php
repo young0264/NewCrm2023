@@ -14,7 +14,7 @@ class BillPublishNEY extends Model{
                     from
                         (
                         select
-                            f_billid, f_bizname, f_shopname, f_price, f_tax,
+                            f_id, f_billid, f_bizname, f_shopname, f_price, f_tax,
                             f_pay_type, f_pay_interval, f_history, f_reply, f_statement, f_tax_bill, f_issuedate,
                             f_registration_number, f_minor_business, f_cp_name, f_rep_name, f_addr, f_business, f_event, f_public_addr1, f_public_addr2,
                             f_name1, f_mobile1, f_email1, f_name2, f_mobile2, f_email2,
@@ -39,7 +39,8 @@ class BillPublishNEY extends Model{
 
     public static function updateBillPublish($parameters, $wheres){
         return DB::table('T_BILL_NEY_PUBLISH')
-            ->where($wheres)
+            ->whereIn('f_id', $wheres['f_id'])
             ->update($parameters);
     }
+
 }
