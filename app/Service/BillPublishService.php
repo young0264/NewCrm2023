@@ -36,18 +36,18 @@ class BillPublishService {
 
 
     public function makeSearchConditions($request): array {
+
         $wheres = "";
         $binds = [];
         $sch_year =  $request->input('sch_year') ?? date('Y');
-        $sch_month =  $request->input('sch_month') ?? date('Y');
+        $sch_month =  $request->input('sch_month') ?? date('m');
         $f_ym = $sch_year.$sch_month;
 
         /**
          * 년도, 월 클릭시 검색 where절 설정
          */
-        $wheres .= "and f_ym = :f_ym";
+        $wheres .= " and f_ym = :f_ym";
         $binds += array('f_ym' => $f_ym);
-
         /**
          * select-box 검색부분 where절 설정
          */
@@ -64,7 +64,7 @@ class BillPublishService {
         foreach (self::$select_input_arr as $ex_item) {
             $item = str_replace("searchInput_", "", $ex_item);
             if ($request->has($ex_item) and $request->filled($ex_item) and $request->input($ex_item) !== 'undefined') {
-                $wheres .= "and ({$item} like :{$item})";
+                $wheres .= " and ({$item} like :{$item})";
                 $binds += array($item =>  "%" . $request->input($ex_item) . "%");
             }
         }

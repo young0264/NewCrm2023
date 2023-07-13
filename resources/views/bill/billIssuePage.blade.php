@@ -5,6 +5,7 @@ $sch_year = request('sch_year') ?? date('Y');
 $sch_month = request('sch_month') ?? date('m');
 ?>
     <script type="text/javascript">
+        let urlParams = new URLSearchParams(location.search);
         let checkbox = {
             // (input.checkbox : id값 , 숨길 div : id값)
             showByChecked: function (checkboxId, isShowDivId) {
@@ -62,7 +63,7 @@ $sch_month = request('sch_month') ?? date('m');
         let tables = {
             headers: null,
             items: null,
-            data: {"sch_year": "{{$sch_year}}", "sch_month": "{{$sch_month}}"},
+            data: {"sch_year": urlParams.get('sch_year'), "sch_month":urlParams.get('sch_month')},
             selectOptionData: {},
             searchParams: {},
             hideSearchKeyArr: [],
@@ -253,7 +254,7 @@ $sch_month = request('sch_month') ?? date('m');
             submitInput: function () {
                 let form = document.getElementById("search_form");
                 let formData = new FormData(form);
-                let searchParams = {};
+                let searchParams = {"sch_year":urlParams.get('sch_year'), "sch_month":urlParams.get('sch_month')};
 
                 for (let [key, value] of formData.entries()) {
                     let sanitizedKey = key.replace(/'/g, ''); // 작은따옴표(') 제거
@@ -381,6 +382,7 @@ $sch_month = request('sch_month') ?? date('m');
                 this.showInputHideSelectBox('update',this.hideUpdateKeyArr);
             },
 
+            //TODO
             /**
              * hideSearchKeyArr 해당하는
              * select-option box 숨기기,
@@ -606,7 +608,6 @@ $sch_month = request('sch_month') ?? date('m');
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
