@@ -67,7 +67,7 @@ $sch_month = request('sch_month') ?? date('m');
             searchParams: {},
             hideSearchKeyArr: [],
             hideUpdateKeyArr: [],
-            billIdArrForUpdate: [], //billIdArrForUpdate : 업데이트할 billid 배열
+            publishIdArrForUpdate: [], //billIdArrForUpdate : 업데이트할 billid 배열
             tab1: new Set(["f_price", "f_pay_type", "f_pay_interval", "f_history",
                 "f_reply", "f_statement", "f_tax_bill", "f_issuedate"]),
             tab2: new Set(["f_registration_number",
@@ -175,7 +175,7 @@ $sch_month = request('sch_month') ?? date('m');
                     }
                 }
                 //bill 다중 업데이트는 업데이트 대상에 대한 billId 배열을 넘겨줘야함
-                jsonObject['billIdArr'] = this.billIdArrForUpdate;
+                jsonObject['publishIdArr'] = this.publishIdArrForUpdate;
 
                 let method = "POST";
                 let url = "{{route("publishUpdate")}}";
@@ -350,8 +350,8 @@ $sch_month = request('sch_month') ?? date('m');
             drawTableBody() {
                 let html = "";
                 this.items.forEach((item, idx) => {
-                    let billId = item['f_billid']
-                    html += `<tr class="text-center" onclick="tables.onLeftClick(this, ${billId})">`
+                    let f_id = item['f_id']
+                    html += `<tr class="text-center" onclick="tables.onLeftClick(this, ${f_id})">`
                     this.headers.forEach((head, idx) => {
                         let className = this.getClassNameByTabs(head['key']);
                         html += `<td class="text-nowrap ${className}" style="cursor:pointer" >${item[head['key']] === null ? "" : item[head['key']]}</td>`;
@@ -404,12 +404,12 @@ $sch_month = request('sch_month') ?? date('m');
              * row의 classList에 selected 표시
              * billIdArrForUpdate : 업데이트할 billid 배열
              */
-            onLeftClick:function(obj, f_billId) {
+            onLeftClick:function(obj, f_id) {
                 if (obj.classList.contains('selected')) {
-                    tables.billIdArrForUpdate.pop(f_billId);
+                    tables.publishIdArrForUpdate.pop(f_id);
                     obj.classList.remove("selected");
                 } else {
-                    tables.billIdArrForUpdate.push(f_billId);
+                    tables.publishIdArrForUpdate.push(f_id);
                     obj.classList.add("selected");
                 }
             },
