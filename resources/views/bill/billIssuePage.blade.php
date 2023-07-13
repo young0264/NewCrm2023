@@ -206,7 +206,7 @@ $sch_month = request('sch_month') ?? date('m');
                 this.searchParams = jsonObject;
 
                 let method = "POST";
-                let url = "{{route("billListNEY")}}";
+                let url = "{{route("publishList")}}";
                 let data = jsonObject;
                 let dataType = "json";
                 let result = js.ajax_call(method, url, data, dataType, false, "", true);
@@ -223,14 +223,14 @@ $sch_month = request('sch_month') ?? date('m');
              * input box, 전체 검색
              */
             onSearch: function () {
-                let sch_val =  document.getElementById('sch_key').value
                 let data = this.data;
-                let method = "POST";
-                let url = "{{route("billListNEY")}}";
-                let dataType = "json";
-                let result = js.ajax_call(method, url, data, dataType, false, "", true);
+                let sch_val =  document.getElementById('sch_key').value
                 data['sch_key'] = "tonghap";
                 data['sch_val'] = sch_val;
+                let method = "POST";
+                let url = "{{route("publishList")}}";
+                let dataType = "json";
+                let result = js.ajax_call(method, url, data, dataType, false, "", true);
                 this.headers = JSON.parse(result['header']);
                 this.items = JSON.parse(result['items']);
 
@@ -262,7 +262,7 @@ $sch_month = request('sch_month') ?? date('m');
                 this.searchParams = searchParams;
 
                 let method = "POST";
-                let url = "{{route("billListNEY")}}";
+                let url = "{{route("publishList")}}";
                 let data = searchParams;
                 let dataType = "json";
 
