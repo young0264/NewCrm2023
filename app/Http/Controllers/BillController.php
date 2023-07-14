@@ -81,17 +81,10 @@ class BillController extends BaseController {
     }
 
     /**
-     * bill 다중 업데이트
+     * bill 업데이트
      */
        public function billUpdate(Request $request){
-            //bill 다중 업데이트 일 경우
-           $result = [];
-           if ($request->input('billIdArr')) {
-               $result = $this->billService->billMultiUpdate($request->input());
-           }else{
-               $result = $this->billService->billSingleUpdate($request->input());
-           }
-
+           $result = $this->billService->billSingleUpdate($request->input());
             if (!$result['status']) {
                 return response()->json([
                     "status" => "error",

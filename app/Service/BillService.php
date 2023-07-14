@@ -39,27 +39,8 @@ class BillService{
         'searchInput_f_product3', 'searchInput_f_product4', 'searchInput_f_public_addr1', 'searchInput_f_public_addr2', 'searchInput_f_registration_number',
         'searchInput_f_rep_name', 'searchInput_f_reply', 'searchInput_f_shopname', 'searchInput_f_statement', 'searchInput_f_tax_bill');
 
-    private static $columns_number_type = array(
-        'f_price', 'f_tax', 'f_day1', 'F_MINOR_BUSINESS', 'F_UNITPRICE1', 'F_COUNT1', 'F_PRICE1', 'F_TAX1',
-        'F_UNITPRICE2', 'F_COUNT2', 'F_PRICE2', 'F_TAX2', 'F_DAY3', 'F_DAY4', 'F_UNITPRICE3', 'F_COUNT3',
-        'F_PRICE3', 'F_BILL_GROUPID', 'F_TAX3', 'F_UNITPRICE4', 'F_COUNT4', 'F_PRICE4', 'F_TAX4', 'f_regid'
-    );
 
-    public function findMysqlClientById($client_id, $f_company) {
-        $mysql_f_company = Common::$osp_convert_oracle_to_mysql[$f_company];
-        $client_info= BRClient::findByClientId($client_id, $mysql_f_company);
 
-        if (!$client_info) {
-            return array();
-        } return $client_info;
-    }
-
-    public function findOracleClientById($f_loginid, $f_company) {
-        $client_info = SCShop::findByLoginId($f_loginid, $f_company);
-        if (!$client_info) {
-            return array();
-        } return $client_info;
-    }
 
     /**
      * 검색조건 wheres, bindings 생성
@@ -67,41 +48,6 @@ class BillService{
     public function makeSearchConditions($request): array {
         $wheres = "";
         $binds = [];
-        $sch_year = $request->input('sch_year');
-        $sch_month = $request->input('sch_month');
-
-        /**
-         * 년도, 월 클릭시 검색 where절 설정
-         */
-        if ($sch_year != "" and $sch_year != 'all') {
-            $binds += array('sch_year' => $sch_year);
-            $wheres .= " and (EXTRACT(YEAR FROM F_REGDATE) = :sch_year)";
-        }
-        if ($sch_month != "" and $sch_month != 'all') {
-            $binds += array('sch_month' => $sch_month);
-            $wheres .= " and (EXTRACT(MONTH FROM F_REGDATE) = :sch_month)";
-        }
-
-        /**
-         * select-box 검색부분 where절 설정
-         */
-        foreach (self::$f_billForm_param as $item) {
-            if ($request->has($item) and $request->filled($item)) {
-                $wheres .= " and ({$item} = :{$item})";
-                $binds += array($item => $request->input($item));
-            }
-        }
-
-        /**
-         * select-box내 직접입력 input으로 검색, where절 설정
-         */
-        foreach (self::$select_input_arr as $ex_item) {
-            $item = str_replace("searchInput_", "", $ex_item);
-            if ($request->has($ex_item) and $request->filled($ex_item) and $request->input($ex_item) !== 'undefined') {
-                $wheres .= "and ({$item} like :{$item})";
-                $binds += array($item =>  "%" . $request->input($ex_item) . "%");
-            }
-        }
 
         /**
          * input 컬럼 검색
@@ -125,29 +71,11 @@ class BillService{
             $wheres .= ")";
             $binds += array("sch_val" => "%" . $request->input('sch_val') . "%");
         }
+
         return [
             "wheres"=>$wheres,
             "binds"=>$binds
         ];
-    }
-
-    private function makeTonghapConditions($request, string &$wheres, array &$binds): void{
-        if ($request->has("sch_key") and $request->filled("sch_key")
-            and $request->has("sch_val") and $request->filled("sch_val")) {
-
-            if ($request->input("sch_key") == "tonghap") {
-                $wheres .= "and
-                            (f_bizname like :sch_val
-                                or f_shopname like :sch_val
-                                or f_registration_number like :sch_val
-                                or f_pay_interval like :sch_val
-                                or f_price like :sch_val
-                            )";
-            } else {
-                $wheres .= "and {$request->input("sch_key")} like :sch_val";
-            }
-            $binds += array("sch_val" => "%" . $request->input("sch_val") . "%");
-        }
     }
 
 
@@ -174,24 +102,6 @@ class BillService{
     /**
      * bill. 이용료청구(여러개) 수정
      */
-    public function billMultiUpdate(array $request){
-        DB::beginTransaction();
-
-        foreach ($request['billIdArr'] as $billId) {
-            $new_request = $request;
-            $new_request['f_billId'] = $billId;
-            $result = self::billSingleUpdate($new_request);
-
-            if (!$result['status']) {
-                return response()->json([
-                    "status" => "error",
-                    "msg" => $result['msg']
-                ]);
-            }
-        }
-        DB::commit();
-        return array("status"=>true, "수정에 성공하였습니다.");
-    }
 
     public function findBillById(Request $request){
         $bill_items = Bill_NEY::findBillById($request->input('billId'));
