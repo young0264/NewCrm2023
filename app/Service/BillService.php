@@ -208,7 +208,7 @@ class BillService{
      * t_bill_pf 테이블 column 정보
      */
     private static function getBillPFInfo(){
-        return array("f_loginid", "f_tax_issue", "f_pf_price", "f_pyung", "f_village", "f_issuedate", "f_opendate", "f_closedate",);
+        return array("f_loginid", "f_tax_issue", "f_pf_price", "f_pyung", "f_village", "f_issuedate", "f_opendate", "f_closedate");
     }
 
     /**

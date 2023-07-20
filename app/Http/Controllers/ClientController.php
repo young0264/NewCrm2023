@@ -45,7 +45,7 @@ class ClientController extends BaseController{
     }
 
     public static function chargeMember(Request $request){
-        return view('charge.chargeRegistView');
+        return view('charge.member');
     }
 
     public static function chargeNonMember(Request $request){

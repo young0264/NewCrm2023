@@ -46,14 +46,17 @@ if (!Auth::check()) {
         /**
          * 이용료청구
          */
-        Route::get("/charge/NonMember", [ClientController::class, "chargeNonMemberRegist"])->name("chargeNonMemberRegist");
         Route::get("/charge/member", [ClientController::class, "chargeMember"])->name("chargeMember");
+        Route::get("/charge/NonMember", [ClientController::class, "chargeNonMemberRegist"])->name("chargeNonMemberRegist");
         Route::post("/charge/storeInfo", [ClientController::class, "getStoreInfo"])->name("getStoreInfo");
 
         /**
          * 계산서
          */
-        Route::get("/bill/issue", [BillController::class, "issue"])->name("billIssue");
+//        Route::get("/bill/issue", [BillController::class, "issue"])->name("billIssue");
+        Route::get("/bill/issue2", [BillController::class, "issue"])->name("billIssue");
+
+
         Route::get("/bill/form", [BillController::class, "form"])->name("billForm");
         Route::get("/bill/form/sub", [BillController::class, "printForm"])->name("printBillForm");
         Route::get("/bill/integrate", [BillController::class, "integrate"])->name("billIntegratedCollection");
@@ -63,7 +66,7 @@ if (!Auth::check()) {
         Route::post("/bill/findById", [BillController::class, "findBillById"])->name("findBillById");
         Route::post("/bill/billUpdate", [BillController::class, "billUpdate"])->name("billUpdate");
         Route::post("/bill/register", [BillController::class, "billRegisterProcess"])->name("billRegisterProcess");
-        Route::get("/bill/issue2", [BillController::class, "issuePage"])->name("billIssue2");
+
 
         /**
          * 계산서 발행

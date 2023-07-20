@@ -143,11 +143,11 @@ class BillController extends BaseController {
         }
     }
 
+//    public static function issue(){
+//        return view("bill.billIssueView");
+//    }
     public static function issue(){
-        return view("bill.billIssueView");
-    }
-    public static function issuePage(){
-        return view("bill.billIssuePage");
+        return view("bill.billIssue");
     }
 
     public static function form(){

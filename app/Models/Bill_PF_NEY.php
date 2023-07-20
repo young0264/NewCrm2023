@@ -15,7 +15,7 @@ class Bill_PF_NEY extends Model{
 
     public static function insertBill($parameters) {
         try {
-            DB::table('T_BILL_PF_NEY')->insert($parameters);
+            DB::table(self::$t_table)->insert($parameters);
         } catch (Exception $e) {
             DB::rollBack();
 //            throw new Exception($e->getMessage());
