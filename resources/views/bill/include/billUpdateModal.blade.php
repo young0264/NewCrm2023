@@ -237,7 +237,7 @@
                                     </select>
                                 </div>
 {{--                                <span class="badge badge-center bg-label-secondary">0</span>--}}
-                                <select class="form-select-sm bg-label-secondary" id="f_interval_option_update" name="f_interval_option">
+                                <select class="form-select-sm bg-label-secondary" id="f_interval_option_update" name="f_interval_option" style="display: none">
 
                                 </select>
                             </div>
