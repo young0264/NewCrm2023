@@ -9,11 +9,14 @@
     function interval_option() {
         let f_pay_interval = document.getElementById("f_pay_interval").value;
         let f_interval_option = document.getElementById("f_interval_option");
-        // let f_interval_option = document.querySelector("#f_interval_option");
         let pay_interval_arr = {"M":0, "Q":2, "H":5, "Y":11, "T":3 };
         let html = "";
-
+        if (f_pay_interval === "-1") {
+            document.getElementById("f_interval_option").style.display = "none";
+            return;
+        }
         for (let i = 0; i <= pay_interval_arr[f_pay_interval]; i++) {
+            document.getElementById("f_interval_option").style.display = "";
             html += `<option value=${i.toString().padStart(2, '0')}>${i.toString().padStart(2, '0')}</option>`;
         }
         f_interval_option.innerHTML = html;
@@ -198,7 +201,7 @@
                             <div class="col-md-3 mx-2">
                                 <select class="form-select text-black fw-bold" id="f_pay_interval"
                                         name="f_pay_interval" onchange="interval_option(this.value)">
-                                    <option value="">결제주기</option>
+                                    <option value="-1">결제주기</option>
                                     <option value="M">월납</option>
                                     <option value="Q">분기납</option>
                                     <option value="T">삼기납</option>
@@ -207,7 +210,7 @@
                                     <option value="E">기타</option>
                                 </select>
                             </div>
-                            <select class="form-select-sm bg-label-secondary" id="f_interval_option" name="f_interval_option">
+                            <select class="form-select-sm bg-label-secondary" id="f_interval_option" name="f_interval_option" style="display: none">
                             </select>
                         </div>
 
