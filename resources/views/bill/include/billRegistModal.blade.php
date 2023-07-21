@@ -21,6 +21,12 @@
 
     let register = {
         BillFormRegister: function () {
+            const checkbox = document.getElementById("bill_immediate");
+            if (checkbox.checked) {
+                checkbox.value = "true";
+            } else {
+                checkbox.value = "false";
+            }
             let method = "POST";
             let url = "{{route("billRegisterProcess")}}";
             let data = $('#billModalForm').serialize();
@@ -397,7 +403,7 @@
                         <div class="btn-group">
                             <div class="col-md-12">
                                 <label>
-                                    <input class="form-check-input me-1" type="checkbox">계산서 즉시 생성
+                                    <input class="form-check-input me-1" type="checkbox" id="bill_immediate" name="bill_immediate" value="true">계산서 즉시 생성
                                 </label>
                             </div>
                             <div class="col-md-6 text-center mx-1">

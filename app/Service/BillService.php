@@ -2,12 +2,10 @@
 namespace App\Service;
 use App\Models\Bill_NEY;
 use App\Models\Bill_PF_NEY;
-use App\Models\BRClient;
-use App\Models\SCShop;
+use App\Models\BillPublishNEY;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Helpers\Common;
 
 class BillService{
 
@@ -131,11 +129,15 @@ class BillService{
         $tax_type0306 = $request->input('tax_type0306') === 'on' ? 'on' : 'off';
         $tax_type01 = $request->input('tax_type01') === 'on' ? 'on' : 'off';
         $billPFParams = self::makeToAssocidateArray($request->input(), self::getBillPFInfo());
-        $billData = self::getBillTotalData($tax_type01, $request, $tax_type0306);
+        $billsData = self::getBillTotalData($tax_type01, $request, $tax_type0306);
 
         Bill_PF_NEY::insertBill($billPFParams);
-        Bill_NEY::insertBills($billData);
+        Bill_NEY::insertBills($billsData);
 
+        if ($request->input('bill_immediate') == "true") {
+            //202301
+            BillPublishNEY::insertBillPublish($billsData,date('Ym'));
+        };
         DB::commit();
     }
 

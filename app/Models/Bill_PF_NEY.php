@@ -13,12 +13,12 @@ class Bill_PF_NEY extends Model{
 
     private static $t_table = "T_BILL_PF_NEY";
 
-    public static function insertBill($parameters) {
+    public static function insertBill($params) {
         try {
-            DB::table(self::$t_table)->insert($parameters);
+            DB::table(self::$t_table)->insert($params);
         } catch (Exception $e) {
             DB::rollBack();
-//            throw new Exception($e->getMessage());
+            print_r($e->getMessage());
             throw new Exception("PF계산서 등록에 실패하였습니다.");
         }
     }
