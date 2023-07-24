@@ -6,7 +6,8 @@ $sch_month = request('sch_month') ?? date('m');
 ?>
     <script type="text/javascript">
         let sch_year = "";
-        let sch_month = "01";
+        let current_month = new Date().getMonth() + 1;
+        let sch_month = current_month.toString().padStart(2, '0'); //현재 month를 2자리 문자형으로 바꾸기
         let table_head = Array();
         let selected_tab = "";
 
@@ -533,7 +534,8 @@ $sch_month = request('sch_month') ?? date('m');
 {{--                                                    <button class="page-link" name="sch_month" value="<?= sprintf('%02d', $i) ?> "<?= $sch_month== sprintf('%02d', $i)  ? 'style="background-color: #007bff; color: white"' : "" ?>> <?= sprintf('%02d', $i) ?>  </button>--}}
                                                     <button class="page-link" id="sch_month<?=sprintf('%02d', $i)?>" name="sch_month"
                                                             onclick="tables.onYmChange('<?= sprintf('%02d', $i) ?>')"
-                                                    ><?= sprintf('%02d', $i) ?>  </button>
+                                                            ><?= sprintf('%02d', $i) ?>
+                                                    </button>
                                                 </li>
                                             @endfor
                                         </ul>
