@@ -127,7 +127,6 @@
                 return;
             }
             this.clientItems.forEach((item, idx) => {
-
                 html += `<tr class="text-center" onclick="tables.onLeftClick(this)" style="cursor:pointer">`;
                 html += `    <td class="text-nowrap" id="f_loginid" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" >${item['f_loginid']}</td>`;
                 html += `    <td class="text-nowrap" id="f_bizname" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_bizname'] === null ? "" : item['f_bizname']}</td>`;

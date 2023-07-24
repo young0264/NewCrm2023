@@ -117,7 +117,6 @@
 
         //TODO
         onClientTableDraw() {
-
             let html = "";
             if (!this.clientItems) {
                 html += `<tr class="text-center">`;
@@ -151,11 +150,11 @@
             let data = this.clientData;
             let dataType = "json";
             let result = js.ajax_call(method, url, data, dataType, false, "", true);
-
             if (result !== "empty") {
                 this.clientItems = JSON.parse(result);
-                this.onClientTableDraw();
             }
+            this.onClientTableDraw();
+
         },
 
         /**
@@ -235,7 +234,7 @@
 </script>
     <div class="container-xxl flex-grow-1 container-p-y" >
         <h4 class="fw-bold py-3 mb-4">
-            <span class="text-muted fw-light">정산 / 이용료 청구 / </span>청구 대상 등록
+            <span class="text-muted fw-light">정산 / 이용료 청구 / </span>청구 대상 등록1
         </h4>
 
         <div class="form-floating">
