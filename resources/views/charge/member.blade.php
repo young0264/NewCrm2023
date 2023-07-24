@@ -120,7 +120,7 @@
             let html = "";
             if (!this.clientItems) {
                 html += `<tr class="text-center">`;
-                html += `    <td colspan="5">조회된 데이터가 없습니다.</td>`;
+                html += `    <td colspan="4">조회된 데이터가 없습니다.</td>`;
                 html += `</tr>`;
                 document.querySelector("#client_tbody").innerHTML = html;
                 return;
@@ -192,7 +192,15 @@
         },
 
         onChargeTableBodyDraw:function() {
+            alert(123);
             let html = "";
+            if (this.billChargeItems.length===0) {
+                html += `<tr class="text-center">`;
+                html += `    <td colspan="7" >조회된 데이터가 없습니다.</td>`;
+                html += `</tr>`;
+                document.querySelector("#charge_tbody").innerHTML = html;
+                return;
+            }
             this.billChargeItems.forEach((item, idx) => {
                 html += `<tr class="text-center">`;
                 html += `    <td class="text-nowrap">${item['f_billid']}</td>`;

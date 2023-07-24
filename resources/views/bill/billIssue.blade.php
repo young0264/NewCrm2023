@@ -358,6 +358,14 @@ $sch_month = request('sch_month') ?? date('m');
              */
             drawTableBody() {
                 let html = "";
+                if (this.items.length === 0) {
+                    alert(123);
+                    html += `<tr class="text-center">`
+                    html += `    <td>조회된 데이터가 없습니다.</td>`;
+                    html += `</tr>`;
+                    return html;
+                }
+                
                 this.items.forEach((item, idx) => {
                     let f_id = item['f_id']
                     html += `<tr class="text-center" onclick="tables.onLeftClick(this, ${f_id})">`
