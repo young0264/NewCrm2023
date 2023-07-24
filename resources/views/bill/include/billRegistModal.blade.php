@@ -82,7 +82,7 @@
                                 <input class="form-control alert-warning" id="f_issuedate" name="f_issuedate"
                                        placeholder="작성일자">
                             </div>
-                            <div class="col-sm-2 mx-2">
+                            <div class="col-md-4 mx-2" >
                                 <select class="form-select alert-info text-black fw-bold" id="f_tax_issue" name="f_tax_issue">
                                     <option value="normal">계산서</option>
                                     <option value="cash">현금영수증</option>
@@ -91,15 +91,16 @@
                                 {{--                                    --}}
                                 {{--                                </select>--}}
                             </div>
+
+                        </div>
+                        <div class="btn-group my-2">
+                            {{--                            --}}
                             <div class="col-sm-2 mx-2">
                                 <input class="form-control" id="f_opendate" name="f_opendate" placeholder="매장오픈일">
                             </div>
                             <div class="col-sm-2 mx-2">
                                 <input class="form-control" id="f_closedate" name="f_closedate" placeholder="매장폐점일">
                             </div>
-                        </div>
-                        <div class="btn-group my-2">
-                            {{--                            --}}
                             <div class=" col-sm-2 mx-4">
                                 <select id="f_village" name="f_village" class="form-select text-black">
                                     <option value="">농어촌(선택)</option>

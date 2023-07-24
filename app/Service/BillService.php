@@ -167,6 +167,7 @@ class BillService{
             if (array_key_exists($key, $request)) {
                 $associate_arr[strtoupper($key)] = $request[$key];
             }
+            //TODO : f_billid는 select sequence 조회, return 값입력
         }
         return $associate_arr;
     }

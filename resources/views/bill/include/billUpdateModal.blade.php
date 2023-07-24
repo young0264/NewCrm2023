@@ -112,21 +112,20 @@
                                     <input class="form-control alert-warning" id="f_issuedate_update" name="f_issuedate"
                                            placeholder="작성일자" disabled>
                                 </div>
-                                <div class="col-sm-2 mx-1">
-                                    <select id="f_tax_issue_update" name="f_tax_issue" class="btn btn-dark " disabled>
+                                <div class="col-md-4 mx-2">
+                                    <select class="form-select alert-info text-black fw-bold" id="f_tax_issue_update" name="f_tax_issue" class="btn btn-dark " disabled>
                                         <option value="normal">계산서</option>
                                         <option value="cash">현금영수증</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="btn-group my-2">
                                 <div class="col-sm-2 mx-1">
                                     <input class="form-control" id="f_opendate_update" name="f_opendate" placeholder="매장오픈일" disabled>
                                 </div>
                                 <div class="col-sm-2 mx-1">
                                     <input class="form-control" id="f_closedate_update" name="f_closedate" placeholder="매장폐점일" disabled>
                                 </div>
-                            </div>
-                            <div class="btn-group my-2">
-
                                 <div class=" col-sm-2 mx-4">
                                     <select id="f_village_update" name="f_village" class="form-select text-black" disabled>
                                         <option value="">농어촌(선택)</option>
