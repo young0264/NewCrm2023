@@ -8,6 +8,7 @@ $sch_month = request('sch_month') ?? date('m');
         let sch_year = "";
         let sch_month = "01";
         let table_head = Array();
+        let selected_tab = "";
 
         window.oncontextmenu = function () {
             return false;
@@ -165,8 +166,11 @@ $sch_month = request('sch_month') ?? date('m');
              * tab선택시 노출되는 table data 변경
              */
             onTabChange: function (obj) {
+                if (obj != null) {
+                    selected_tab = $(obj).data("tab");
+                }
                 $(".table_tab").hide();
-                $("." + $(obj).data("tab")).show();
+                $("." + selected_tab).show();
             },
 
             /**
@@ -229,6 +233,7 @@ $sch_month = request('sch_month') ?? date('m');
                 this.selectOptionsInit()
                 this.onDraw();
                 this.showInputHideSelectBox('search', this.hideSelectSearchKeys);
+                this.onTabChange();
             },
 
             /**
@@ -248,6 +253,7 @@ $sch_month = request('sch_month') ?? date('m');
 
                 this.selectOptionsInit()
                 this.onDraw();
+                this.onTabChange();
             },
 
             /**
@@ -365,7 +371,7 @@ $sch_month = request('sch_month') ?? date('m');
                     html += `</tr>`;
                     return html;
                 }
-                
+
                 this.items.forEach((item, idx) => {
                     let f_id = item['f_id']
                     html += `<tr class="text-center" onclick="tables.onLeftClick(this, ${f_id})">`
