@@ -366,7 +366,6 @@ $sch_month = request('sch_month') ?? date('m');
             drawTableBody() {
                 let html = "";
                 if (this.items.length === 0) {
-                    alert(123);
                     html += `<tr class="text-center">`
                     html += `    <td>조회된 데이터가 없습니다.</td>`;
                     html += `</tr>`;

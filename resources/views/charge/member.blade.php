@@ -192,7 +192,6 @@
         },
 
         onChargeTableBodyDraw:function() {
-            alert(123);
             let html = "";
             if (this.billChargeItems.length===0) {
                 html += `<tr class="text-center">`;

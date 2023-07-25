@@ -91,6 +91,9 @@
     <!-- Page -->
     <link rel="stylesheet" href="../assets/vendor/css/pages/page-auth.css"/>
 
+    {{--    jquery --}}
+    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('scss/custom.css')}}" />
     <!-- Custom JS  -->
