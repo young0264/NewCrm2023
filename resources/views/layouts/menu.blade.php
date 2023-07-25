@@ -1,3 +1,60 @@
+
+<script type="text/javascript" >
+    $(document).ready(function() {
+        const activeMenu = getCookie("active-menu");
+        const menuSub = getCookie("menu-sub");
+        if (activeMenu) {
+            $(".menu-item").removeClass("active");
+            $(activeMenu).addClass("active");
+        }
+        if (menuSub) {
+            $(".menu-item").removeClass("open");
+            $(menuSub).addClass("open");
+        }
+
+        // menu-toggle 요소에 대한 클릭 이벤트 리스너 추가
+        $('.menu-toggle').click(function() {
+            console.log("open toggle");
+            // 하위 메뉴를 토글하여 열고 닫기
+            const menuSub = $(this).siblings('.menu-sub');
+            if (menuSub.hasClass('open')) {
+                menuSub.removeClass('open');
+                menuSub.slideUp(); //메뉴 닫기
+                setCookie("menu-sub", ""); // 하위 메뉴가 닫히면 쿠키 값 제거
+            } else {
+                // $('.menu-sub').slideUp(); //다른 toggle 선택할때 기존 toggle 닫을지 말지
+                // $('.menu-sub').removeClass('open');
+                menuSub.slideDown();
+                menuSub.addClass('open');
+                setCookie("menu-sub", "#" + $(this).closest('.menu-item').attr("id"));
+            }
+        });
+
+        $('.menu-link').click(function() {
+            console.log("menu-link");
+            $('.menu-item').removeClass('active'); // 모든 메뉴 항목에서 "active" 클래스 제거
+            $(this).closest('.menu-item').addClass('active'); // 클릭한 요소가 속한 메뉴 항목에 "active" 클래스 추가
+            setCookie("active-menu", "#" + $(this).closest('.toggle-sub').attr("id"));
+        });
+    });
+    // 쿠키 설정 함수
+    function setCookie(name, value) {
+        document.cookie = name + "=" + (value || "") + "; path=/";
+    }
+
+    // 쿠키 가져오기 함수
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+</script>
+
 <!-- 메뉴 리스트 -->
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
@@ -39,51 +96,59 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">정산관리</span>
         </li>
-        <li class="menu-item active">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <li class="menu-item" id="charge">
+            <a href="javascript:void(0);" class="menu-link menu-toggle ">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
                 <div data-i18n="Account Settings">이용료 청구</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item ">
-                    <a href="{{route('chargeMember')}}" class="menu-link">
+                <li class="menu-item toggle-sub active" id="charge_account">
+                    <a href="{{route('chargeMember')}}" class="menu-link ">
                         <div data-i18n="Account">청구 대상 등록</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item toggle-sub" id="charge_guest">
                     <a href="{{route('chargeNonMemberRegist')}}" class="menu-link">
                         <div data-i18n="Notifications">비회원 청구 대상 등록</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item toggle-sub" id="charge_search">
                     <a href="pages-account-settings-connections.html" class="menu-link">
                         <div data-i18n="Connections">청구 대상 조회</div>
                     </a>
                 </li>
             </ul>
         </li>
-        <li class="menu-item ">
+        <li class="menu-item" id="bill">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
                 <div data-i18n="Account Settings">계산서</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item active">
+                <li class="menu-item toggle-sub" id="bill_search">
 {{--                    <a href="{{route('billIssue')}}" class="menu-link ">--}}
 {{--                        <div data-i18n="Account">계산서 발행 조회1</div>--}}
 {{--                    </a>--}}
                     <a href="{{route('billIssue')}}" class="menu-link ">
                         <div data-i18n="Account">계산서 발행 조회</div>
                     </a>
+                </li>
+                <li class="menu-item toggle-sub" id="bill_print1">
                     <a href="{{route('billForm')}}" class="menu-link">
                         <div data-i18n="Account">계산서 양식 출력</div>
                     </a>
+                </li>
+                <li class="menu-item toggle-sub" id="bill_print2">
                     <a href="{{route('printBillForm')}}" class="menu-link">
                         <div data-i18n="Account">계산서 양식 출력 내역 View(임시)</div>
                     </a>
+                </li>
+                <li class="menu-item toggle-sub" id="bill_tonghap">
                     <a href="{{route('billIntegratedCollection')}}" class="menu-link">
                         <div data-i18n="Account">통합 징수 출력</div>
                     </a>
+                </li>
+                <li class="menu-item toggle-sub" id="bill_cash">
                     <a href="{{route('billCashReceipt')}}" class="menu-link">
                         <div data-i18n="Account">현금 영수증 조회</div>
                     </a>
@@ -91,46 +156,46 @@
             </ul>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item" id="deposit">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
                 <div data-i18n="Authentications">입금내역</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item toggle-sub" id="deposit_history">
                     <a href="{{route('depositHistory')}}" class="menu-link" >
                         <div data-i18n="Basic">입금내역 등록 히스토리</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item toggle-sub" id="deposit_search">
                     <a href="{{route('depositList')}}" class="menu-link" >
                         <div data-i18n="Basic">입금내역 등록, 조회</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item toggle-sub" id="deposit_match1">
                     <a href="{{route('depositMatch1')}}" class="menu-link" >
                         <div data-i18n="Basic">입금내역 매칭1</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item toggle-sub" id="deposit_match2">
                     <a href="{{route('depositMatch2')}}" class="menu-link" >
                         <div data-i18n="Basic">입금내역 매칭2</div>
                     </a>
                 </li>
             </ul>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" id="payable">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cube-alt"></i>
                 <div data-i18n="Misc">미수금</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item toggle-sub" id="payable_search">
                     <a href="pages-misc-error.html" class="menu-link">
                         <div data-i18n="Error">미수금 조회</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item toggle-sub" id="payable_info">
                     <a href="pages-misc-error.html" class="menu-link">
                         <div data-i18n="Error">이용료 납부 안내</div>
                     </a>
