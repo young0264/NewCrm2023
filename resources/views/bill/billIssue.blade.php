@@ -4,13 +4,14 @@
 $sch_year = request('sch_year') ?? date('Y');
 $sch_month = request('sch_month') ?? date('m');
 ?>
-    <script type="text/javascript">
+<script type="text/javascript">
         let sch_year = "";
         let current_month = new Date().getMonth() + 1;
         let sch_month = current_month.toString().padStart(2, '0'); //현재 month를 2자리 문자형으로 바꾸기
         let table_head = Array();
         let selected_tab = "";
-
+        let search_data = {"sch_year": sch_year, "sch_month": sch_month};
+        let items = null;
         window.oncontextmenu = function () {
             return false;
         };
@@ -68,8 +69,8 @@ $sch_month = request('sch_month') ?? date('m');
 
         let tables = {
             headers: null,
-            items: null,
-            data: {"sch_year": sch_year, "sch_month": sch_month},
+            // items: null,
+            // data: {"sch_year": sch_year, "sch_month": sch_month},
             selectOptionData: {},
             hideSelectSearchKeys: [],
             hideSelectUpdateKeys: [],
@@ -99,14 +100,14 @@ $sch_month = request('sch_month') ?? date('m');
             dataSet: function () {
                 let method = "POST";
                 let url = "{{route("publishList")}}";
-                let data = this.data;
+                let data = search_data;
                 let dataType = "json";
                 let result = js.ajax_call(method, url, data, dataType, false, "", true);
                 if (result['header'] !== '[]') {
                     this.headers = JSON.parse(result['header']);
-                    this.items = JSON.parse(result['items']);
+                    items = JSON.parse(result['items']);
                 }else{
-                    this.items = JSON.parse(result['items']);
+                    items = JSON.parse(result['items']);
                 }
             },
 
@@ -115,11 +116,11 @@ $sch_month = request('sch_month') ?? date('m');
              * selectOptionData
              */
             selectOptionsInit: function () {
-                if (this.items.length === 0) {
+                if (items.length === 0) {
                     return;
                 }
                 this.selectOptionData = {};
-                this.items.forEach((item, idx) => {
+                items.forEach((item, idx) => {
                     this.headers.forEach((head, idx) => {
                         if (this.selectOptionData[head['key']] === undefined) {
                             this.selectOptionData[head['key']] = new Set();
@@ -214,9 +215,10 @@ $sch_month = request('sch_month') ?? date('m');
                         continue;
                     }
                     if (value !== "") {
-                        this.data[sanitizedKey] = value; //data에 검색조건 저장
+                        search_data[sanitizedKey] = value; //search_data에 검색조건 저장
                     }
                 }
+                console.log("search_data : ", search_data);
 
                 /**
                  * form으로 넘긴 값을 key-value로 가져와
@@ -224,12 +226,12 @@ $sch_month = request('sch_month') ?? date('m');
 
                 let method = "POST";
                 let url = "{{route("publishList")}}";
-                let data = this.data;
+                let data = search_data;
                 let dataType = "json";
                 let result = js.ajax_call(method, url, data, dataType, false, "", true);
 
                 this.headers = JSON.parse(result['header']);
-                this.items = JSON.parse(result['items']);
+                items = JSON.parse(result['items']);
 
                 this.selectOptionsInit()
                 this.onDraw();
@@ -241,8 +243,8 @@ $sch_month = request('sch_month') ?? date('m');
              * input box, 전체 검색
              */
             onSearch: function () {
-                let data = this.data;
-                let sch_val =  document.getElementById('sch_key').value
+                let data = search_data;
+                let sch_val =  document.getElementById('sch_key').value;
                 data['sch_key'] = "tonghap";
                 data['sch_val'] = sch_val;
                 let method = "POST";
@@ -250,7 +252,7 @@ $sch_month = request('sch_month') ?? date('m');
                 let dataType = "json";
                 let result = js.ajax_call(method, url, data, dataType, false, "", true);
                 this.headers = JSON.parse(result['header']);
-                this.items = JSON.parse(result['items']);
+                items = JSON.parse(result['items']);
 
                 this.selectOptionsInit()
                 this.onDraw();
@@ -275,18 +277,18 @@ $sch_month = request('sch_month') ?? date('m');
 
                 for (let [key, value] of formData.entries()) {
                     let sanitizedKey = key.replace(/'/g, ''); // 작은따옴표(') 제거
-                    this.data[sanitizedKey] = value; //data에 검색조건 저장
+                    search_data[sanitizedKey] = value; //data에 검색조건 저장
                 }
 
                 let method = "POST";
                 let url = "{{route("publishList")}}";
-                let data = this.data;
+                let data = search_data;
                 let dataType = "json";
 
                 let result = js.ajax_call(method, url, data, dataType, false, "", true);
 
                 this.headers = JSON.parse(result['header']);
-                this.items = JSON.parse(result['items']);
+                items = JSON.parse(result['items']);
                 this.selectOptionsInit()
                 this.onDraw();
                 this.showInputHideSelectBox('search', this.hideSelectSearchKeys);
@@ -299,32 +301,31 @@ $sch_month = request('sch_month') ?? date('m');
             drawUpdateSelectBox: function () {
                 let updateSelectBoxHtml = "";
                 updateSelectBoxHtml += `
-                                    <div class="btn-group"> \n
-                                        <button class="btn btn-primary" style="width:480px; max-width:95%" onclick="tables.billsUpdate()">컬럼 일괄 업데이트
-                                        </button> \n
+                                    <div class="btn-group">
+                                        <button class="btn btn-primary" onclick="tables.billsUpdate()">컬럼 일괄 업데이트</button>
                                     </div>`;
 
                 this.headers.forEach((head, idx) => {
                     if (head['key'] === 'f_bizname' || head['key'] === 'f_shopname') return;
                     let className = this.getClassNameByTabs(head['key']);
 
-                    updateSelectBoxHtml +=
-                        `<div class="btn-group ${className}"> \n
-                            <select class="form-select" id="update_${head['key']}" name="${head['key']}"
-                                    style="width:120px; max-width:90%" onchange="tables.hideUpdateKeys()">\n
-                                <option value="">${head['name']}</option>`;
-
+                    updateSelectBoxHtml +=`<div class="btn-group ${className}"> \n
+                                                <select class="form-select" id="update_${head['key']}" name="${head['key']}" onchange="tables.hideUpdateKeys()" style="width:120px; max-width:90%">
+                                                    <option value="">${head['name']}</option>`;
+                    updateSelectBoxHtml += `        <option value="selectDirect">직접입력</option>`;
                     //select-option data 가져오기
                     this.selectOptionData[head['key']].forEach((item, idx) => {
-                        updateSelectBoxHtml += `<option value="${item}">${item}</option>`;
+                        updateSelectBoxHtml += `    <option value="${item}">${item}</option>`;
                     });
-                    updateSelectBoxHtml += `<option value="selectDirect">직접입력</option> \n </select> \n`;
-                    updateSelectBoxHtml += `<input class="alert-primary" type="text" placeholder="${head['name']}"
-                                        id="updateInput_${head['key']}" name="${head['key']}"
-                                        value="${this.data['searchInput_'+head['key']] === undefined ? "" : this.data['searchInput_'+head['key']] }"
-                                        style="display: none" > \n`;
-                    updateSelectBoxHtml += ` </div> </div>`;
+
+                    updateSelectBoxHtml += `    </select>`;
+                    updateSelectBoxHtml += `    <input class="alert-primary" type="text" placeholder="${head['name']}"
+                                                        id="updateInput_${head['key']}" name="${head['key']}"
+                                                        value="${search_data['searchInput_'+head['key']] === undefined ? "" : search_data['searchInput_'+head['key']] }"
+                                                        style="display: none">`;
+                    updateSelectBoxHtml += `</div>`;
                 });
+
                 return updateSelectBoxHtml;
             },
 
@@ -332,31 +333,32 @@ $sch_month = request('sch_month') ?? date('m');
              * table head select box(검색) 그리기
              */
             drawTableSelectBox: function () {
-                let tableHeadHtml = "";
-                tableHeadHtml += `<tr> `;
+                let tableHeadHtml = "<tr>";
+
                 this.headers.forEach((head, idx) => {
                     let className = this.getClassNameByTabs(head['key']);
                     tableHeadHtml += `<th class="text-nowrap text-center ${className}"> \n
                                         <div class="btn-group "> \n
                                             <select class="form-select" style="width:130px; max-width:95%"
                                                     id="search_${head['key']}" name="${head['key']}"
-                                                    onchange="tables.selectSearch('search_form')"> \n
+                                                    onchange="tables.selectSearch('search_form')">
                                                 <option value="" >${head['name']}</option>`;
 
                     this.selectOptionData[head['key']].forEach((item, idx) => {
                         if (item === null) return;
-                        tableHeadHtml += `<option value="${item}" ${(this.data[head['key']] !== "" && this.data[head['key']]=== item) ? "selected" : ""} >${item}</option>`;
+                        tableHeadHtml += `<option value="${item}" ${(search_data[head['key']] !== "" && search_data[head['key']]=== item) ? "selected" : ""} >${item}</option>`;
                     });
-                    tableHeadHtml += `<option value="selectDirect">직접입력</option> \n </select> \n`;
+                    tableHeadHtml += `<option value="selectDirect">직접입력</option></select>`;
                     tableHeadHtml += `<input class="alert-primary" type="text" placeholder="${head['name']}"
                                         id="searchInput_${head['key']}" name="searchInput_${head['key']}"
                                         onkeydown="tables.handleKeyPress(event,'${head['key']}')"
-                                        value="${this.data['searchInput_'+head['key']] === undefined ? "" : this.data['searchInput_'+head['key']] }"
-                                        style="display: none" > \n`;
+                                        value="${search_data['searchInput_'+head['key']] === undefined ? "" : search_data['searchInput_'+head['key']] }"
+                                        style="display: none" >`;
                 });
 
-                tableHeadHtml += `<button onclick="tables.submitInput()" hidden="hidden">Submit</button>`;
-                tableHeadHtml += ` </div> </tr> \n`;
+                tableHeadHtml += `    <button onclick="tables.submitInput()" hidden="hidden">Submit</button>`;
+                tableHeadHtml += `</div>
+                                    </tr>`;
                 return tableHeadHtml;
             },
 
@@ -365,14 +367,13 @@ $sch_month = request('sch_month') ?? date('m');
              */
             drawTableBody() {
                 let html = "";
-                if (this.items.length === 0) {
+                if (items.length === 0) {
                     html += `<tr class="text-center">`
                     html += `    <td>조회된 데이터가 없습니다.</td>`;
                     html += `</tr>`;
                     return html;
                 }
-
-                this.items.forEach((item, idx) => {
+                items.forEach((item, idx) => {
                     let f_id = item['f_id']
                     html += `<tr class="text-center" onclick="tables.onLeftClick(this, ${f_id})">`
                     this.headers.forEach((head, idx) => {
@@ -443,11 +444,11 @@ $sch_month = request('sch_month') ?? date('m');
 
             YmColorChange(sch_month_param) {
                 let sch_year_param = document.getElementById('sch_year').value;
-                this.data['sch_year'] = sch_year_param
-                this.data['sch_month'] = sch_month_param;
+                search_data['sch_year'] = sch_year_param;
+                search_data['sch_month'] = sch_month_param;
 
                 //기존의 month 색깔 해제
-                var exButtonElement = document.getElementById("sch_month"+sch_month); // Button 요소 가져오기
+                var exButtonElement = document.getElementById("sch_month" + sch_month); // Button 요소 가져오기
                 exButtonElement.style.backgroundColor = ""; // 배경색 변경
                 exButtonElement.style.color = ""; // 텍스트 색상 변경
 
@@ -461,43 +462,55 @@ $sch_month = request('sch_month') ?? date('m');
                         break;
                     }
                 }
-                var newButtonElement = document.getElementById("sch_month"+sch_month); // Button 요소 가져오기
+                var newButtonElement = document.getElementById("sch_month" + sch_month); // Button 요소 가져오기
                 newButtonElement.style.backgroundColor = "#007bff"; // 배경색 변경
                 newButtonElement.style.color = "white"; // 텍스트 색상 변경
-            }
+            },
+
+            excel_down: function () {
+                console.log(search_data);
+                location.href="{{route('listByNeyExcel')}}?mode=excel";
+                {{--let jsonData = { 'mode':"excel",'headers': this.headers, 'items': this.items};--}}
+                {{--let method = "POST";--}}
+                {{--let url = "{{route("billListNEY")}}";--}}
+                {{--let data = jsonData;--}}
+                {{--let dataType = "json";--}}
+                {{--js.ajax_call(method, url, data, dataType, false, "", true);--}}
+            },
+
         };
 
     </script>
 
-    <style type="text/css">
-        html, body {
-            height: 100%;
-        }
+<style type="text/css">
+    html, body {
+        height: 100%;
+    }
 
-        .custom-context-menu {
-            position: absolute;
-            box-sizing: border-box;
-            min-height: 100px;
-            min-width: 200px;
-            background-color: #ffffff;
-            box-shadow: 0 0 1px 2px lightgrey;
-        }
+    .custom-context-menu {
+        position: absolute;
+        box-sizing: border-box;
+        min-height: 100px;
+        min-width: 200px;
+        background-color: #ffffff;
+        box-shadow: 0 0 1px 2px lightgrey;
+    }
 
-        .custom-context-menu ul {
-            list-style: none;
-            padding: 0;
-            background-color: transparent;
-        }
+    .custom-context-menu ul {
+        list-style: none;
+        padding: 0;
+        background-color: transparent;
+    }
 
-        .custom-context-menu li {
-            padding: 3px 5px;
-            cursor: pointer;
-        }
+    .custom-context-menu li {
+        padding: 3px 5px;
+        cursor: pointer;
+    }
 
-        .custom-context-menu li:hover {
-            background-color: #f0f0f0;
-        }
-    </style>
+    .custom-context-menu li:hover {
+        background-color: #f0f0f0;
+    }
+</style>
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">
             <span class="text-muted fw-light">정산 / 계산서 / </span>계산서 발행 조회2
@@ -509,40 +522,40 @@ $sch_month = request('sch_month') ?? date('m');
                 {{--            content left        --}}
                 <div class="col-md-12">
                     <div class="col-md-12">
-                        <div class="card">
-                            <!-- Notifications -->
+                        <div class="card mb-4">
                             <h4 class="card-header text-primary">계산서 발행 리스트2</h4>
-{{--                            <form id="year_month_id">--}}
-                                <div class="card-body" >
-                                    {{-- 년도, 월 선택--}}
-                                    <nav aria-label="Page navigation">
-                                        <ul class="pagination pagination-lg">
-                                            <li>
-                                                <div class="btn-group">
-                                                    <select type="button" id="sch_year" name="sch_year"
-                                                            class="btn btn-outline-secondary dropdown-toggle"
-                                                            aria-expanded="false">
-                                                        @for ($i=date("Y"); $i>date("Y")-5; $i--)
-                                                            <option value="<?= $i ?>" <?= $i==$sch_year ? 'selected' : "" ?> > <?= $i ?>년</option>
-                                                        @endfor
-                                                    </select>
-                                                </div>
-                                            </li>
-                                            @for($i=1; $i<=12; $i++)
-                                                <li class="page-item">
-{{--                                                    <button class="page-link" name="sch_month" value="<?= sprintf('%02d', $i) ?> "<?= $sch_month== sprintf('%02d', $i)  ? 'style="background-color: #007bff; color: white"' : "" ?>> <?= sprintf('%02d', $i) ?>  </button>--}}
-                                                    <button class="page-link" id="sch_month<?=sprintf('%02d', $i)?>" name="sch_month"
-                                                            onclick="tables.onYmChange('<?= sprintf('%02d', $i) ?>')"
-                                                            ><?= sprintf('%02d', $i) ?>
-                                                    </button>
-                                                </li>
-                                            @endfor
-                                        </ul>
-                                    </nav>
-                                    {{--1~12번 년월 선택 end--}}
-                                </div>
-{{--                            </form>--}}
                             <div class="card-body">
+                                {{-- 년도, 월 선택--}}
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination pagination-lg">
+                                        <li>
+                                            <div class="btn-group">
+                                                <select type="button" id="sch_year" name="sch_year"
+                                                        class="btn btn-outline-secondary dropdown-toggle"
+                                                        aria-expanded="false">
+                                                    @for ($i=date("Y"); $i>date("Y")-5; $i--)
+                                                        <option value="<?= $i ?>" <?= $i==$sch_year ? 'selected' : "" ?> > <?= $i ?>년</option>
+                                                    @endfor
+                                                </select>
+                                            </div>
+                                        </li>
+                                        @for($i=1; $i<=12; $i++)
+                                            <li class="page-item">
+                                                {{--                                                    <button class="page-link" name="sch_month" value="<?= sprintf('%02d', $i) ?> "<?= $sch_month== sprintf('%02d', $i)  ? 'style="background-color: #007bff; color: white"' : "" ?>> <?= sprintf('%02d', $i) ?>  </button>--}}
+                                                <button class="page-link" id="sch_month<?=sprintf('%02d', $i)?>" name="sch_month"
+                                                        onclick="tables.onYmChange('<?= sprintf('%02d', $i) ?>')"
+                                                ><?= sprintf('%02d', $i) ?>
+                                                </button>
+                                            </li>
+                                        @endfor
+                                    </ul>
+                                </nav>
+
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                {{--1~12번 년월 선택 end--}}
                                 <div class="btn-group col-md-4 form-floating">
                                     <div class="nav-align-top mb-1">
                                         {{-- 탭 1~4 시작 --}}
@@ -607,6 +620,7 @@ $sch_month = request('sch_month') ?? date('m');
                                             </li>
                                         </ul>
                                         {{-- 탭 1~4 끝 --}}
+
                                     </div>
                                 </div>
                                 <div class="btn-group col-md-5 mb-1">
@@ -616,9 +630,12 @@ $sch_month = request('sch_month') ?? date('m');
                                     <button class="btn btn-success" onclick="tables.onSearch()">검색</button>
                                 </div>
                                 <div class="btn-group col-md-1 mb-1">
-                                    <button class="btn btn-success">다운로드</button>
+                                    <form id="excelDownloadForm" action="{{route('listByNeyExcel')}}" method="POST">
+                                        @csrf
+                                        <input type="hidden" id="search_data" name="search_data">
+                                        <button class="btn btn-success" type="submit">다운로드</button>
+                                    </form>
                                 </div>
-
                                 {{--컬럼 업데이트 head group 시작--}}
                                 <nav class="navbar navbar-example navbar-expand-lg navbar-light bg-light">
                                     <div class="horizontal-scrollable" >
@@ -631,32 +648,18 @@ $sch_month = request('sch_month') ?? date('m');
                                     </div>
                                 </nav>
                                 {{--컬럼 업데이트 head group 끝--}}
-                            </div>
-
-                            {{-- table content --}}
-                            <div class="tab-content" >
-                                <div class="table-responsive" id="both-scrollbars-example">
-                                    <form id="search_form">
-                                        <table class="table table-hover table-bordered border-bottom">
-                                            <thead id="table_head_select">
-                                            </thead>
-                                            <tbody id="table_body">
-                                            </tbody>
-                                        </table>
-                                    </form>
-
-                                    <div class="modal fade" id="unitPriceModal" tabindex="-1" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5>단가를 합산한 세부 내역을 <br>엑셀 파일로 다운로드 할까요?</h5>
-                                                </div>
-                                                <div class="modal-body text-center ">
-                                                    <button class="btn btn-primary mx-2">네</button>
-                                                    <button class="btn btn-primary mx-2">아니오</button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="table-responsive" id="both-scrollbars-example" style="height: 800px">
+                                    <div class="table-container">
+                                        {{--                                        <aside id="layout-menu"  class="layout-menu ">--}}
+                                        <form id="search_form">
+                                            <table class="table table-hover table-bordered border-bottom" >
+                                                <thead id="table_head_select">
+                                                </thead>
+                                                <tbody id="table_body">
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                        {{--                                        </aside>--}}
                                     </div>
                                 </div>
                             </div>
@@ -934,5 +937,10 @@ $sch_month = request('sch_month') ?? date('m');
         </div>
     </div>
     {{--오른쪽 버튼 클릭 content 끝--}}
-
+<script>
+    // excel down form submit시 event
+    document.getElementById("excelDownloadForm").addEventListener("submit", function() {
+        document.getElementById("search_data").value =  JSON.stringify(items);
+    });
+</script>
 @endsection
