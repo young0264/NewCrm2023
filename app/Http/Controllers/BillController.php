@@ -8,7 +8,6 @@ use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
@@ -52,11 +51,9 @@ class BillController extends BaseController {
     }
 
     public function listByNEY(Request $request){
-
         $result = $this->billService->makeSearchConditions($request);
         $items = Bill_NEY::list($result["wheres"], $result['binds']);
         $headers = array();
-
         $notContainedHeader = array_flip(["f_billid", "f_bizid", "f_shopid", "f_status", "f_standard1", "f_standard2", "f_standard3", "f_standard4",
             "f_count1", "f_count2", "f_count3", "f_count4", "f_tax1", "f_tax2", "f_tax3", "f_tax4", "f_bigo1", "f_bigo2", "f_bigo3", "f_bigo4",
             "f_day1", "f_day2", "f_day3", "f_day4", "f_unitprice1", "f_unitprice2", "f_unitprice3", "f_unitprice4", "f_issue_type", "f_tax", "f_loginid"]);
@@ -143,9 +140,6 @@ class BillController extends BaseController {
         }
     }
 
-//    public static function issue(){
-//        return view("bill.billIssueView");
-//    }
     public static function issue(){
         return view("bill.billIssue");
     }

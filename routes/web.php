@@ -73,6 +73,7 @@ if (!Auth::check()) {
          */
         Route::post("/publish/list",[BillPublishController::class, "list"])->name("publishList");
         Route::post("/publish/update",[BillPublishController::class, "update"])->name("publishUpdate");
+        Route::post("/bill/ListNEY/excel", [BillPublishController::class, "listByNeyExcel"])->name("listByNeyExcel");
 
 
         /**

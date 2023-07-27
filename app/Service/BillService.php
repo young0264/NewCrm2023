@@ -135,8 +135,7 @@ class BillService{
         Bill_NEY::insertBills($billsData);
 
         if ($request->input('bill_immediate') == "true") {
-            //202301
-            BillPublishNEY::insertBillPublish($billsData,date('Ym'));
+            BillPublishNEY::insertBillPublish($billsData);
         };
         DB::commit();
     }
@@ -167,8 +166,10 @@ class BillService{
             if (array_key_exists($key, $request)) {
                 $associate_arr[strtoupper($key)] = $request[$key];
             }
-            //TODO : f_billid는 select sequence 조회, return 값입력
         }
+        //sequence 형태로 billid 직접 넣어주기
+        $nextVal = DB::select("SELECT \"SBMUSIC\".\"T_BILL_NEY_SEQ\".NEXTVAL FROM DUAL");
+        $associate_arr["f_billid"] = $nextVal[0]->nextval;
         return $associate_arr;
     }
 

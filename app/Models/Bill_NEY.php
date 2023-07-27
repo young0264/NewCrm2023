@@ -58,7 +58,6 @@ class Bill_NEY extends Model{
                                     {$wheres}
                                         order by f_billid desc
                         ) where rownum <= 50";
-
         return DB::select($query, $params);
     }
 
@@ -80,8 +79,8 @@ class Bill_NEY extends Model{
             }
         } catch (Exception $e) {
             DB::rollback();
+            print_r($e->getMessage());
             throw new Exception("계산서 등록에 실패하였습니다.");
         }
-
     }
 }

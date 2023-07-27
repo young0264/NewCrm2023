@@ -37,13 +37,12 @@ class BillPublishNEY extends Model{
         return DB::select($query, array("f_billid"=>$billId));
     }
 
-    public static function insertBillPublish($params,$dateStr){
+    public static function insertBillPublish($params){
         $f_ym = date('Ym');
         foreach ($params as $param) {
             $param['f_ym'] = $f_ym;
             DB::table('T_BILL_NEY_PUBLISH')->insert($param);
         }
-        return DB::table('T_BILL_NEY_PUBLISH')->insert($params);
     }
     public static function updateBillPublish($parameters, $wheres){
         return DB::table('T_BILL_NEY_PUBLISH')

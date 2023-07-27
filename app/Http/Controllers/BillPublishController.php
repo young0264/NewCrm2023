@@ -1,18 +1,15 @@
 <?php
 namespace App\Http\Controllers;
+use App\Exports\PublishExport;
 use App\Models\Bill;
-use App\Models\Bill_NEY;
 use App\Models\BillPublishNEY;
 use App\Service\BillPublishService;
-use App\Service\BillService;
-use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BillPublishController extends BaseController {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -23,6 +20,11 @@ class BillPublishController extends BaseController {
         $this->billPublishService = $billPublishService;
     }
 
+    public function listByNeyExcel(Request $request) {
+        $items = json_decode($request->input('search_data'));
+        $filename = sprintf("%s_계산서리스트_%s.xlsx", date('Ymd'), time());
+        return Excel::download(new PublishExport($items), $filename);
+    }
     public function list(Request $request){
 
         $result = $this->billPublishService->makeSearchConditions($request);
