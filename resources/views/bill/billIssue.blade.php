@@ -75,7 +75,7 @@ $sch_month = request('sch_month') ?? date('m');
             hideSelectSearchKeys: [],
             hideSelectUpdateKeys: [],
             publishIdArrForUpdate: [], //billIdArrForUpdate : 업데이트할 billid 배열
-            tab1: new Set(["f_price", "f_pay_type", "f_pay_interval", "f_history",
+            tab1: new Set(["f_pay_type", "f_pay_interval", "f_history",
                 "f_reply", "f_statement", "f_tax_bill", "f_issuedate"]),
             tab2: new Set(["f_registration_number",
                 "f_minor_business", "f_cp_name", "f_rep_name",
@@ -218,7 +218,6 @@ $sch_month = request('sch_month') ?? date('m');
                         search_data[sanitizedKey] = value; //search_data에 검색조건 저장
                     }
                 }
-                console.log("search_data : ", search_data);
 
                 /**
                  * form으로 넘긴 값을 key-value로 가져와
@@ -236,7 +235,6 @@ $sch_month = request('sch_month') ?? date('m');
                 this.selectOptionsInit()
                 this.onDraw();
                 this.showInputHideSelectBox('search', this.hideSelectSearchKeys);
-                this.onTabChange();
             },
 
             /**
@@ -253,10 +251,8 @@ $sch_month = request('sch_month') ?? date('m');
                 let result = js.ajax_call(method, url, data, dataType, false, "", true);
                 this.headers = JSON.parse(result['header']);
                 items = JSON.parse(result['items']);
-
                 this.selectOptionsInit()
                 this.onDraw();
-                this.onTabChange();
             },
 
             /**
