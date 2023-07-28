@@ -118,7 +118,6 @@
         //TODO
         onClientTableDraw() {
             let html = "";
-            console.log(this.clientItems);
             if (this.clientItems===null) {
                 html += `<tr class="text-center">`;
                 html += `    <td colspan="4">조회된 데이터가 없습니다.</td>`;
@@ -151,6 +150,7 @@
             let data = this.clientData;
             let dataType = "json";
             let result = js.ajax_call(method, url, data, dataType, false, "", true);
+            this.clientItems = null;
             if (result !== "empty") {
                 this.clientItems = JSON.parse(result);
             }
