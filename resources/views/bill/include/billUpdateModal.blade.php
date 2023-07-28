@@ -43,7 +43,8 @@
 
             //input-box의 id와 value에 매칭되는 값을 넣어줍니다.
             billForm_keys.forEach(function (key) {
-                document.querySelector("#" + key+"_update").value = update.jsonOfBillInfo[key];
+                input_val = update.jsonOfBillInfo[key] === undefined ? "" : update.jsonOfBillInfo[key];
+                document.querySelector("#" + key+"_update").value = input_val;
             });
         },
 
