@@ -290,7 +290,6 @@ $sch_month = request('sch_month') ?? date('m');
                 this.showInputHideSelectBox('search', this.hideSelectSearchKeys);
                 this.showInputHideSelectBox('update', this.hideSelectUpdateKeys);
             },
-
             /**
              * update group select box 그리기
              */
@@ -299,6 +298,7 @@ $sch_month = request('sch_month') ?? date('m');
                 updateSelectBoxHtml += `
                                     <div class="btn-group">
                                         <button class="btn btn-primary" onclick="tables.billsUpdate()">컬럼 일괄 업데이트</button>
+                                        <button class="btn btn-warning" onclick="location.href='{{route('billIssue')}}'">초기화</button>
                                     </div>`;
 
                 this.headers.forEach((head, idx) => {
