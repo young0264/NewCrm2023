@@ -287,7 +287,7 @@
                                     </div>
 
                                     <div class="form-floating">
-                                        <div class="btn-group my-2" style="width: 70%;">
+                                        <div class="btn-group my-2" style="width: 60%;">
                                             <input
                                                 class="form-control mx-1"
                                                 type="text"
@@ -297,14 +297,12 @@
                                             />
                                         </div>
                                         <div class="btn-group my-2">
-                                            <button type="button" class="btn btn-info" onclick="tables.onClientTableSearch()">검색</button>
+                                            <button type="button" class="btn btn-info mx-1" onclick="tables.onClientTableSearch()">검색</button>
+                                            <button type="button" class="btn btn-primary mx-1">청구</button>
                                         </div>
                                     </div>
                                     <div class="form-floating">
                                         <div class="mb-3" >
-                                            <button type="button" class="btn btn-secondary">전체로드</button>
-                                            <button type="button" class="btn btn-secondary">미등록만</button>
-                                            <button type="button" class="btn btn-primary">청구</button>
                                         </div>
                                     </div>
 {{--                                    <div class="form-floating row my-2 mx-1">--}}
