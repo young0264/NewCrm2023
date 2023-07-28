@@ -118,7 +118,8 @@
         //TODO
         onClientTableDraw() {
             let html = "";
-            if (!this.clientItems) {
+            console.log(this.clientItems);
+            if (this.clientItems===null) {
                 html += `<tr class="text-center">`;
                 html += `    <td colspan="4">조회된 데이터가 없습니다.</td>`;
                 html += `</tr>`;
