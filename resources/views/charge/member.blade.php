@@ -74,14 +74,18 @@
         selectedClientShopId: "",
         selectedClientBizId: "",
         selectedClientBizName: "",
-
+        selectedClassList : null,
         /**
          * 마우스 왼쪽버튼 클릭시
          * f_loginid
          */
         onLeftClick:function(obj) {
-            if (obj.classList.contains('selected')) {
+            if (this.selectedClassList === null) {
+                this.selectedClassList = obj.classList;
+                obj.classList.add("selected");
+            }else if (obj.classList.contains('selected')) {
                 obj.classList.remove("selected");
+                this.selectedClassList =null;
                 this.selectedClientLoginId = "";
                 this.selectedClientShopname = "";
                 this.selectedClientCompany = "";
@@ -89,18 +93,19 @@
                 this.selectedClientShopId = "";
                 this.selectedClientBizId = "";
                 this.selectedClientBizName = "";
-            } else if(this.selectedClientLoginId === "" && this.selectedClientShopname === "" && this.selectedClientCompany === "" && this.selectedClientSite === "") {
+            } else {
                 obj.classList.add("selected");
-                //TODO
-                // this.selectedClient['f_loginid'] = obj.querySelector("#f_loginid").innerText;
-                this.selectedClientLoginId = obj.querySelector("#f_loginid").innerText;
-                this.selectedClientShopname = obj.querySelector("#f_shopname").innerText;
-                this.selectedClientCompany = obj.querySelector("#f_company").innerText;
-                this.selectedClientSite = obj.querySelector("#f_site").innerText;
-                this.selectedClientShopId = obj.querySelector("#f_shopid").innerText;
-                this.selectedClientBizId = obj.querySelector("#f_bizid").innerText;
-                this.selectedClientBizName = obj.querySelector("#f_bizname").innerText;
+                this.selectedClassList.remove("selected");
+                this.selectedClassList = obj.classList;
             }
+
+            this.selectedClientLoginId = obj.querySelector("#f_loginid").innerText;
+            this.selectedClientShopname = obj.querySelector("#f_shopname").innerText;
+            this.selectedClientCompany = obj.querySelector("#f_company").innerText;
+            this.selectedClientSite = obj.querySelector("#f_site").innerText;
+            this.selectedClientShopId = obj.querySelector("#f_shopid").innerText;
+            this.selectedClientBizId = obj.querySelector("#f_bizid").innerText;
+            this.selectedClientBizName = obj.querySelector("#f_bizname").innerText;
         },
 
         /**
@@ -320,14 +325,9 @@
                                         <th class="text-nowrap text-center">매장명</th>
                                     </tr>
                                     </thead>
+                                    {{-- 고객검색 리스트 시작 --}}
                                     <tbody class="text-center" id="client_tbody">
-{{--                                    @for($i=0; $i<6; $i++)--}}
-{{--                                        <tr class="text-center">--}}
-{{--                                            <td class="text-nowrap">7323231A</td>--}}
-{{--                                            <td>더벤티</td>--}}
-{{--                                            <td>가산테라타</td>--}}
-{{--                                        </tr>--}}
-{{--                                    @endfor--}}
+                                    {{-- 고객검색 리스트 끝--}}
                                     </tbody>
                                 </table>
 
