@@ -83,4 +83,14 @@ class Bill_NEY extends Model{
             throw new Exception("계산서 등록에 실패하였습니다.");
         }
     }
+
+    public static function deleteBill(array $f_billid) {
+        try {
+            DB::table('T_BILL_NEY')->whereIn('f_billid', $f_billid)->update(['f_deleted' => 'Y']);
+        } catch (Exception $e) {
+            DB::rollback();
+            print_r($e->getMessage());
+            throw new Exception("계산서 삭제에 실패하였습니다.");
+        }
+    }
 }

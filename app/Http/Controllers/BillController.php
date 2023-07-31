@@ -77,6 +77,16 @@ class BillController extends BaseController {
         );
     }
 
+    /** bill 삭제 : N(삭제하지 않은 데이터), Y(삭제한데이터) */
+    public function billDelete(Request $request) {
+        if ($this->billService->billDelete($request->input())) {
+            return response()->json([
+                "status" => "ok",
+                "msg" => "삭제되었습니다."
+            ]);
+        }
+    }
+
     /**
      * bill 업데이트
      */

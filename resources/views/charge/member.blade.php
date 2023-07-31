@@ -76,13 +76,23 @@
         selectedClientBizName: "",
         clientClassList : null,
         billClassList: new Set(),
-        selectedBillId:"",
+
+        /** f_deleted 컬럼 Y:삭제(노출x) */
+        billDelete: function () {
+            let method = "POST";
+            let url = "{{route("billDelete")}}";
+            let data = {f_billid: Array.from(this.billClassList)};
+            let dataType = "json";
+            js.ajax_call(method, url, data, dataType, false, "", true);
+
+            this.billChargeTableDataSet();
+        },
+
         /** 청구대상 마우스 왼쪽 버튼 클릭*/
         billLeftClick: function (obj) {
             if(obj.classList.contains('selected')) {
                 obj.classList.remove("selected");
                 this.billClassList.delete(obj.querySelector("#f_billid").innerText);
-                this.selectedBillId = "";
             } else {
                 obj.classList.add("selected");
                 this.billClassList.add(obj.querySelector("#f_billid").innerText);
@@ -410,7 +420,7 @@
                                         </div>
                                     </div>
                                     <div class="form-floating">
-                                        <button type="button" class="btn btn-danger">청구 해제</button>
+                                        <button type="button" class="btn btn-danger" onclick="tables.billDelete()">청구 해제</button>
                                         <button type="button"
                                                 class="btn btn-primary"
                                                 data-bs-toggle="modal"

@@ -44,7 +44,7 @@ class BillService{
      * 검색조건 wheres, bindings 생성
      */
     public function makeSearchConditions($request): array {
-        $wheres = "";
+        $wheres = "and (F_DELETED = 'N')";
         $binds = [];
 
         /**
@@ -303,6 +303,16 @@ class BillService{
             }
         }
         return $result;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function billDelete(array $request) {
+        DB::beginTransaction();
+        Bill_NEY::deleteBill($request['f_billid']);
+        DB::commit();
+        return true;
     }
 }
 ?>

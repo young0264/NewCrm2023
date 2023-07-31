@@ -66,6 +66,8 @@ if (!Auth::check()) {
         Route::post("/bill/findById", [BillController::class, "findBillById"])->name("findBillById");
         Route::post("/bill/billUpdate", [BillController::class, "billUpdate"])->name("billUpdate");
         Route::post("/bill/register", [BillController::class, "billRegisterProcess"])->name("billRegisterProcess");
+        Route::post("/bill/delete", [BillController::class, "billDelete"])->name("billDelete");
+
 
 
         /**
