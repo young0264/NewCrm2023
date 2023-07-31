@@ -74,18 +74,29 @@
         selectedClientShopId: "",
         selectedClientBizId: "",
         selectedClientBizName: "",
-        selectedClassList : null,
-        /**
-         * 마우스 왼쪽버튼 클릭시
-         * f_loginid
-         */
+        clientClassList : null,
+        billClassList: new Set(),
+        selectedBillId:"",
+        /** 청구대상 마우스 왼쪽 버튼 클릭*/
+        billLeftClick: function (obj) {
+            if(obj.classList.contains('selected')) {
+                obj.classList.remove("selected");
+                this.billClassList.delete(obj.querySelector("#f_billid").innerText);
+                this.selectedBillId = "";
+            } else {
+                obj.classList.add("selected");
+                this.billClassList.add(obj.querySelector("#f_billid").innerText);
+            }
+        },
+
+        /** 고객 검색 마우스 왼쪽 버튼 클릭 */
         clientLeftClick:function(obj) {
-            if (this.selectedClassList === null) {
-                this.selectedClassList = obj.classList;
+            if (this.clientClassList === null) {
+                this.clientClassList = obj.classList;
                 obj.classList.add("selected");
             }else if (obj.classList.contains('selected')) {
                 obj.classList.remove("selected");
-                this.selectedClassList =null;
+                this.clientClassList =null;
                 this.selectedClientLoginId = "";
                 this.selectedClientShopname = "";
                 this.selectedClientCompany = "";
@@ -95,8 +106,8 @@
                 this.selectedClientBizName = "";
             } else {
                 obj.classList.add("selected");
-                this.selectedClassList.remove("selected");
-                this.selectedClassList = obj.classList;
+                this.clientClassList.remove("selected");
+                this.clientClassList = obj.classList;
             }
 
             this.selectedClientLoginId = obj.querySelector("#f_loginid").innerText;
@@ -131,7 +142,6 @@
                 return;
             }
             this.clientItems.forEach((item, idx) => {
-
                 html += `<tr class="text-center" onclick="tables.clientLeftClick(this)" style="cursor:pointer">`;
                 html += `    <td class="text-nowrap" id="f_loginid" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" >${item['f_loginid']}</td>`;
                 html += `    <td class="text-nowrap" id="f_bizname" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_bizname'] === null ? "" : item['f_bizname']}</td>`;
@@ -207,8 +217,8 @@
                 return;
             }
             this.billChargeItems.forEach((item, idx) => {
-                html += `<tr class="text-center">`;
-                html += `    <td class="text-nowrap">${item['f_billid']}</td>`;
+                html += `<tr class="text-center" onclick="tables.billLeftClick(this)">`;
+                html += `    <td class="text-nowrap" id="f_billid">${item['f_billid']}</td>`;
                 html += `    <td class="text-nowrap">${item['f_bizname'] === null ? "" : item['f_bizname']}</td>`;
                 html += `    <td class="text-nowrap">
                                 <a href="#" onclick="update.BillFormShow('${item['f_billid']}', '${item['f_loginid']}')">${item['f_shopname'] === null ? "값없음" : item['f_shopname']} </a>
