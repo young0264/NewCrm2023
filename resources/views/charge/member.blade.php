@@ -79,7 +79,7 @@
          * 마우스 왼쪽버튼 클릭시
          * f_loginid
          */
-        onLeftClick:function(obj) {
+        clientLeftClick:function(obj) {
             if (this.selectedClassList === null) {
                 this.selectedClassList = obj.classList;
                 obj.classList.add("selected");
@@ -132,7 +132,7 @@
             }
             this.clientItems.forEach((item, idx) => {
 
-                html += `<tr class="text-center" onclick="tables.onLeftClick(this)" style="cursor:pointer">`;
+                html += `<tr class="text-center" onclick="tables.clientLeftClick(this)" style="cursor:pointer">`;
                 html += `    <td class="text-nowrap" id="f_loginid" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" >${item['f_loginid']}</td>`;
                 html += `    <td class="text-nowrap" id="f_bizname" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_bizname'] === null ? "" : item['f_bizname']}</td>`;
                 html += `    <td class="text-nowrap" id="f_shopname" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item['f_shopname'] === null ? "" : item['f_shopname']}</td>`;
