@@ -3,6 +3,7 @@ namespace App\Service;
 use App\Models\Bill_NEY;
 use App\Models\Bill_PF_NEY;
 use App\Models\BillPublishNEY;
+use App\Models\BillLog;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -308,9 +309,10 @@ class BillService{
     /**
      * @throws Exception
      */
-    public function billDelete(array $request) {
+    public function billDelete(array $request, array $log_params) {
         DB::beginTransaction();
         Bill_NEY::deleteBill($request['f_billid']);
+        BillLog::createLog($log_params);
         DB::commit();
         return true;
     }

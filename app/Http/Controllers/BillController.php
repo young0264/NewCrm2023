@@ -4,21 +4,25 @@ namespace App\Http\Controllers;
 use App\Models\Bill;
 use App\Models\Bill_NEY;
 use App\Service\BillService;
+use App\Service\LogService;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BillController extends BaseController {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     protected BillService $billService;
+    protected LogService $logService;
 
-    public function __construct(BillService $billService){
+    public function __construct(BillService $billService, LogService $logService){
         $this->billService = $billService;
+        $this->logService = $logService;
     }
 
     public function list(Request $request){
@@ -81,7 +85,8 @@ class BillController extends BaseController {
      * @throws Exception
      */
     public function billDelete(Request $request) {
-        if ($this->billService->billDelete($request->input())) {
+        $log_params = $this->logService->makeLogParams($request->input('f_billid')[0],"Bill_NEY","D");
+        if ($this->billService->billDelete($request->input(), $log_params )) {
             return response()->json([
                 "status" => "ok",
                 "msg" => "삭제되었습니다."
