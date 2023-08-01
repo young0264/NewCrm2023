@@ -77,18 +77,21 @@
         clientClassList : null,
         billClassList: new Set(),
 
-        /** f_deleted 컬럼 Y:삭제(노출x) */
+        /** f_deleted 컬럼 Y:삭제(숨기기), 컬럼N:노출 */
         billDelete: function () {
+            if (!confirm("삭제 하시겠습니까?")) {
+                return;
+            }
             let method = "POST";
             let url = "{{route("billDelete")}}";
             let data = {f_billid: Array.from(this.billClassList)};
             let dataType = "json";
-            js.ajax_call(method, url, data, dataType, false, "", true);
-
+            let result = js.ajax_call(method, url, data, dataType, false, "", true);
+            console.log("result : ", result);
             this.billChargeTableDataSet();
         },
 
-        /** 청구대상 마우스 왼쪽 버튼 클릭*/
+        /** 청구대상 마우스 왼쪽 버튼 클릭 */
         billLeftClick: function (obj) {
             if(obj.classList.contains('selected')) {
                 obj.classList.remove("selected");
