@@ -16,7 +16,9 @@ class BillLog extends Model{
             DB::rollBack();
             print_r($e->getMessage());
             throw new Exception("Bill Log 등록에 실패하였습니다.");
+            return false;
         }
+        return true;
     }
 
 }

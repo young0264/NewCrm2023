@@ -84,7 +84,7 @@
             }
             let method = "POST";
             let url = "{{route("billDelete")}}";
-            let data = {f_billid: Array.from(this.billClassList)};
+            let data = {f_billId: Array.from(this.billClassList)};
             let dataType = "json";
             let result = js.ajax_call(method, url, data, dataType, false, "", true);
             console.log("result : ", result);

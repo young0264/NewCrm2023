@@ -174,7 +174,6 @@
                     selected_tab = $(obj).data("tab");
                 }
                 $(".table_tab").hide();
-                alert(selected_tab);
                 $("." + selected_tab).show();
             },
 

@@ -81,7 +81,7 @@ class BillService{
     /**
      * bill. 이용료청구(단일) 수정
      */
-    public function billSingleUpdate(array $request){
+    public function billSingleUpdate(array $request, array $log_params){
         DB::beginTransaction();
         $bill_wheres = array("f_billId"=>($request['f_billId']));
         $paramOfBill_basic = self::makeToAssocidateArray($request, self::getAllBillIds());
@@ -94,6 +94,11 @@ class BillService{
             DB::rollBack();
             return array("status"=>false, "수정시 에러가 발생했습니다. 입력값들을 확인해주세요.");
         }
+        if (!BillLog::createLog($log_params)) {
+            DB::rollBack();
+            return array("status"=>false, "로그 등록시 에러가 발생했습니다. 입력값들을 확인해주세요.");
+        }
+
         DB::commit();
         return array("status"=>true, "수정에 성공하였습니다.");
     }
