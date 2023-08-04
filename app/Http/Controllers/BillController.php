@@ -85,7 +85,7 @@ class BillController extends BaseController {
      * @throws Exception
      */
     public function billDelete(Request $request) {
-        $log_params = $this->logService->makeLogParams($request->input('f_billId')[0],"Bill_NEY","D");
+        $log_params = $this->logService->makeBillLogParams($request->input('f_billId')[0],"Bill_NEY","D");
         if ($this->billService->billDelete($request->input(), $log_params )) {
             return response()->json([
                 "status" => "ok",
@@ -98,7 +98,7 @@ class BillController extends BaseController {
      * bill 업데이트
      */
        public function billUpdate(Request $request){
-           $log_params = $this->logService->makeLogParams($request->input('f_billId'),"Bill_NEY","U");
+           $log_params = $this->logService->makeBillLogParams($request->input('f_billId'),"Bill_NEY","U");
            $result = $this->billService->billSingleUpdate($request->input(), $log_params);
             if (!$result['status']) {
                 return response()->json([
@@ -142,7 +142,12 @@ class BillController extends BaseController {
     public function billRegisterProcess(Request $request){
 
         try {
-            $this->billService->billCreate($request);
+//            echo "<pre>";
+//            print_r($request->input('f_billid'));
+//            print_r($request->input('f_billId'));
+//            exit;
+            $log_params = $this->logService->makeBillLogParams($request->input('f_billId'),"Bill_NEY","C");
+            $this->billService->billCreate($request, $log_params);
 
             return response()->json([
                 "status"=>"ok",

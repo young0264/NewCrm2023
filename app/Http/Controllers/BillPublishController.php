@@ -4,6 +4,7 @@ use App\Exports\PublishExport;
 use App\Models\Bill;
 use App\Models\BillPublishNEY;
 use App\Service\BillPublishService;
+use App\Service\LogService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,9 +16,12 @@ class BillPublishController extends BaseController {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     protected BillPublishService $billPublishService;
+    protected LogService $logService;
 
-    public function __construct(BillPublishService $billPublishService){
+
+    public function __construct(BillPublishService $billPublishService, LogService $logService){
         $this->billPublishService = $billPublishService;
+        $this->logService = $logService;
     }
 
     public function listByNeyExcel(Request $request) {
@@ -55,7 +59,20 @@ class BillPublishController extends BaseController {
     }
 
     public function update(Request $request){
+//        echo "<pre>";
+//        print_r($request->input('publishIdArr'));
+//        print_r($request->input());
+//        exit;
+        $publishParams = array();
+//        foreach ($request->input('publishIdArr') as $key => $publishId ) {
+////            $this->logService->createPublishLog($publishId, "T_BILL_PUBLISH_NEY", "UPDATE");
+//            $publishParams[] = $param;
+//        }
+        $param = $this->logService->createPublishLog($request->input('publishIdArr'));
+
         $result = $this->billPublishService->billMultiUpdate($request->input());
+
+
         if (!$result['status']) {
             return response()->json([
                 "status" => "error",

@@ -24,6 +24,7 @@
 
     let register = {
         BillFormRegister: function () {
+
             const checkbox = document.getElementById("bill_immediate");
             if (checkbox.checked) {
                 checkbox.value = "true";

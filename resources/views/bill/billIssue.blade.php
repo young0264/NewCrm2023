@@ -194,7 +194,9 @@
                 }
                 //bill 다중 업데이트는 업데이트 대상에 대한 billId 배열을 넘겨줘야함
                 jsonObjectForUpdate['publishIdArr'] = this.publishIdArrForUpdate;
-
+                this.publishIdArrForUpdate = [];
+                console.log("jsonObjectForUpdate", jsonObjectForUpdate);
+                console.log("this.publishIdArrForUpdate", this.publishIdArrForUpdate);
                 let method = "POST";
                 let url = "{{route("publishUpdate")}}";
                 let dataType = "json";

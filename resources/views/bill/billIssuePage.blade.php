@@ -186,6 +186,7 @@ $sch_month = request('sch_month') ?? date('m');
                 }
                 //bill 다중 업데이트는 업데이트 대상에 대한 billId 배열을 넘겨줘야함
                 jsonObjectForUpdate['publishIdArr'] = this.publishIdArrForUpdate;
+                this.publishIdArrForUpdate = [];
 
                 let method = "POST";
                 let url = "{{route("publishUpdate")}}";
@@ -293,7 +294,7 @@ $sch_month = request('sch_month') ?? date('m');
                 let updateSelectBoxHtml = "";
                 updateSelectBoxHtml += `
                                     <div class="btn-group"> \n
-                                        <button class="btn btn-primary" style="width:480px; max-width:95%" onclick="tables.billsUpdate()">컬럼 일괄 업데이트
+                                        <button class="btn btn-primary" style="width:480px; max-width:95%" onclick="tables.billsUpdate()">12컬럼 일괄 업데이트
                                         </button> \n
                                     </div>`;
 

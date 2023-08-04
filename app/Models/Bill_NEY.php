@@ -73,6 +73,10 @@ class Bill_NEY extends Model{
     }
 
     public static function insertBills($params) {
+//        echo "<pre>";
+//        print_r($params[0]['f_billid']);
+//        print_r($params[0]['F_NAME2']);
+//        exit;
         try {
             foreach ($params as $param) {
                 DB::table('T_BILL_NEY')->insert($param);

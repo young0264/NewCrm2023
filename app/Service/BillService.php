@@ -130,15 +130,28 @@ class BillService{
      * bill (이용료청구) 등록
      * @throws Exception
      */
-    public function billCreate(Request $request){
+    public function billCreate(Request $request, array $log_params){
+
         DB::beginTransaction();
+
         $tax_type0306 = $request->input('tax_type0306') === 'on' ? 'on' : 'off';
         $tax_type01 = $request->input('tax_type01') === 'on' ? 'on' : 'off';
         $billPFParams = self::makeToAssocidateArray($request->input(), self::getBillPFInfo());
         $billsData = self::getBillTotalData($tax_type01, $request, $tax_type0306);
+//        echo "<pre>";
+//        print_r("bills data : ", $billsData);
+//        exit;
 
-        Bill_PF_NEY::insertBill($billPFParams);
+        //sequence 형태로 billid 직접 넣어주기
+//        $nextVal = DB::select("SELECT \"SBMUSIC\".\"T_BILL_NEY_SEQ\".NEXTVAL FROM DUAL");
+//        $associate_arr["f_billid"] = $nextVal[0]->nextval;
+
+
+        BillLog::createLog($log_params);
         Bill_NEY::insertBills($billsData);
+        if ($request->input('f_pf_price')) {
+            Bill_PF_NEY::insertBill($billPFParams);
+        }
 
         if ($request->input('bill_immediate') == "true") {
             BillPublishNEY::insertBillPublish($billsData);
@@ -156,9 +169,14 @@ class BillService{
          * $billData_0306 : [공연권료 / (세금)계산서 (위수탁)] 03 06 ] --> on일떄(각 row insert), off(동작 x) 등록할  array 리턴
          * $billData_01   : [ 이용료 분할 / (세금)계산서 (일반) ] 01 ] --> on일때(각 row insert), off일때(1개 row) 등록할  array 리턴
          */
+        //TODO : 여기 여기
         $billData_0306 = self::getInfo_0306($tax_type0306, $request);
         $billData_01 = self::getInfo_01($tax_type01, $request);
 
+//        echo "<pre>";
+//        print_r($billData_01);
+//        print_r($billData_01[0]['f_billid']);
+//        exit;
         return array_merge($billData_01, $billData_0306);
     }
 
@@ -166,16 +184,19 @@ class BillService{
      * getBillsIdInput의 key를 기준으로
      * request로 들어온 값을 key:value의 연관배열 형태로 만들어 리턴
      */
-    private static function makeToAssocidateArray(array $request, array $keyArray): array{
+    private static function makeToAssocidateArray(array $request, array $keyArray, bool $flag = false): array{
         $associate_arr = array();
         foreach ($keyArray as $key) {
             if (array_key_exists($key, $request)) {
                 $associate_arr[strtoupper($key)] = $request[$key];
             }
         }
-        //sequence 형태로 billid 직접 넣어주기
-        $nextVal = DB::select("SELECT \"SBMUSIC\".\"T_BILL_NEY_SEQ\".NEXTVAL FROM DUAL");
-        $associate_arr["f_billid"] = $nextVal[0]->nextval;
+//        if ($flag) {
+//            //sequence 형태로 billid 직접 넣어주기
+//            $nextVal = DB::select("SELECT \"SBMUSIC\".\"T_BILL_NEY_SEQ\".NEXTVAL FROM DUAL");
+//            $associate_arr["f_billid"] = $nextVal[0]->nextval;
+//        }
+
         return $associate_arr;
     }
 
@@ -227,7 +248,7 @@ class BillService{
      *      off -> 품목 1~4를 한개의 row에 insert
      */
     private static function getInfo_01(string $tax_type01, Request $request): array{
-        $basic_info_param = self::makeToAssocidateArray($request->input(), self::getBillBasicInfo());
+        $basic_info_param = self::makeToAssocidateArray($request->input(), self::getBillBasicInfo(),true);
         $client_result = self::makeToAssocidateArray($request->input(), self::$client_extra_key_info);
 
         $result = array();
@@ -237,6 +258,7 @@ class BillService{
                     break;
                 }
                 $params = array_merge($basic_info_param,$client_result);
+
                 $params["F_PRODUCT1"] = $request->input('f_product' . $i);
                 $params["F_UNITPRICE1"] = $request->input('f_unitprice' . $i);
                 $params["F_BIGO1"] = $request->input('f_bigo' . $i);
@@ -245,6 +267,11 @@ class BillService{
                 $params["F_PRICE"] = $request->input('f_unitprice' . $i);
                 $params["F_TAX_TYPE"] = "01"; //이용료 분할 계산서 (일반 -> 01)
                 $params["F_ASSO"] = "NORMAL";
+
+                /**sequence 형태로 billid 직접 넣어주기*/
+                $nextVal = DB::select("SELECT \"SBMUSIC\".\"T_BILL_NEY_SEQ\".NEXTVAL FROM DUAL");
+                $params["F_BILLID"] = $nextVal[0]->nextval;
+
                 $result[] = $params;
             }
         } else if ($tax_type01 === "off") {
@@ -255,6 +282,11 @@ class BillService{
             $total_price += $request->input('f_unitprice4');
 
             $params = array_merge($basic_info_param,$client_result);
+
+            /**sequence 형태로 billid 직접 넣어주기*/
+            $nextVal = DB::select("SELECT \"SBMUSIC\".\"T_BILL_NEY_SEQ\".NEXTVAL FROM DUAL");
+            $params["f_billid"] = $nextVal[0]->nextval;
+
             $params["F_PRICE"] = $total_price;
             $params["F_PRODUCT1"] = $request->input('f_product1');
             $params["F_UNITPRICE1"] = $request->input('f_unitprice1');
@@ -298,6 +330,11 @@ class BillService{
                     break;
                 }
                 $params = array_merge($basic_info_param,$client_result);
+
+                /**sequence 형태로 billid 직접 넣어주기*/
+                $nextVal = DB::select("SELECT \"SBMUSIC\".\"T_BILL_NEY_SEQ\".NEXTVAL FROM DUAL");
+                $params["F_BILLID"] = $nextVal[0]->nextval;
+
                 $params["F_PRODUCT1"] = $request->input("f_product1_" . strtolower($key));
                 $params["F_UNITPRICE1"] = $request->input("f_unitprice_" . strtolower($key));
                 $params["F_ISSUE_TYPE"] = $request->input("f_issue_type_" . strtolower($key));
@@ -316,7 +353,7 @@ class BillService{
      */
     public function billDelete(array $request, array $log_params) {
         DB::beginTransaction();
-        Bill_NEY::deleteBill($request['f_billid']);
+        Bill_NEY::deleteBill($request['f_billId']);
         BillLog::createLog($log_params);
         DB::commit();
         return true;
