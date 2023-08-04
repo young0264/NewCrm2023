@@ -520,7 +520,7 @@
     </style>
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">
-            <span class="text-muted fw-light">정산 / 계산서 / </span>계산서 발행 조회2
+            <span class="text-muted fw-light">정산 / 계산서 / </span>계산서 발행 조회22
         </h4>
 
         <div class="form-floating">
@@ -665,7 +665,7 @@
 {{--                                </nav>--}}
                                 {{--컬럼 업데이트 head group 끝--}}
                                 {{-- table header, body 시작 --}}
-                                <div class="table-responsive" id="both-scrollbars-example" style="height: 800px">
+                                <div class="table-responsive" id="both-scrollbars-example" style="height: 500px">
                                     <div class="table-container">
                                         {{--                                        <aside id="layout-menu"  class="layout-menu ">--}}
                                         <form id="search_form">

@@ -340,7 +340,7 @@
 {{--                                    </div>--}}
                                 </div>
                             </form>
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="height: 545px;">
                                 <table class="table table-hover border-bottom" style="table-layout: fixed">
                                     <thead id="customer_thead" style="text-overflow: ellipsis; max-width: 120px;">
                                     <tr>
@@ -379,7 +379,7 @@
                                 <div class="card-body">
                                     <div class="form-floating">
                                         <div class="mb-3">
-                                            <div class="demo-inline-spacing">
+                                            <div class="demo-inline-spacing my-2" >
                                                 <div class="btn-group">
                                                     <select class="form-select" id="f_pay_type" name="f_pay_type">
                                                         <option value="">결제수단</option>
@@ -395,33 +395,35 @@
                                                         <option>비신탁</option>
                                                     </select>
                                                 </div>
+                                                <div class="btn-group">
+                                                    <select class="form-select" id="sch_key" name="sch_key">
+                                                        <option value="tonghap">통합</option>
+                                                        <option value="f_billid">점포코드</option>
+                                                        <option value="f_bizname">브랜드</option>
+                                                        <option value="f_shopname">매장명</option>
+                                                        <option value="f_registration_number">사업자번호</option>
+                                                        <option value="f_interval">결제주기</option>
+                                                        <option value="f_price">단가</option>
+                                                    </select>
+                                                </div>
+                                                <div class="btn-group my-2">
+                                                    <input
+                                                        class="form-control"
+                                                        type="text"
+                                                        id="sch_val" name="sch_val"
+                                                        placeholder="검색어를 입력하세요."
+                                                    />
+                                                </div>
+                                                <div class="btn-group my-2">
+                                                    <button type="button" class="btn btn-info" onclick="tables.onChargeTableSearch()">검색</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-floating">
-                                        <div class="btn-group">
-                                            <select class="form-select" id="sch_key" name="sch_key">
-                                                <option value="tonghap">통합</option>
-                                                <option value="f_billid">점포코드</option>
-                                                <option value="f_bizname">브랜드</option>
-                                                <option value="f_shopname">매장명</option>
-                                                <option value="f_registration_number">사업자번호</option>
-                                                <option value="f_interval">결제주기</option>
-                                                <option value="f_price">단가</option>
-                                            </select>
-                                        </div>
-                                        <div class="btn-group my-2">
-                                            <input
-                                                class="form-control"
-                                                type="text"
-                                                id="sch_val" name="sch_val"
-                                                placeholder="검색어를 입력하세요."
-                                            />
-{{--                                            <input class="form-control" id="sch_val" name="sch_val" value="{{request('sch_val')}}" placeholder="검색어를 입력하세요.">--}}
-                                        </div>
-                                        <div class="btn-group my-2">
-                                            <button type="button" class="btn btn-info" onclick="tables.onChargeTableSearch()">검색</button>
-                                        </div>
+
+
+
                                     </div>
                                     <div class="form-floating">
                                         <button type="button" class="btn btn-danger" onclick="tables.billDelete()">청구 해제</button>
@@ -435,7 +437,7 @@
                                     </div>
                                 </div>
                             </form>
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="height: 520px;">
                                 <table class="table table-hover border-bottom">
                                     <thead id="charge_thead">
                                     <tr>
@@ -448,7 +450,7 @@
                                         <th class="text-nowrap text-center">단가</th>
                                     </tr>
                                     </thead>
-                                    <tbody class="text-center" id="charge_tbody">
+                                    <tbody class="text-center" id="charge_tbody" >
                                     </tbody>
                                 </table>
                                 <div class="col-md text-center">
