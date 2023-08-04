@@ -303,7 +303,7 @@
                 let updateSelectBoxHtml = "";
                 updateSelectBoxHtml += `
                                     <tr class="btn-group">
-                                        <th class="btn-group" style="width:340px; ">
+                                        <th style="width:340px; ">
                                             <button class="btn btn-primary" onclick="tables.billsUpdate()">컬럼 일괄 업데이트</button>
                                             <button class="btn btn-warning" onclick="location.href='{{route('billIssue')}}'">초기화</button>
                                         </th>`;

@@ -326,10 +326,9 @@
                                                 placeholder="검색어를 입력하세요."
                                             />
                                         </div>
-                                        <div class="btn-group my-2">
-                                            <button type="button" class="btn btn-info mx-1" onclick="tables.onClientTableSearch()">검색</button>
-                                            <button type="button" class="btn btn-primary mx-1">청구</button>
-                                        </div>
+                                        <button type="button" class="btn btn-info " onclick="tables.onClientTableSearch()">검색</button>
+                                        <button type="button" class="btn btn-primary ">청구</button>
+
                                     </div>
                                     <div class="form-floating">
                                         <div class="mb-3" >
