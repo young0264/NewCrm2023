@@ -382,7 +382,7 @@
                 }
                 items.forEach((item, idx) => {
                     let f_id = item['f_id']
-                    html += `<tr class="text-center" onclick="tables.onLeftClick(this, ${f_id})">`
+                    html += `<tr class="text-center" onclick="tables.onLeftClick(this, ${f_id})" style="font-size: 14px; height: 10px;">`
                     this.headers.forEach((head, idx) => {
                         let className = this.getClassNameByTabs(head['key']);
                         html += `<td class="text-nowrap ${className}" style="cursor:pointer; width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" >${item[head['key']] === null ? "" : item[head['key']]}</td>`;
@@ -645,7 +645,7 @@
                                 </div>
                                 {{--컬럼 업데이트 head group 시작--}}
 {{--                                <nav class="navbar navbar-example navbar-expand-lg navbar-light bg-light">--}}
-                                <div class="table-responsive" id="both-scrollbars-example">
+                                <div class="table-responsive">
 
                                     <div class="horizontal-scrollable" >
                                         <form id="update_form">
@@ -653,7 +653,7 @@
 {{--                                            <div class="btn-group" id="update_group" >--}}
 {{--                                            </div>--}}
                                             {{-- 컬럼일괄 업데이트 끝--}}
-                                            <table class="table table-hover border-bottom border-top" >
+                                            <table class="table-hover border-bottom border-top" >
                                                 <thead id="update_group">
                                                 </thead>
 {{--                                                <tbody id="table_body">--}}
@@ -664,10 +664,10 @@
                                 </div>
 {{--                                </nav>--}}
                                 {{--컬럼 업데이트 head group 끝--}}
+
                                 {{-- table header, body 시작 --}}
-                                <div class="table-responsive" id="both-scrollbars-example" style="height: 500px">
+                                <div class="table-responsive" style="height: 500px">
                                     <div class="table-container">
-                                        {{--                                        <aside id="layout-menu"  class="layout-menu ">--}}
                                         <form id="search_form">
                                             <table class="table table-hover" style="table-layout: fixed;">
                                                 <thead id="table_head_select">
@@ -676,7 +676,6 @@
                                                 </tbody>
                                             </table>
                                         </form>
-                                        {{--                                        </aside>--}}
                                     </div>
                                 </div>
                                 {{-- table header, body 끝 --}}
