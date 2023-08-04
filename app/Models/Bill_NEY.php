@@ -90,7 +90,7 @@ class Bill_NEY extends Model{
 
     public static function deleteBill(array $f_billid) {
         try {
-            DB::table('T_BILL_NEY')->whereIn('f_billid', $f_billid)->update(['f_deleted' => 'Y']);
+            DB::table('T_BILL_NEY')->whereIn('f_billid', $f_billid)->update(['F_STATUS' => 'N']);
         } catch (Exception $e) {
             DB::rollback();
             print_r($e->getMessage());

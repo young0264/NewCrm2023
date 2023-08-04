@@ -45,7 +45,7 @@ class BillService{
      * 검색조건 wheres, bindings 생성
      */
     public function makeSearchConditions($request): array {
-        $wheres = "and (F_DELETED = 'N')";
+        $wheres = "and (F_STATUS = 'Y')";
         $binds = [];
 
         /**
@@ -138,14 +138,6 @@ class BillService{
         $tax_type01 = $request->input('tax_type01') === 'on' ? 'on' : 'off';
         $billPFParams = self::makeToAssocidateArray($request->input(), self::getBillPFInfo());
         $billsData = self::getBillTotalData($tax_type01, $request, $tax_type0306);
-//        echo "<pre>";
-//        print_r("bills data : ", $billsData);
-//        exit;
-
-        //sequence 형태로 billid 직접 넣어주기
-//        $nextVal = DB::select("SELECT \"SBMUSIC\".\"T_BILL_NEY_SEQ\".NEXTVAL FROM DUAL");
-//        $associate_arr["f_billid"] = $nextVal[0]->nextval;
-
 
         BillLog::createLog($log_params);
         Bill_NEY::insertBills($billsData);
@@ -334,7 +326,6 @@ class BillService{
                 /**sequence 형태로 billid 직접 넣어주기*/
                 $nextVal = DB::select("SELECT \"SBMUSIC\".\"T_BILL_NEY_SEQ\".NEXTVAL FROM DUAL");
                 $params["F_BILLID"] = $nextVal[0]->nextval;
-
                 $params["F_PRODUCT1"] = $request->input("f_product1_" . strtolower($key));
                 $params["F_UNITPRICE1"] = $request->input("f_unitprice_" . strtolower($key));
                 $params["F_ISSUE_TYPE"] = $request->input("f_issue_type_" . strtolower($key));

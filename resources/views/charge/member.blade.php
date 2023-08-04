@@ -77,7 +77,7 @@
         clientClassList : null,
         billClassList: new Set(),
 
-        /** f_deleted 컬럼 Y:삭제(숨기기), 컬럼N:노출 */
+        /** F_STATUS 컬럼 Y : 노출, 컬럼 N :삭제(숨기기)*/
         billDelete: function () {
             if (!confirm("삭제 하시겠습니까?")) {
                 return;
