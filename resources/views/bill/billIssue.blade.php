@@ -181,6 +181,11 @@
              * 컬럼 일괄 업데이트 버튼 클릭시
              */
             billsUpdate: function () {
+                console.log(this.publishIdArrForUpdate);
+                if (this.publishIdArrForUpdate.length === 0) {
+                    alert("업데이트할 항목을 선택해주세요.");
+                    return;
+                }
                 // form 데이터 json으로 변환
                 let form = document.getElementById('update_form');
                 let formData = new FormData(form);
