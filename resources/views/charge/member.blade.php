@@ -230,7 +230,7 @@
                 return;
             }
             this.billChargeItems.forEach((item, idx) => {
-                html += `<tr class="text-center" onclick="tables.billLeftClick(this)">`;
+                html += `<tr class="text-center" onclick="tables.billLeftClick(this)" style="font-size: 14px;">`;
                 html += `    <td class="text-nowrap" id="f_billid">${item['f_billid']}</td>`;
                 html += `    <td class="text-nowrap">${item['f_bizname'] === null ? "" : item['f_bizname']}</td>`;
                 html += `    <td class="text-nowrap">
@@ -436,7 +436,7 @@
                                     </div>
                                 </div>
                             </form>
-                            <div class="table-responsive" style="height: 520px;">
+                            <div class="table-responsive" style="height: 570px;">
                                 <table class="table table-hover border-bottom">
                                     <thead id="charge_thead">
                                     <tr>
@@ -449,7 +449,7 @@
                                         <th class="text-nowrap text-center">단가</th>
                                     </tr>
                                     </thead>
-                                    <tbody class="text-center" id="charge_tbody" >
+                                    <tbody class="text-center" id="charge_tbody"  >
                                     </tbody>
                                 </table>
                                 <div class="col-md text-center">
