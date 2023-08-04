@@ -24,7 +24,11 @@
 
     let register = {
         BillFormRegister: function () {
-
+            const element = document.querySelector('#f_pf_price[name="f_pay_interval"]');
+            if(element === null){
+                alert("결제주기를 입력해 주세요.");
+                return;
+            }
             const checkbox = document.getElementById("bill_immediate");
             if (checkbox.checked) {
                 checkbox.value = "true";
